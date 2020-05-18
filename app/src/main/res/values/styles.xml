@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/app_color_blue</item>
+        <item name="colorPrimaryDark">@color/app_color_blue</item>
+        <item name="colorAccent">@color/app_color_blue</item>
+        <item name="android:windowBackground">@drawable/jianbian</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>
