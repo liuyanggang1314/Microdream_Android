@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/app_color_blue</item>
         <item name="android:windowBackground">@drawable/jianbian</item>
         <item name="android:windowIsTranslucent">true</item>
+
+        <item name="QMUITopBarStyle">@style/QDTopBar</item>
+    </style>
+
+    <style name="QDTopBar" parent="QMUI.TopBar">
+        <item name="android:background">@drawable/titile_background</item>
+        <item name="qmui_topbar_title_color">@color/white</item>
     </style>
 
 </resources>

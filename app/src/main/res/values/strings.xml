@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Microdream</string>
+    <string name="permissions">请先授权,否则无法使用</string>
+
+    <string name="about_copyright">Microdream 微梦想 版权所有\nCopyright ©2020-%1$s Microdream.\nAll Rights Reserved.</string>
+    <string name="input_username">请输入用户名</string>
+    <string name="input_password">请输入密码</string>
+    <string name="login">登 录</string>
+    <string name="Remember_the_password">记住我</string>
+    <string name="signup">注 册</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="loginingtext">正在登陆中</string>
 </resources>
