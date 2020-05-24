@@ -16,7 +16,7 @@ import java.util.Locale;
  * @Date 2020/5/19
  * @Version 1.0
  */
-public class VersionUtils {
+public class VersionUtil {
     public static String getversion(Context context) {
         //版本
         PackageManager packageManager = context.getPackageManager();
@@ -26,7 +26,13 @@ public class VersionUtils {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return packInfo.versionName;
+        assert packInfo != null;
+        String version = packInfo.versionName;
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Version. ");
+        stringBuffer.append(version);
+        stringBuffer.append(".");
+        return String.valueOf(stringBuffer);
     }
 
     public static String getCopyrightInfo(Context context) {

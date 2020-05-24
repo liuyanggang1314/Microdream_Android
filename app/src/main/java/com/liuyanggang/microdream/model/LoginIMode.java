@@ -1,12 +1,10 @@
 package com.liuyanggang.microdream.model;
 
-import android.util.Log;
-
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
 import com.liuyanggang.microdream.entity.UserEntity;
 import com.liuyanggang.microdream.model.Lisentener.LoginLisentener;
-import com.liuyanggang.microdream.utils.MMKVUtils;
-import com.liuyanggang.microdream.utils.RsaUtils;
+import com.liuyanggang.microdream.utils.MMKVUtil;
+import com.liuyanggang.microdream.utils.RsaUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
@@ -28,15 +26,17 @@ import static com.liuyanggang.microdream.entity.MicrodreamEntity.UNAUTHORIZED;
 public class LoginIMode implements IModel {
     //model 负责数据以及业务逻辑。
 
-    public void login(String username, String password, LoginLisentener lisentener) {
+    public void login(String username, String password, boolean isRemember, LoginLisentener lisentener) {
         if (lisentener == null) {
             return;
         }
+        if (isRemember) {
+            MMKVUtil.setBooleanInfo("isRememberMe", true);
+        }
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(username);
-        userEntity.setPassword(RsaUtils.mEncrypt(password));
+        userEntity.setPassword(RsaUtil.mEncrypt(password));
         RequestBody body = RequestBody.create(JSON, JSONUtil.toJsonStr(userEntity));
-
 
         OkGo.<String>post(LOGINNOCODE)
                 .upRequestBody(body)
@@ -44,7 +44,7 @@ public class LoginIMode implements IModel {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        lisentener.onFails("网络请求错误");
+                        lisentener.onError("网络请求错误");
                     }
 
                     @Override
@@ -52,23 +52,55 @@ public class LoginIMode implements IModel {
                         int code = response.code();
                         if (code != 500) {
                             String str = response.body();
-                            Log.d("361", str);
-                            JSONObject jsonObject = new JSONObject(str);
-                            String status = jsonObject.getStr("status");
-                            if (status == null) {
-                                String token = jsonObject.getStr("token");
-                                MMKVUtils.setStringInfo("token", token);
-                                lisentener.onSeccess();
-                            } else {
-                                String message = jsonObject.getStr("message");
-                                if (UNAUTHORIZED.equals(status)) {
-                                    //无token
+                            if (!str.equals("")) {
+                                JSONObject jsonObject = new JSONObject(str);
+                                String status = jsonObject.getStr("status");
+                                if (status == null) {
+                                    String token = jsonObject.getStr("token");
+                                    JSONObject user = jsonObject.getJSONObject("user");
+                                    JSONObject userInfo = user.getJSONObject("user");
+                                    String username = userInfo.getStr("username");
+                                    String nickName = userInfo.getStr("nickName");
+                                    String email = userInfo.getStr("email");
+                                    String phone = userInfo.getStr("phone");
+                                    String gender = userInfo.getStr("gender");
+                                    String avatarName = userInfo.getStr("avatarName");
+                                    String avatarPath = userInfo.getStr("avatarPath");
+                                    String pwdResetTime = userInfo.getStr("pwdResetTime");
+                                    String enabled = userInfo.getStr("enabled");
+                                    String createBy = userInfo.getStr("createBy");
+                                    String updatedBy = userInfo.getStr("updatedBy");
+                                    String createTime = userInfo.getStr("createTime");
+                                    String updateTime = userInfo.getStr("updateTime");
+
+
+                                    MMKVUtil.setStringInfo("token", token);
+                                    MMKVUtil.setStringInfo("username", username);
+                                    MMKVUtil.setStringInfo("nickName", nickName);
+                                    MMKVUtil.setStringInfo("email", email);
+                                    MMKVUtil.setStringInfo("phone", phone);
+                                    MMKVUtil.setStringInfo("gender", gender);
+                                    MMKVUtil.setStringInfo("avatarName", avatarName);
+                                    MMKVUtil.setStringInfo("avatarPath", avatarPath);
+                                    MMKVUtil.setStringInfo("pwdResetTime", pwdResetTime);
+                                    MMKVUtil.setStringInfo("enabled", enabled);
+                                    MMKVUtil.setStringInfo("createBy", createBy);
+                                    MMKVUtil.setStringInfo("updatedBy", updatedBy);
+                                    MMKVUtil.setStringInfo("createTime", createTime);
+                                    MMKVUtil.setStringInfo("updateTime", updateTime);
+                                    lisentener.onSeccess();
                                 } else {
-                                    lisentener.onFails(message);
+                                    String message = jsonObject.getStr("message");
+                                    if (UNAUTHORIZED.equals(status)) {
+                                        //无token
+                                    } else {
+                                        lisentener.onError(message);
+                                    }
                                 }
                             }
+
                         } else {
-                            lisentener.onFails("请求超时");
+                            lisentener.onError("请求超时");
                         }
 
                     }

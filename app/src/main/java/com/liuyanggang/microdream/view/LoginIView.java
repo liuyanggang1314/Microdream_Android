@@ -12,9 +12,11 @@ public interface LoginIView extends IView {
 
     String getPassword();
 
+    boolean getIsRemember();
+
 
     void onLoginSeccess();
 
-    void onLoginFails(String fails);
+    void onLoginError(String error);
 
 }

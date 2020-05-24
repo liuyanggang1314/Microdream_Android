@@ -7,9 +7,9 @@
                 <shape>
                     <gradient
                         android:angle="0"
-                        android:startColor="@color/wudi"
-                        android:centerColor="#E91E63"
-                        android:endColor="#00BCD4"
+                        android:startColor="#0cebeb"
+                        android:centerColor="#20e3b2"
+                        android:endColor="#29ffc6"
                         android:type="linear"/>
                     <corners android:bottomLeftRadius="3dp"
                         android:bottomRightRadius="3dp"
@@ -21,8 +21,8 @@
                 <shape>
                     <gradient
                         android:angle="0"
-                        android:startColor="@color/wudi"
-                        android:endColor="@color/wudi"
+                        android:startColor="#d9a7c7"
+                        android:endColor="#fffcdc"
                         android:type="linear"/>
                     <corners android:bottomLeftRadius="3dp"
                         android:bottomRightRadius="3dp"

@@ -10,5 +10,6 @@ package com.liuyanggang.microdream.model.Lisentener;
 public interface LoginLisentener {
     void onSeccess();
 
-    void onFails(String fails);
+    void onError(String error);
+
 }

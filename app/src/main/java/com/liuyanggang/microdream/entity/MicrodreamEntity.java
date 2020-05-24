@@ -13,19 +13,54 @@ public class MicrodreamEntity {
     /**
      * 域名
      */
-    public static final String MICRODREAM_SERVER = "http://192.168.0.102:8000/";
+    private static final String MICRODREAM_SERVER = "http://192.168.0.102:8000/";
 
+    /**
+     * 登录
+     */
     public static final String LOGINNOCODE = MICRODREAM_SERVER + "auth/loginnocode";
-
+    /**
+     * 注册
+     */
+    public static final String REGISTER = MICRODREAM_SERVER + "api/users/createNo";
+    /**
+     * 修改密码
+     */
+    public static final String CHANGEPASSWORD = MICRODREAM_SERVER + "api/users/updatePass";
+    /**
+     * 请求heard
+     */
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    /**
+     * 请求成功code
+     */
     public static final String OK = "200";
+    /**
+     * 请求失败401 UNAUTHORIZED授权错误
+     */
     public static final String UNAUTHORIZED = "401";
+    /**
+     * 请求错误
+     */
     public static final String BAD_REQUEST = "400";
+    /**
+     * token
+     */
     public static final String TOKEN_STRING = "token";
+
+    /**
+     * DrawerLayout边缘滑动距离
+     */
+    public static final Integer DRAWERLEFTEDGESIZEDP = 200;
     /**
      * 密码最低
      */
     public static final int PASSWORD_LESS = 6;
+    /**
+     * phone长度
+     */
+    public static final int PHONE_LENTH = 11;
+
     /**
      * 密码最高
      */
@@ -34,6 +69,16 @@ public class MicrodreamEntity {
      * 授权状态码
      */
     public static final int RC_PERM = 123;
+
+    /**
+     * 正则表达式:验证手机号
+     */
+    public static final String REGEX_MOBILE = "^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$";
+
+    /**
+     * 正则表达式:验证邮箱
+     */
+    public static final String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 
     /**
      * REA公匙

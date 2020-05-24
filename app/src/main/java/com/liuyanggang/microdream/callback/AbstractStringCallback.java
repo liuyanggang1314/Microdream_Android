@@ -1,6 +1,6 @@
 package com.liuyanggang.microdream.callback;
 
-import com.liuyanggang.microdream.utils.MMKVUtils;
+import com.liuyanggang.microdream.utils.MMKVUtil;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.convert.StringConvert;
 import com.lzy.okgo.request.base.Request;
@@ -26,8 +26,8 @@ public abstract class AbstractStringCallback extends AbsCallback<String> {
     @Override
     public void onStart(Request<String, ? extends Request> request) {
         super.onStart(request);
-        if (MMKVUtils.getStringInfo(TOKEN_STRING) != null) {
-            request.headers("Authorization", MMKVUtils.getStringInfo(TOKEN_STRING));
+        if (MMKVUtil.getStringInfo(TOKEN_STRING) != null) {
+            request.headers("Authorization", MMKVUtil.getStringInfo(TOKEN_STRING));
         }
     }
 

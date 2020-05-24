@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/app_color_blue</item>
         <item name="colorPrimaryDark">@color/app_color_blue</item>
         <item name="colorAccent">@color/app_color_blue</item>
@@ -12,9 +11,30 @@
         <item name="QMUITopBarStyle">@style/QDTopBar</item>
     </style>
 
+    <!--标题栏属性-->
     <style name="QDTopBar" parent="QMUI.TopBar">
         <item name="android:background">@drawable/titile_background</item>
         <item name="qmui_topbar_title_color">@color/white</item>
+        <item name="qmui_bottomDividerHeight">0px</item>
+    </style>
+
+    <!--弹窗属性-->
+    <style name="MyDialog" parent="QMUI.Dialog.Action">
+        <!-- 控制灰色遮罩颜色深度为70% -->
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:windowBackground">@color/qmui_config_color_transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- 在中间弹框、背后有遮罩的效果 -->
+        <item name="android:windowIsFloating">true</item>
+        <item name="qmui_skin_support_dialog_bg">@drawable/login_button_background</item>
+        <item name="qmui_skin_support_s_dialog_menu_item_bg">@drawable/transparent_button_background</item>
+        <item name="qmui_skin_support_dialog_menu_item_text_color">@color/white</item>
+    </style>
+
+
+    <style name="DialogAnimations" parent="android:Animation">
+        <item name="android:windowEnterAnimation" >@anim/fragment_open_enter</item>
+        <item name="android:windowExitAnimation" >@anim/fragment_open_exit</item>
     </style>
 
 </resources>

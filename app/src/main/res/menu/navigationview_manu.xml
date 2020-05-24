@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group1">
+        <item
+            android:id="@+id/menu_1"
+            android:icon="@mipmap/user"
+            android:title="@string/selfinfo" />
+        <item
+            android:id="@+id/menu_2"
+            android:icon="@mipmap/lock_fill"
+            android:title="@string/change_password" />
+        <item
+            android:id="@+id/menu_3"
+            android:icon="@mipmap/mail_fill"
+            android:title="@string/feedback" />
+    </group>
+    <group android:id="@+id/group2">
+        <item
+            android:id="@+id/menu_4"
+            android:icon="@mipmap/delete"
+            android:title="@string/clear_cache" />
+        <item
+            android:id="@+id/menu_5"
+            android:icon="@mipmap/exit"
+            android:title="@string/sign_out" />
+    </group>
+    <group android:id="@+id/group3">
+        <item
+            android:id="@+id/menu_6"
+            android:icon="@mipmap/info"
+            android:title="@string/about" />
+    </group>
+</menu>

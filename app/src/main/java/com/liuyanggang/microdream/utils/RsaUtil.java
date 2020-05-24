@@ -13,7 +13,7 @@ import static com.liuyanggang.microdream.entity.MicrodreamEntity.PUBLIC_KEY;
  * @Date 2020/5/20
  * @Version 1.0
  */
-public class RsaUtils {
+public class RsaUtil {
     /**
      * 解密
      *

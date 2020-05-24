@@ -4,36 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/logo"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2">
+        app:layout_constraintVertical_bias="0.22">
 
-    </ImageView>
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/logo">
 
-    <TextView
-        android:id="@+id/app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
-        app:layout_constraintVertical_bias="0.1">
+        </ImageView>
 
-    </TextView>
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:padding="30dp"
+            android:textStyle="italic"
+            android:textColor="@color/white"
+            android:textSize="30sp">
+
+        </TextView>
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/copyright"
@@ -42,13 +48,13 @@
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="@string/about_copyright"
-        android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textColor="@color/mistyrose"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_name"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="1">
 
     </TextView>

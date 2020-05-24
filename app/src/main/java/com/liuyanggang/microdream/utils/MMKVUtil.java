@@ -11,7 +11,7 @@ import com.tencent.mmkv.MMKV;
  * @Date 2020/5/19
  * @Version 1.0
  */
-public class MMKVUtils {
+public class MMKVUtil {
 
     /**
      * 存储String值
@@ -19,7 +19,7 @@ public class MMKVUtils {
      * @param key
      * @param value
      */
-    public static void setStringInfo(@NonNull String key, @NonNull String value) {
+    public static void setStringInfo(@NonNull String key, String value) {
         MMKV kv = MMKV.defaultMMKV();
         kv.encode(key, value);
     }
@@ -55,6 +55,28 @@ public class MMKVUtils {
     public static int getIntInfo(@NonNull String key) {
         MMKV kv = MMKV.defaultMMKV();
         return kv.decodeInt(key);
+    }
+
+    /**
+     * 存储boolean值
+     *
+     * @param key
+     * @param value
+     */
+    public static void setBooleanInfo(@NonNull String key, @NonNull boolean value) {
+        MMKV kv = MMKV.defaultMMKV();
+        kv.encode(key, value);
+    }
+
+    /**
+     * 获取boolean值
+     *
+     * @param key
+     * @return
+     */
+    public static boolean getBooleanInfo(@NonNull String key) {
+        MMKV kv = MMKV.defaultMMKV();
+        return kv.decodeBool(key);
     }
 
 }

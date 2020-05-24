@@ -12,6 +12,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @ClassName CodeDialog
@@ -48,6 +49,7 @@ public class LoginDialog extends QMUIDialog {
      * 初始化界面
      */
     private void initView() {
+        ButterKnife.bind(this);
         // 设置窗口大小
         int screenWidth = QMUIDisplayHelper.getScreenWidth(mContext);
         int screenHeight = QMUIDisplayHelper.getScreenHeight(mContext);

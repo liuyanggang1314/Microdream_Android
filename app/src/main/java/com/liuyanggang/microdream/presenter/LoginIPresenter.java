@@ -25,9 +25,10 @@ public class LoginIPresenter extends IPresenter {
             LoginIView loginView = (LoginIView) mViewReference.get();
             String name = loginView.getUserName();
             String passWord = loginView.getPassword();
+            boolean isRemember = loginView.getIsRemember();
             loginView = null;
             //此时LoginListener作为匿名内部类是持有外部类的引用的。
-            ((LoginIMode) mImodel).login(name, passWord, new LoginLisentener() {
+            ((LoginIMode) mImodel).login(name, passWord, isRemember, new LoginLisentener() {
                 @Override
                 public void onSeccess() {
                     if (mViewReference.get() != null) {
@@ -36,11 +37,9 @@ public class LoginIPresenter extends IPresenter {
                 }
 
                 @Override
-                public void onFails(String fails) {
+                public void onError(String error) {
                     if (mViewReference.get() != null) {
-                        if (mViewReference.get() != null) {
-                            ((LoginIView) mViewReference.get()).onLoginFails(fails);
-                        }
+                        ((LoginIView) mViewReference.get()).onLoginError(error);
                     }
                 }
 

@@ -1,19 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:fitsSystemWindows="true" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/qmui_topbar_height"
+            android:fitsSystemWindows="true">
+
+            <com.liuyanggang.microdream.components.CustomScrollViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/commonTabLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </com.liuyanggang.microdream.components.CustomScrollViewPager>
+
+            <com.flyco.tablayout.CommonTabLayout
+                android:id="@+id/commonTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#ffffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tl_iconHeight="29dp"
+                app:tl_iconWidth="29dp"
+                app:tl_indicator_color="@color/pink"
+                app:tl_indicator_height="0dp"
+                app:tl_textSelectColor="@color/pink"
+                app:tl_textUnselectColor="#66000000"
+                app:tl_textsize="10dp"
+                app:tl_underline_color="#8a8a8a"
+                app:tl_underline_height="0dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@drawable/navigationview_background"
+            app:headerLayout="@layout/layout_navigationview_head"
+            app:itemTextColor="@color/white"
+            app:menu="@menu/navigationview_manu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

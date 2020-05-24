@@ -9,7 +9,6 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okserver.OkDownload;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.mmkv.MMKV;
 
 import java.util.logging.Level;
@@ -73,10 +72,6 @@ public class MicrodreamApplication extends Application {
     }
 
     private void initQmui() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
         //QDUpgradeManager.getInstance(this).check();//更新
         QMUISwipeBackActivityManager.init(this);//初始化
     }
