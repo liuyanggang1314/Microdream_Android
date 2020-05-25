@@ -1,8 +1,10 @@
 package com.liuyanggang.microdream.model;
 
+import com.liuyanggang.microdream.base.BaseInitData;
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
 import com.liuyanggang.microdream.model.Lisentener.ChangePasswordListener;
 import com.liuyanggang.microdream.model.Lisentener.GetUserInfoLisentener;
+import com.liuyanggang.microdream.model.Lisentener.LogoutLinstener;
 import com.liuyanggang.microdream.utils.MMKVUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -15,6 +17,7 @@ import okhttp3.RequestBody;
 
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.CHANGEPASSWORD;
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.JSON;
+import static com.liuyanggang.microdream.entity.MicrodreamEntity.LOGOUT;
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.REGISTER;
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.UNAUTHORIZED;
 
@@ -26,6 +29,51 @@ import static com.liuyanggang.microdream.entity.MicrodreamEntity.UNAUTHORIZED;
  * @Version 1.0
  */
 public class MainIModel implements IModel {
+
+    /**
+     * 密码修改
+     *
+     * @param lisentener
+     */
+    public void logout(LogoutLinstener lisentener) {
+        if (lisentener == null) {
+            return;
+        }
+        OkGo.<String>delete(LOGOUT)
+                .execute(new AbstractStringCallback() {
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        lisentener.onLogoutError("网络请求错误");
+                    }
+
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        int code = response.code();
+                        if (code != 500) {
+                            String str = response.body();
+
+                            if (!str.equals("")) {
+                                JSONObject jsonObject = new JSONObject(str);
+                                String status = jsonObject.getStr("status");
+                                String message = jsonObject.getStr("message");
+                                if (UNAUTHORIZED.equals(status)) {
+                                    //无token
+                                    lisentener.onLogoutError(UNAUTHORIZED);
+                                } else {
+                                    lisentener.onLogoutError(message);
+                                }
+                            } else {
+                                BaseInitData.removeData();
+                                lisentener.onLogoutSeccess();
+                            }
+                        } else {
+                            lisentener.onLogoutError("请求超时");
+                        }
+
+                    }
+                });
+    }
 
     /**
      * 密码修改
@@ -123,7 +171,7 @@ public class MainIModel implements IModel {
                                     MMKVUtil.setStringInfo("avatarName", avatarName);
                                     MMKVUtil.setStringInfo("avatarPath", avatarPath);
                                     MMKVUtil.setStringInfo("pwdResetTime", pwdResetTime);
-                                    MMKVUtil.setStringInfo("enabled", enabled);
+                                    MMKVUtil.setBooleanInfo("enabled", enabled);
                                     MMKVUtil.setStringInfo("createBy", createBy);
                                     MMKVUtil.setStringInfo("updatedBy", updatedBy);
                                     MMKVUtil.setStringInfo("createTime", createTime);

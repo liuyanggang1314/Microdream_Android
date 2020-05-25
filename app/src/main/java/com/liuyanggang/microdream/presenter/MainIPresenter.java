@@ -2,6 +2,7 @@ package com.liuyanggang.microdream.presenter;
 
 import com.liuyanggang.microdream.model.Lisentener.ChangePasswordListener;
 import com.liuyanggang.microdream.model.Lisentener.GetUserInfoLisentener;
+import com.liuyanggang.microdream.model.Lisentener.LogoutLinstener;
 import com.liuyanggang.microdream.model.MainIModel;
 import com.liuyanggang.microdream.view.MainIView;
 
@@ -47,6 +48,9 @@ public class MainIPresenter extends IPresenter {
         }
     }
 
+    /**
+     * 修改密码
+     */
     public void changePassword() {
         if (mImodel != null && mViewReference != null && mViewReference.get() != null) {
             MainIView loginView = (MainIView) mViewReference.get();
@@ -65,6 +69,32 @@ public class MainIPresenter extends IPresenter {
                 public void onChangePasswordError(String error) {
                     if (mViewReference.get() != null) {
                         ((MainIView) mViewReference.get()).onChangePasswordError(error);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 退出登录
+     */
+    public void logout() {
+        if (mImodel != null && mViewReference != null && mViewReference.get() != null) {
+            MainIView loginView = (MainIView) mViewReference.get();
+            loginView = null;
+            //此时LoginListener作为匿名内部类是持有外部类的引用的。
+            ((MainIModel) mImodel).logout(new LogoutLinstener() {
+                @Override
+                public void onLogoutSeccess() {
+                    if (mViewReference.get() != null) {
+                        ((MainIView) mViewReference.get()).onLogoutSuccess();
+                    }
+                }
+
+                @Override
+                public void onLogoutError(String error) {
+                    if (mViewReference.get() != null) {
+                        ((MainIView) mViewReference.get()).onLogoutError(error);
                     }
                 }
             });

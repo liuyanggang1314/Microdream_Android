@@ -22,9 +22,35 @@ public interface MainIView extends IView {
      */
     void onGetUserInfoError(String error);
 
-    Map<String,String> onGetPasswordInfo();
+    /**
+     * 获取修改密码的信息
+     *
+     * @return
+     */
+    Map<String, String> onGetPasswordInfo();
 
+    /**
+     * 修改密码成功
+     */
     void onChangePasswordSuccess();
 
+    /**
+     * 修改密码失败
+     *
+     * @param error
+     */
     void onChangePasswordError(String error);
+
+    /**
+     * 退出登录成功
+     */
+    void onLogoutSuccess();
+
+    /**
+     * 退出登录失败
+     *
+     * @param error
+     */
+    void onLogoutError(String error);
+
 }

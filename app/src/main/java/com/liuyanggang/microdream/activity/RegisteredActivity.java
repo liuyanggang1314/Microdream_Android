@@ -101,7 +101,7 @@ public class RegisteredActivity extends BaseActivity implements RegisterView {
                         editSex.setText(items[which]);
                         dialog.dismiss();
                     })
-                    .create(R.style.MyDialog).show();
+                    .create(R.style.MyDialogPink).show();
         });
     }
 
@@ -198,7 +198,7 @@ public class RegisteredActivity extends BaseActivity implements RegisterView {
         tipDialog.dismiss();
         AnimationUtil.initAnimationShake(linearLayout);
         Alerter.create(this)
-                .setTitle("提示")
+                .setTitle(R.string.app_name)
                 .setText(error)
                 .setDuration(1000)
                 .setIcon(R.mipmap.logo)

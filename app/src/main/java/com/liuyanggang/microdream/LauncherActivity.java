@@ -54,16 +54,10 @@ public class LauncherActivity extends BaseActivity {
         methodRequiresTwoPermission();
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        if (hasFocus) {
-            AnimationUtil.initAnimationBounceInDown(linearLayout);
-        }
-    }
-
     private void initInfo() {
         String copyrightInfo = VersionUtil.getCopyrightInfo(getApplicationContext());
         copyright.setText(copyrightInfo);
+        AnimationUtil.initAnimationBounceInDown(linearLayout);
     }
 
     @Override
@@ -75,8 +69,7 @@ public class LauncherActivity extends BaseActivity {
 
 
     private void methodRequiresTwoPermission() {
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
             new Handler().postDelayed(this::doAfterPermissionsGranted, 2500);
         } else {

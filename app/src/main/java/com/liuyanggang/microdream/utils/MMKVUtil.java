@@ -14,6 +14,17 @@ import com.tencent.mmkv.MMKV;
 public class MMKVUtil {
 
     /**
+     * 删除
+     *
+     * @param key
+     */
+    public static void removeInfo(String key) {
+        MMKV kv = MMKV.defaultMMKV();
+        kv.removeValueForKey(key);
+    }
+
+
+    /**
      * 存储String值
      *
      * @param key
@@ -64,6 +75,17 @@ public class MMKVUtil {
      * @param value
      */
     public static void setBooleanInfo(@NonNull String key, @NonNull boolean value) {
+        MMKV kv = MMKV.defaultMMKV();
+        kv.encode(key, value);
+    }
+
+    /**
+     * 存储boolean值
+     *
+     * @param key
+     * @param value
+     */
+    public static void setBooleanInfo(@NonNull String key, @NonNull String value) {
         MMKV kv = MMKV.defaultMMKV();
         kv.encode(key, value);
     }

@@ -3,6 +3,7 @@ package com.liuyanggang.microdream.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -11,12 +12,14 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.liuyanggang.microdream.MainActivity;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.base.BaseActivity;
+import com.liuyanggang.microdream.utils.AnimationUtil;
 import com.liuyanggang.microdream.utils.VersionUtil;
+import com.tapadoo.alerter.Alerter;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.wangyuwei.particleview.ParticleView;
 
 /**
  * @ClassName AboutActivity
@@ -27,15 +30,20 @@ import me.wangyuwei.particleview.ParticleView;
  */
 public class AboutActivity extends BaseActivity {
     private CommonTitleBar commonTitleBar;
-    private ParticleView mParticleView;
     @BindView(R.id.version)
     TextView version;
+    @BindView(R.id.logo)
+    ImageView logo;
     @BindView(R.id.check_updata)
     Button checkUpdate;
     @BindView(R.id.copyright)
     TextView copyright;
     @BindView(R.id.lottieAnimationView)
     LottieAnimationView lottieAnimationView;
+    @BindView(R.id.lottieAnimationView_heart)
+    LottieAnimationView lottieAnimationViewHeart;
+    @BindString(R.string.heartinfo)
+    String heartInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +51,28 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         initView();
         initTopbar();
+        initListener();
+    }
+
+    private void initListener() {
+        checkUpdate.setOnClickListener(v -> {
+            AnimationUtil.initAnimationBounceIn(checkUpdate);
+            lottieAnimationViewHeart.playAnimation();
+        });
+        lottieAnimationViewHeart.setOnClickListener(v -> {
+            lottieAnimationViewHeart.playAnimation();
+            Alerter.create(this)
+                    .setTitle(R.string.app_name)
+                    .setText(heartInfo)
+                    .setDuration(5000)
+                    .setIcon(R.mipmap.logo)
+                    .enableSwipeToDismiss()
+                    .setBackgroundResource(R.drawable.atlas_background)
+                    .show();
+        });
+        logo.setOnClickListener(v -> {
+            lottieAnimationViewHeart.playAnimation();
+        });
     }
 
     private void initTopbar() {
@@ -56,18 +86,13 @@ public class AboutActivity extends BaseActivity {
     private void initView() {
         ButterKnife.bind(this);
         commonTitleBar = findViewById(R.id.back);
-        mParticleView = findViewById(R.id.mParticleView);
         version.setText(VersionUtil.getversion(this));
         copyright.setText(VersionUtil.getCopyrightInfo(this));
+        lottieAnimationView.setSpeed(0.5f);
+        lottieAnimationViewHeart.setProgress(1f);
+        lottieAnimationViewHeart.setSpeed(0.5f);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        if (hasFocus) {
-            mParticleView.startAnim();
-            lottieAnimationView.setSpeed(0.5f);
-        }
-    }
 
     @Override
     public Intent onLastActivityFinish() {

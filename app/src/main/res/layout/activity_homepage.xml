@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.qmuiteam.qmui.widget.QMUIAppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:fitsSystemWindows="true">
+
+        <com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout
+            android:id="@+id/mCollapsingTopBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/navigationview_background"
+            android:minHeight="?attr/qmui_topbar_height"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:qmui_collapsedTitleGravity="center"
+            app:qmui_contentScrim="?attr/qmui_config_color_blue"
+            app:qmui_expandedTitleGravity="center_horizontal|bottom"
+            app:qmui_expandedTitleMarginBottom="20dp"
+            app:qmui_followTopBarCommonSkin="true"
+            app:qmui_statusBarScrim="?attr/qmui_config_color_blue">
+
+            <ImageView
+                android:id="@+id/slfe_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:fitsSystemWindows="false"
+                android:scaleType="centerCrop"
+                app:qmui_layout_collapseMode="parallax"
+                app:qmui_layout_collapseParallaxMultiplier="0.7"
+                tools:ignore="MissingPrefix" />
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="?attr/qmui_topbar_height"
+                android:contentDescription="@null"
+                android:src="@mipmap/logo" />
+
+            <com.qmuiteam.qmui.widget.QMUITopBar
+                android:id="@+id/topbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/qmui_topbar_height"
+                android:background="@color/qmui_config_color_transparent"
+                android:fitsSystemWindows="true"
+                app:qmui_bottomDividerHeight="0px"
+                app:qmui_layout_collapseMode="pin" />
+        </com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout>
+    </com.qmuiteam.qmui.widget.QMUIAppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

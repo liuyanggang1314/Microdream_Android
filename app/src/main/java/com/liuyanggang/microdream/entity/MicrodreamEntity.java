@@ -13,7 +13,7 @@ public class MicrodreamEntity {
     /**
      * 域名
      */
-    private static final String MICRODREAM_SERVER = "http://192.168.0.102:8000/";
+    private static final String MICRODREAM_SERVER = "http://liuyanggang.com:8000/";
 
     /**
      * 登录
@@ -27,6 +27,10 @@ public class MicrodreamEntity {
      * 修改密码
      */
     public static final String CHANGEPASSWORD = MICRODREAM_SERVER + "api/users/updatePass";
+    /**
+     * 退出登录
+     */
+    public static final String LOGOUT = MICRODREAM_SERVER + "auth/logout";
     /**
      * 请求heard
      */

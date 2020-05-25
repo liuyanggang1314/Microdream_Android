@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Microdream</string>
-    <string name="permissions">请先授权,否则无法使用</string>
-
+    <string name="permissions">系统初始化需要以下权限:\n1.本地存储权限</string>
+    <string name="permissions_photo">图片选择需要以下权限:\n1.访问设备上的照片\n2.拍照</string>
     <string name="about_copyright">Microdream 微梦想 版权所有\nCopyright ©2020-%1$s Microdream.\nAll Rights Reserved.</string>
+
+    <string name="heartinfo">如果事与愿违\n相信上天会有更好的安排</string>
+
+
     <string name="input_username">请输入用户名</string>
     <string name="input_password">请输入密码</string>
     <string name="login">登 录</string>
@@ -32,4 +36,6 @@
     <string name="new_password">新密码</string>
     <string name="old_password">旧密码</string>
     <string name="ok">确定</string>
+    <string name="choose_photo">从相册选择照片</string>
+    <string name="mood_edit">这一刻的想法...</string>
 </resources>

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.liuyanggang.microdream"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -62,7 +62,7 @@ dependencies {
     //Toasty吐司
     implementation 'com.github.GrenderG:Toasty:1.4.2'
     //PhotoView图片缩放
-    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    // implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     //butterknife注入
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
@@ -84,6 +84,8 @@ dependencies {
     //androidanimations动画
     implementation 'com.daimajia.easing:library:2.0@aar'
     implementation 'com.daimajia.androidanimations:library:2.3@aar'
-    //ParticleView关于页面动画
-    implementation 'me.wangyuwei:ParticleView:1.0.4'
+    //照片添加
+    implementation 'cn.bingoogolapple:bga-photopicker:2.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'cn.bingoogolapple:bga-baseadapter:2.0.0@aar'
 }

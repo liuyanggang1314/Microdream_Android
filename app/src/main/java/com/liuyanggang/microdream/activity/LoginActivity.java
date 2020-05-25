@@ -167,11 +167,10 @@ public class LoginActivity extends BaseActivity implements LoginIView {
         AnimationUtil.initAnimationShake(linearLayout);
         loginDialog.dismiss();
         Alerter.create(this)
-                .setTitle("提示")
+                .setTitle(R.string.app_name)
                 .setText(error)
-                .setDuration(1000)
+                .setDuration(2000)
                 .setIcon(R.mipmap.logo)
-                .enableInfiniteDuration(true)
                 .enableSwipeToDismiss()
                 .setBackgroundResource(R.drawable.atlas_background)
                 .show();

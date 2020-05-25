@@ -83,7 +83,7 @@ public class LoginIMode implements IModel {
                                     MMKVUtil.setStringInfo("avatarName", avatarName);
                                     MMKVUtil.setStringInfo("avatarPath", avatarPath);
                                     MMKVUtil.setStringInfo("pwdResetTime", pwdResetTime);
-                                    MMKVUtil.setStringInfo("enabled", enabled);
+                                    MMKVUtil.setBooleanInfo("enabled", enabled);
                                     MMKVUtil.setStringInfo("createBy", createBy);
                                     MMKVUtil.setStringInfo("updatedBy", updatedBy);
                                     MMKVUtil.setStringInfo("createTime", createTime);
