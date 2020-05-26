@@ -1,4 +1,4 @@
-package com.liuyanggang.microdream.model.Lisentener;
+package com.liuyanggang.microdream.model.lisentener;
 
 /**
  * @ClassName LoginLisentener
@@ -8,8 +8,16 @@ package com.liuyanggang.microdream.model.Lisentener;
  * @Version 1.0
  */
 public interface LoginLisentener {
+    /**
+     * 登录成功
+     */
     void onSeccess();
 
+    /**
+     * 登录失败
+     *
+     * @param error
+     */
     void onError(String error);
 
 }

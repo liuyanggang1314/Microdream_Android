@@ -20,11 +20,21 @@ public class BaseActivity extends QMUIActivity {
 
     private long exitTime = 0;
 
+    /**
+     * 开启透明状态栏
+     * @return
+     */
     @Override
     protected boolean translucentFull() {
         return true;
     }
 
+    /**
+     * 实体按键监听事件
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

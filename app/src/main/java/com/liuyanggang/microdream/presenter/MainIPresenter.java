@@ -1,8 +1,8 @@
 package com.liuyanggang.microdream.presenter;
 
-import com.liuyanggang.microdream.model.Lisentener.ChangePasswordListener;
-import com.liuyanggang.microdream.model.Lisentener.GetUserInfoLisentener;
-import com.liuyanggang.microdream.model.Lisentener.LogoutLinstener;
+import com.liuyanggang.microdream.model.lisentener.ChangePasswordListener;
+import com.liuyanggang.microdream.model.lisentener.GetUserInfoLisentener;
+import com.liuyanggang.microdream.model.lisentener.LogoutLinstener;
 import com.liuyanggang.microdream.model.MainIModel;
 import com.liuyanggang.microdream.view.MainIView;
 

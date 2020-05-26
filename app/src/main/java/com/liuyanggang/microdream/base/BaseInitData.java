@@ -10,6 +10,9 @@ import com.liuyanggang.microdream.utils.MMKVUtil;
  * @Version 1.0
  */
 public class BaseInitData {
+    /**
+     * 初始化系统数据
+     */
     public static void initData() {
         MMKVUtil.setStringInfo("token", "");
         MMKVUtil.setStringInfo("username", "");
@@ -28,6 +31,9 @@ public class BaseInitData {
         MMKVUtil.setBooleanInfo("isRememberMe", false);
     }
 
+    /**
+     * 移除系统数据
+     */
     public static void removeData() {
         MMKVUtil.removeInfo("token");
         MMKVUtil.removeInfo("username");

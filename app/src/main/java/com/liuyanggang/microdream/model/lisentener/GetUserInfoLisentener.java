@@ -1,4 +1,4 @@
-package com.liuyanggang.microdream.model.Lisentener;
+package com.liuyanggang.microdream.model.lisentener;
 
 /**
  * @ClassName MainLisentener
@@ -8,7 +8,15 @@ package com.liuyanggang.microdream.model.Lisentener;
  * @Version 1.0
  */
 public interface GetUserInfoLisentener {
+    /**
+     * 获取用户信息成功
+     */
     void onGetUserInfoSuccess();
 
+    /**
+     * 获取用户信息失败
+     *
+     * @param error
+     */
     void onGetUserInfoError(String error);
 }

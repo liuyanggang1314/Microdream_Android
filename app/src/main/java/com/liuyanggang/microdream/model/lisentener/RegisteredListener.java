@@ -1,4 +1,4 @@
-package com.liuyanggang.microdream.model.Lisentener;
+package com.liuyanggang.microdream.model.lisentener;
 
 /**
  * @ClassName RegisteredLisenter
@@ -8,7 +8,15 @@ package com.liuyanggang.microdream.model.Lisentener;
  * @Version 1.0
  */
 public interface RegisteredListener {
+    /**
+     * 注册成功
+     */
     void onSeccess();
 
+    /**
+     * 注册失败
+     *
+     * @param error
+     */
     void onError(String error);
 }

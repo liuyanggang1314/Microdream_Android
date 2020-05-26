@@ -3,7 +3,7 @@ package com.liuyanggang.microdream.model;
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
 import com.liuyanggang.microdream.entity.RegisterJson;
 import com.liuyanggang.microdream.entity.UserEntity;
-import com.liuyanggang.microdream.model.Lisentener.RegisteredListener;
+import com.liuyanggang.microdream.model.lisentener.RegisteredListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 

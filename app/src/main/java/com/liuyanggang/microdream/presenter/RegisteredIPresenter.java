@@ -1,7 +1,7 @@
 package com.liuyanggang.microdream.presenter;
 
 import com.liuyanggang.microdream.entity.UserEntity;
-import com.liuyanggang.microdream.model.Lisentener.RegisteredListener;
+import com.liuyanggang.microdream.model.lisentener.RegisteredListener;
 import com.liuyanggang.microdream.model.RegisteredIMode;
 import com.liuyanggang.microdream.view.RegisterView;
 

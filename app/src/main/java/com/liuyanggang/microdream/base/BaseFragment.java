@@ -11,7 +11,10 @@ import com.qmuiteam.qmui.arch.QMUIFragment;
  */
 public abstract class BaseFragment extends QMUIFragment {
 
-
+    /**
+     * 开启透明状态栏
+     * @return
+     */
     @Override
     protected boolean translucentFull() {
         return true;

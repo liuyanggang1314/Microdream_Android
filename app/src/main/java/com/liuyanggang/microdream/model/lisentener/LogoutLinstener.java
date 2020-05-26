@@ -1,4 +1,4 @@
-package com.liuyanggang.microdream.model.Lisentener;
+package com.liuyanggang.microdream.model.lisentener;
 
 /**
  * @ClassName LogoutLinstener
@@ -8,7 +8,15 @@ package com.liuyanggang.microdream.model.Lisentener;
  * @Version 1.0
  */
 public interface LogoutLinstener {
+    /**
+     * 登出成功
+     */
     void onLogoutSeccess();
 
+    /**
+     * 登出失败
+     *
+     * @param error
+     */
     void onLogoutError(String error);
 }

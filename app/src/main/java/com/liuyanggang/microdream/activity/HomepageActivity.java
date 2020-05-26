@@ -15,6 +15,7 @@ import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.adapter.HomepageAdapter;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.entity.HomepageEntity;
+import com.liuyanggang.microdream.utils.CustomAnimation;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -60,6 +61,9 @@ public class HomepageActivity extends BaseActivity {
         onListener();
     }
 
+    /**
+     * 初始化标题
+     */
     private void initTopBar() {
         mCollapsingTopBarLayout.setStatusBarScrim(getDrawable(R.drawable.scooter_background));
         mCollapsingTopBarLayout.setContentScrim(getDrawable(R.drawable.scooter_background));
@@ -81,19 +85,26 @@ public class HomepageActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 监听事件
+     */
     private void onListener() {
         mCollapsingTopBarLayout.setScrimUpdateListener(animation -> {
 
         });
     }
 
+    /**
+     * 初始化recyclerview
+     */
     private void initRecyclerView() {
-        initdata();
+        setdata();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new HomepageAdapter(R.layout.acticity_homepage_item, datas);
         adapter.setAnimationEnable(true);
         adapter.setAnimationFirstOnly(false);
+        adapter.setAdapterAnimation(new CustomAnimation());
         View errorView = getLayoutInflater().inflate(R.layout.layout_emptyview, recyclerView, false);
         adapter.setEmptyView(errorView);
         //添加Android自带的分割线
@@ -101,7 +112,10 @@ public class HomepageActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void initdata() {
+    /**
+     * 初始化数据
+     */
+    private void setdata() {
         datas = new ArrayList<>();
         for (int i = 0; i <= 10; i++) {
             HomepageEntity homepageEntity = new HomepageEntity();
@@ -120,8 +134,50 @@ public class HomepageActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 初始化view
+     */
     private void initView() {
         ButterKnife.bind(this);
+    }
+
+    /**
+     * 取recyclerview错误布局
+     *
+     * @return
+     */
+    private View getErrorView() {
+        View errorView = getLayoutInflater().inflate(R.layout.layout_errorview, recyclerView, false);
+        errorView.setOnClickListener(v -> {
+
+        });
+        return errorView;
+    }
+
+    /**
+     * 获取recyclerview加载布局
+     *
+     * @return
+     */
+    private View getLoadingView() {
+        View loadingView = getLayoutInflater().inflate(R.layout.layout_loadingview, recyclerView, false);
+        loadingView.setOnClickListener(v -> {
+
+        });
+        return loadingView;
+    }
+
+    /**
+     * 获取recyclerview空布局
+     *
+     * @return
+     */
+    private View getEmptyView() {
+        View emptyView = getLayoutInflater().inflate(R.layout.layout_emptyview, recyclerView, false);
+        emptyView.setOnClickListener(v -> {
+
+        });
+        return emptyView;
     }
 
     @Override

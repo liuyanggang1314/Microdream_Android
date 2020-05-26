@@ -2,9 +2,9 @@ package com.liuyanggang.microdream.model;
 
 import com.liuyanggang.microdream.base.BaseInitData;
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
-import com.liuyanggang.microdream.model.Lisentener.ChangePasswordListener;
-import com.liuyanggang.microdream.model.Lisentener.GetUserInfoLisentener;
-import com.liuyanggang.microdream.model.Lisentener.LogoutLinstener;
+import com.liuyanggang.microdream.model.lisentener.ChangePasswordListener;
+import com.liuyanggang.microdream.model.lisentener.GetUserInfoLisentener;
+import com.liuyanggang.microdream.model.lisentener.LogoutLinstener;
 import com.liuyanggang.microdream.utils.MMKVUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;

@@ -1,4 +1,4 @@
-package com.liuyanggang.microdream.model.Lisentener;
+package com.liuyanggang.microdream.model.lisentener;
 
 /**
  * @ClassName ChangePasswordIPresenter
@@ -8,7 +8,14 @@ package com.liuyanggang.microdream.model.Lisentener;
  * @Version 1.0
  */
 public interface ChangePasswordListener {
+    /**
+     * 密码修改成功
+     */
     void onChangePasswordSuccess();
 
+    /**
+     * 密码修改失败
+     * @param error
+     */
     void onChangePasswordError(String error);
 }
