@@ -27,8 +27,8 @@ public class MainIPresenter extends IPresenter {
      */
     public void getUserInfo() {
         if (mImodel != null && mViewReference != null && mViewReference.get() != null) {
-            MainIView loginView = (MainIView) mViewReference.get();
-            loginView = null;
+            MainIView mainIView = (MainIView) mViewReference.get();
+            mainIView = null;
             //此时LoginListener作为匿名内部类是持有外部类的引用的。
             ((MainIModel) mImodel).getUserInfo(new GetUserInfoLisentener() {
                 @Override
@@ -53,9 +53,9 @@ public class MainIPresenter extends IPresenter {
      */
     public void changePassword() {
         if (mImodel != null && mViewReference != null && mViewReference.get() != null) {
-            MainIView loginView = (MainIView) mViewReference.get();
-            Map<String, String> paawordInfo = loginView.onGetPasswordInfo();
-            loginView = null;
+            MainIView mainIView = (MainIView) mViewReference.get();
+            Map<String, String> paawordInfo = mainIView.onGetPasswordInfo();
+            mainIView = null;
             //此时LoginListener作为匿名内部类是持有外部类的引用的。
             ((MainIModel) mImodel).chagePawword(paawordInfo, new ChangePasswordListener() {
                 @Override
@@ -80,8 +80,8 @@ public class MainIPresenter extends IPresenter {
      */
     public void logout() {
         if (mImodel != null && mViewReference != null && mViewReference.get() != null) {
-            MainIView loginView = (MainIView) mViewReference.get();
-            loginView = null;
+            MainIView mainIView = (MainIView) mViewReference.get();
+            mainIView = null;
             //此时LoginListener作为匿名内部类是持有外部类的引用的。
             ((MainIModel) mImodel).logout(new LogoutLinstener() {
                 @Override

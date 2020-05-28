@@ -11,11 +11,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.liuyanggang.microdream.MainActivity;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.base.BaseActivity;
+import com.liuyanggang.microdream.components.UnauthorizedDialog;
+import com.liuyanggang.microdream.manager.AppManager;
+import com.liuyanggang.microdream.presenter.MoodEditIPresenter;
 import com.liuyanggang.microdream.utils.AnimationUtil;
 import com.liuyanggang.microdream.utils.ToastyUtil;
+import com.liuyanggang.microdream.view.MoodEditIView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,6 +35,8 @@ import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
+
 
 /**
  * @ClassName MoodeditActivity
@@ -37,10 +45,12 @@ import pub.devrel.easypermissions.EasyPermissions;
  * @Date 2020/5/25
  * @Version 1.0
  */
-public class MoodeditActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
+public class MoodeditActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate, MoodEditIView {
+    private MoodEditIPresenter mPresenter;
     private static final int PRC_PHOTO_PICKER = 1;
     private static final int RC_CHOOSE_PHOTO = 1;
     private static final int RC_PHOTO_PREVIEW = 2;
+    private QMUITipDialog tipDialog;
     @BindView(R.id.mBGASortableNinePhotoLayout)
     BGASortableNinePhotoLayout mPhotosSnpl;
     @BindView(R.id.topbar)
@@ -56,6 +66,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
         initView();
         initTopBar();
         initBGASortableNinePhoto();
+        setData();
     }
 
     private void initTopBar() {
@@ -68,9 +79,14 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
                 AnimationUtil.initAnimationShake(moodText);
                 ToastyUtil.setNormalWarning(getApplicationContext(), "请先填写信息", Toast.LENGTH_SHORT);
             } else {
-
+                mPresenter.onSaveMood();
+                tipdialog("正在发表");
             }
         });
+    }
+
+    private void setData() {
+        this.mPresenter = new MoodEditIPresenter(this);
     }
 
     private void initView() {
@@ -79,7 +95,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
 
     private void initBGASortableNinePhoto() {
         // 设置拖拽排序控件的代理
-        mPhotosSnpl.setMaxItemCount(6);//四张
+        mPhotosSnpl.setMaxItemCount(9);//9张
         mPhotosSnpl.setEditable(true);//是否编辑
         mPhotosSnpl.setPlusEnable(true);//是否显示加号
         mPhotosSnpl.setSortable(true);//设置是否可拖拽排序，默认值为 true
@@ -177,5 +193,67 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
         } else if (requestCode == RC_PHOTO_PREVIEW) {
             mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
         }
+    }
+
+    /**
+     * 加载UI
+     *
+     * @param info
+     */
+    private void tipdialog(String info) {
+        tipDialog = new QMUITipDialog.Builder(MoodeditActivity.this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord(info)
+                .create();
+        tipDialog.show();
+    }
+
+    @Override
+    public void onMoodSaveSueccess() {
+        tipDialog.dismiss();
+        ToastyUtil.setNormalSuccess(this, "发表成功", Toast.LENGTH_SHORT);
+        finish();
+    }
+
+    @Override
+    public void onModdSavaError(String error) {
+        if (UNAUTHORIZED_STRING.equals(error)) {
+            tipDialog.dismiss();
+            UnauthorizedDialog unauthorizedDialog = new UnauthorizedDialog(this);
+            unauthorizedDialog.setOnClickCloseListener(new UnauthorizedDialog.OnClickCloseListener() {
+                @Override
+                public void onColseClick() {
+                    unauthorizedDialog.dismiss();
+                }
+
+                @Override
+                public void onEnterClick() {
+                    unauthorizedDialog.dismiss();
+                    AppManager.getInstance().finishOtherActivity(MainActivity.class);
+                    finish();
+                }
+            });
+            unauthorizedDialog.show();
+        } else {
+            tipDialog.dismiss();
+            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+        }
+    }
+
+
+    @Override
+    public String getContent() {
+        return moodText.getText().toString().trim();
+    }
+
+    @Override
+    public List<String> getimages() {
+        return mPhotosSnpl.getData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.mPresenter = null;
     }
 }

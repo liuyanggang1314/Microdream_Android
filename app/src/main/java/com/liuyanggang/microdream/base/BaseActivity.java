@@ -1,9 +1,13 @@
 package com.liuyanggang.microdream.base;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import com.liuyanggang.microdream.manager.AppManager;
 import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.qmuiteam.qmui.arch.QMUIActivity;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
@@ -19,6 +23,12 @@ import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 public class BaseActivity extends QMUIActivity {
 
     private long exitTime = 0;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppManager.getInstance().addActivity(this);
+    }
 
     /**
      * 开启透明状态栏

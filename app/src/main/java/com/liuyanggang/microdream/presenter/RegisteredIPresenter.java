@@ -2,7 +2,7 @@ package com.liuyanggang.microdream.presenter;
 
 import com.liuyanggang.microdream.entity.UserEntity;
 import com.liuyanggang.microdream.model.lisentener.RegisteredListener;
-import com.liuyanggang.microdream.model.RegisteredIMode;
+import com.liuyanggang.microdream.model.RegisteredIModel;
 import com.liuyanggang.microdream.view.RegisterView;
 
 import java.lang.ref.WeakReference;
@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference;
  */
 public class RegisteredIPresenter extends IPresenter {
     public RegisteredIPresenter(RegisterView registerView) {
-        this.mImodel = new RegisteredIMode();
+        this.mImodel = new RegisteredIModel();
         this.mViewReference = new WeakReference<>(registerView);
     }
 
@@ -25,15 +25,19 @@ public class RegisteredIPresenter extends IPresenter {
             RegisterView registerView = (RegisterView) mViewReference.get();
             UserEntity userEntity = registerView.getRegisterInfo();
             registerView = null;
-            ((RegisteredIMode) mImodel).register(userEntity, new RegisteredListener() {
+            ((RegisteredIModel) mImodel).register(userEntity, new RegisteredListener() {
                 @Override
                 public void onSeccess() {
-                    ((RegisterView) mViewReference.get()).onRegisterSeccess();
+                    if (mViewReference.get() != null) {
+                        ((RegisterView) mViewReference.get()).onRegisterSeccess();
+                    }
                 }
 
                 @Override
                 public void onError(String error) {
-                    ((RegisterView) mViewReference.get()).onRegisterError(error);
+                    if (mViewReference.get() != null) {
+                        ((RegisterView) mViewReference.get()).onRegisterError(error);
+                    }
                 }
             });
         }

@@ -37,9 +37,10 @@
 
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
                 android:layout_gravity="center|bottom"
+                android:scaleType="centerCrop"
                 android:layout_marginBottom="?attr/qmui_topbar_height"
                 android:contentDescription="@null"
                 android:src="@mipmap/logo" />
@@ -58,7 +59,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

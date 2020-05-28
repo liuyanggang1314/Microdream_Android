@@ -1,5 +1,10 @@
 package com.liuyanggang.microdream.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+
 /**
  * @ClassName HomepageEntity
  * @Description TODO
@@ -7,27 +12,41 @@ package com.liuyanggang.microdream.entity;
  * @Date 2020/5/25
  * @Version 1.0
  */
-public class HomepageEntity {
-    private Integer id;
+public class HomepageEntity implements Parcelable {
+    private Long id;
+    private Long userId;
     private String nikeName;
     private String userName;
     private String avatar;
-    private String txt;
-    private String updateTime;
-    private String image1;
-    private String image2;
-    private String image3;
-    private String image4;
-    private String image5;
-    private String image6;
+    private String content;
+    private String creatTime;
     private boolean delete;
+    private ArrayList<String> images;
 
-    public Integer getId() {
+    public HomepageEntity() {
+
+    }
+
+    public HomepageEntity(Parcel in) {
+        this.content = in.readString();
+        this.images = in.createStringArrayList();
+    }
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getNikeName() {
@@ -54,68 +73,20 @@ public class HomepageEntity {
         this.avatar = avatar;
     }
 
-    public String getTxt() {
-        return txt;
+    public String getContent() {
+        return content;
     }
 
-    public void setTxt(String txt) {
-        this.txt = txt;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
+    public String getCreatTime() {
+        return creatTime;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getImage1() {
-        return image1;
-    }
-
-    public void setImage1(String image1) {
-        this.image1 = image1;
-    }
-
-    public String getImage2() {
-        return image2;
-    }
-
-    public void setImage2(String image2) {
-        this.image2 = image2;
-    }
-
-    public String getImage3() {
-        return image3;
-    }
-
-    public void setImage3(String image3) {
-        this.image3 = image3;
-    }
-
-    public String getImage4() {
-        return image4;
-    }
-
-    public void setImage4(String image4) {
-        this.image4 = image4;
-    }
-
-    public String getImage5() {
-        return image5;
-    }
-
-    public void setImage5(String image5) {
-        this.image5 = image5;
-    }
-
-    public String getImage6() {
-        return image6;
-    }
-
-    public void setImage6(String image6) {
-        this.image6 = image6;
+    public void setCreatTime(String creatTime) {
+        this.creatTime = creatTime;
     }
 
     public boolean isDelete() {
@@ -125,4 +96,39 @@ public class HomepageEntity {
     public void setDelete(boolean delete) {
         this.delete = delete;
     }
+
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
+    }
+
+    public static Creator<HomepageEntity> getCREATOR() {
+        return CREATOR;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.content);
+        parcel.writeStringList(this.images);
+    }
+
+    public static final Parcelable.Creator<HomepageEntity> CREATOR = new Parcelable.Creator<HomepageEntity>() {
+        @Override
+        public HomepageEntity createFromParcel(Parcel source) {
+            return new HomepageEntity(source);
+        }
+
+        @Override
+        public HomepageEntity[] newArray(int size) {
+            return new HomepageEntity[size];
+        }
+    };
 }

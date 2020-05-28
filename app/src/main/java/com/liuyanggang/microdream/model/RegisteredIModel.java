@@ -11,9 +11,12 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import okhttp3.RequestBody;
 
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.JSON;
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.REGISTER;
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.UNAUTHORIZED;
+import static com.liuyanggang.microdream.entity.HttpEntity.JSON;
+import static com.liuyanggang.microdream.entity.HttpEntity.OK;
+import static com.liuyanggang.microdream.entity.HttpEntity.REGISTER;
+import static com.liuyanggang.microdream.entity.HttpEntity.TIME_OUT;
+import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_INT;
+import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
 
 /**
  * @ClassName RegisterIMode
@@ -22,7 +25,7 @@ import static com.liuyanggang.microdream.entity.MicrodreamEntity.UNAUTHORIZED;
  * @Date 2020/5/23
  * @Version 1.0
  */
-public class RegisteredIMode implements IModel {
+public class RegisteredIModel implements IModel {
     public void register(UserEntity userEntity, RegisteredListener lisentener) {
         if (lisentener == null) {
             return;
@@ -44,25 +47,23 @@ public class RegisteredIMode implements IModel {
                     @Override
                     public void onSuccess(Response<String> response) {
                         int code = response.code();
-                        if (code != 500) {
-                            String str = response.body();
-                            if (!str.equals("")) {
-                                JSONObject jsonObject = new JSONObject(str);
-                                String status = jsonObject.getStr("status");
-                                String message = jsonObject.getStr("message");
-                                if (UNAUTHORIZED.equals(status)) {
-                                    //无token
-                                } else {
-                                    lisentener.onError(message);
-                                }
-                            } else {
+                        String str = response.body();
+                        switch (code) {
+                            case OK:
                                 lisentener.onSeccess();
-                            }
-
-                        } else {
-                            lisentener.onError("请求超时");
+                                break;
+                            case UNAUTHORIZED_INT:
+                                lisentener.onError(UNAUTHORIZED_STRING);
+                                break;
+                            case TIME_OUT:
+                                lisentener.onError("请求超时");
+                                break;
+                            default:
+                                JSONObject jsonObject = new JSONObject(str);
+                                String msg = jsonObject.getStr("message");
+                                lisentener.onError(msg);
+                                break;
                         }
-
                     }
                 });
     }

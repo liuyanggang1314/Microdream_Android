@@ -12,6 +12,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.liuyanggang.microdream.MainActivity;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.base.BaseActivity;
+import com.liuyanggang.microdream.manager.AppUpgradeManager;
 import com.liuyanggang.microdream.utils.AnimationUtil;
 import com.liuyanggang.microdream.utils.VersionUtil;
 import com.tapadoo.alerter.Alerter;
@@ -58,13 +59,14 @@ public class AboutActivity extends BaseActivity {
         checkUpdate.setOnClickListener(v -> {
             AnimationUtil.initAnimationBounceIn(checkUpdate);
             lottieAnimationViewHeart.playAnimation();
+            AppUpgradeManager.check();
         });
         lottieAnimationViewHeart.setOnClickListener(v -> {
             lottieAnimationViewHeart.playAnimation();
             Alerter.create(this)
                     .setTitle(R.string.app_name)
                     .setText(heartInfo)
-                    .setDuration(5000)
+                    .setDuration(3000)
                     .setIcon(R.mipmap.logo)
                     .enableSwipeToDismiss()
                     .setBackgroundResource(R.drawable.atlas_background)

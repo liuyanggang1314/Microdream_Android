@@ -1,4 +1,4 @@
-package com.liuyanggang.microdream.base;
+package com.liuyanggang.microdream.manager;
 
 import com.liuyanggang.microdream.utils.MMKVUtil;
 
@@ -9,7 +9,7 @@ import com.liuyanggang.microdream.utils.MMKVUtil;
  * @Date 2020/5/25
  * @Version 1.0
  */
-public class BaseInitData {
+public class AppDataManager {
     /**
      * 初始化系统数据
      */

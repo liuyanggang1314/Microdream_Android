@@ -62,7 +62,7 @@ dependencies {
     //Toasty吐司
     implementation 'com.github.GrenderG:Toasty:1.4.2'
     //PhotoView图片缩放
-    // implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     //butterknife注入
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
@@ -86,6 +86,9 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.3@aar'
     //照片添加
     implementation 'cn.bingoogolapple:bga-photopicker:2.0.2'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'cn.bingoogolapple:bga-baseadapter:2.0.0@aar'
+    //图片裁剪
+    implementation 'com.jph.takephoto:takephoto_library:4.0.3'
+    //升级
+    implementation "com.github.yjfnypeu:UpdatePlugin:3.1.3"
 }

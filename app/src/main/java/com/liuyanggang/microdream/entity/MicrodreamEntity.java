@@ -1,7 +1,5 @@
 package com.liuyanggang.microdream.entity;
 
-import okhttp3.MediaType;
-
 /**
  * @ClassName MicrodreamEntity
  * @Description TODO
@@ -10,43 +8,6 @@ import okhttp3.MediaType;
  * @Version 1.0
  */
 public class MicrodreamEntity {
-    /**
-     * 域名
-     */
-    private static final String MICRODREAM_SERVER = "http://liuyanggang.com:8000/";
-
-    /**
-     * 登录
-     */
-    public static final String LOGINNOCODE = MICRODREAM_SERVER + "auth/loginnocode";
-    /**
-     * 注册
-     */
-    public static final String REGISTER = MICRODREAM_SERVER + "api/users/createNo";
-    /**
-     * 修改密码
-     */
-    public static final String CHANGEPASSWORD = MICRODREAM_SERVER + "api/users/updatePass";
-    /**
-     * 退出登录
-     */
-    public static final String LOGOUT = MICRODREAM_SERVER + "auth/logout";
-    /**
-     * 请求heard
-     */
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    /**
-     * 请求成功code
-     */
-    public static final String OK = "200";
-    /**
-     * 请求失败401 UNAUTHORIZED授权错误
-     */
-    public static final String UNAUTHORIZED = "401";
-    /**
-     * 请求错误
-     */
-    public static final String BAD_REQUEST = "400";
     /**
      * token
      */

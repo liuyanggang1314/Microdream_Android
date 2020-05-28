@@ -1,8 +1,8 @@
 package com.liuyanggang.microdream;
 
-import org.junit.Test;
+import com.liuyanggang.microdream.utils.MyListUtil;
 
-import cn.hutool.json.JSONObject;
+import org.junit.Test;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,11 +12,7 @@ import cn.hutool.json.JSONObject;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        try {
-            JSONObject jsonObject=new JSONObject("");
-        }catch (Exception e){
-            System.out.println(123);
-        }
-
+        String str = "logo-20200528071112227.png,logo-20200528071112281.png";
+        System.out.println(MyListUtil.setString(str));
     }
 }

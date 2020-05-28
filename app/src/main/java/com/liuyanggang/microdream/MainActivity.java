@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,15 +21,19 @@ import com.google.android.material.navigation.NavigationView;
 import com.liuyanggang.microdream.activity.AboutActivity;
 import com.liuyanggang.microdream.activity.HomepageActivity;
 import com.liuyanggang.microdream.activity.LoginActivity;
+import com.liuyanggang.microdream.activity.PersonalInformationActivity;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.components.ChangePasswordDialog;
+import com.liuyanggang.microdream.components.CleanDataCacheDialog;
 import com.liuyanggang.microdream.components.CustomScrollViewPager;
+import com.liuyanggang.microdream.components.LogoutDialog;
+import com.liuyanggang.microdream.components.UnauthorizedDialog;
 import com.liuyanggang.microdream.entity.TabEntity;
 import com.liuyanggang.microdream.fragment.ImageFragment;
 import com.liuyanggang.microdream.fragment.IndexFragment;
 import com.liuyanggang.microdream.fragment.MoodFragment;
+import com.liuyanggang.microdream.manager.AppManager;
 import com.liuyanggang.microdream.presenter.MainIPresenter;
-import com.liuyanggang.microdream.utils.DataCleanManagerUtil;
 import com.liuyanggang.microdream.utils.DrawerLayoutUtil;
 import com.liuyanggang.microdream.utils.MMKVUtil;
 import com.liuyanggang.microdream.utils.RsaUtil;
@@ -37,12 +42,9 @@ import com.liuyanggang.microdream.view.MainIView;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentPagerAdapter;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.tapadoo.alerter.Alerter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +54,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 
+import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG;
+import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.DRAWERLEFTEDGESIZEDP;
 
 /**
@@ -65,6 +69,7 @@ public class MainActivity extends BaseActivity implements MainIView {
     private ChangePasswordDialog changePasswordDialog;
     private MainIPresenter mPresenter;
     private QMUITipDialog tipDialog;
+    private LogoutDialog logoutDialog;
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
 
@@ -108,10 +113,10 @@ public class MainActivity extends BaseActivity implements MainIView {
         this.mPresenter = new MainIPresenter(this);
         String username = MMKVUtil.getStringInfo("username");
         String nickname = MMKVUtil.getStringInfo("nickName");
-        String avatarPath = MMKVUtil.getStringInfo("avatarPath");
+        String avatarName = MMKVUtil.getStringInfo("avatarName");
         userName.setText(username);
         nikeName.setText(nickname);
-        Glide.with(getApplicationContext()).load("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg")
+        Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + avatarName)
                 .placeholder(R.drawable.image_fill)
                 .error(R.drawable.logo)
                 .optionalCircleCrop()
@@ -125,7 +130,7 @@ public class MainActivity extends BaseActivity implements MainIView {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_1: //个人信息
-
+                    startActivity(new Intent(this, PersonalInformationActivity.class));
                     break;
                 case R.id.menu_2: //密码修改
                     initChangePassword();
@@ -155,40 +160,50 @@ public class MainActivity extends BaseActivity implements MainIView {
      * 退出登录
      */
     private void logout() {
-        new QMUIDialog.CheckBoxMessageDialogBuilder(this)
-                .setTitle("退出后是否删除账号信息?")
-                .setMessage("删除账号信息")
-                .setChecked(true)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction(0, "退出", QMUIDialogAction.ACTION_PROP_NEGATIVE, (dialog, index) -> {
-                    tipdialog("正在退出");
-                    mPresenter.logout();
-                    dialog.dismiss();
+        logoutDialog = new LogoutDialog(this);
+        try {
+            Objects.requireNonNull(logoutDialog.getWindow()).setWindowAnimations(R.style.DialogAnimations);
+        } catch (Exception ignored) {
 
-                }).create(R.style.MyDialogAtlas).show();
+        }
+        logoutDialog.setOnClickCloseListener(new LogoutDialog.OnClickCloseListener() {
+            @Override
+            public void onColseClick() {
+                logoutDialog.dismiss();
+            }
+
+            @Override
+            public void onEnterClick() {
+                tipdialog("正在退出");
+                mPresenter.logout();
+            }
+        });
+        logoutDialog.show();
     }
 
     /**
      * 缓存清除
      */
     private void initCleanDataCache() {
-        File file = new File(getApplicationContext().getCacheDir().getPath());
-        String cache = "0";
+        CleanDataCacheDialog cleanDataCacheDialog = new CleanDataCacheDialog(this);
         try {
-            cache = DataCleanManagerUtil.getCacheSize(file);
-        } catch (Exception e) {
-            e.printStackTrace();
+            Objects.requireNonNull(cleanDataCacheDialog.getWindow()).setWindowAnimations(R.style.DialogAnimations);
+        } catch (Exception ignored) {
+
         }
-        new QMUIDialog.MessageDialogBuilder(this)
-                .setTitle("是否要清除缓存")
-                .setMessage("缓存共有：" + cache)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction(0, "确定", QMUIDialogAction.ACTION_PROP_NEGATIVE, (dialog, index) -> {
-                    DataCleanManagerUtil.cleanInternalCache(getApplicationContext());
-                    DataCleanManagerUtil.cleanExternalCache(getApplicationContext());
-                    dialog.dismiss();
-                })
-                .create(R.style.MyDialogAtlas).show();
+        cleanDataCacheDialog.setOnClickCloseListener(new CleanDataCacheDialog.OnClickCloseListener() {
+            @Override
+            public void onColseClick() {
+                cleanDataCacheDialog.dismiss();
+            }
+
+            @Override
+            public void onEnterClick() {
+                ToastyUtil.setNormalSuccess(MainActivity.this, getString(R.string.clear_cache_success), Toast.LENGTH_SHORT);
+                cleanDataCacheDialog.dismiss();
+            }
+        });
+        cleanDataCacheDialog.show();
     }
 
     /**
@@ -309,21 +324,37 @@ public class MainActivity extends BaseActivity implements MainIView {
         return false;
     }
 
+    /**
+     * 获取用户信息成功返回
+     */
     @Override
     public void onGetUserInfoSuccess() {
 
     }
 
+    /**
+     * 获取用户信息错误返回
+     *
+     * @param error
+     */
     @Override
     public void onGetUserInfoError(String error) {
 
     }
 
+    /**
+     * 密码修改值获取
+     *
+     * @return
+     */
     @Override
     public Map<String, String> onGetPasswordInfo() {
         return passwordMap;
     }
 
+    /**
+     * 密码修成成功
+     */
     @Override
     public void onChangePasswordSuccess() {
         tipDialog.dismiss();
@@ -338,10 +369,35 @@ public class MainActivity extends BaseActivity implements MainIView {
                 .show();
     }
 
+    /**
+     * 密码修改失败
+     *
+     * @param error
+     */
     @Override
     public void onChangePasswordError(String error) {
-        tipDialog.dismiss();
-        ToastyUtil.setNormalPrimary(getApplicationContext(), error, Toasty.LENGTH_LONG);
+        if (UNAUTHORIZED_STRING.equals(error)) {
+            tipDialog.dismiss();
+            changePasswordDialog.dismiss();
+            UnauthorizedDialog unauthorizedDialog = new UnauthorizedDialog(this);
+            unauthorizedDialog.setOnClickCloseListener(new UnauthorizedDialog.OnClickCloseListener() {
+                @Override
+                public void onColseClick() {
+                    unauthorizedDialog.dismiss();
+                }
+
+                @Override
+                public void onEnterClick() {
+                    unauthorizedDialog.dismiss();
+                    AppManager.getInstance().finishOtherActivity(MainActivity.class);
+                    finish();
+                }
+            });
+            unauthorizedDialog.show();
+        } else {
+            tipDialog.dismiss();
+            ToastyUtil.setNormalPrimary(getApplicationContext(), error, Toasty.LENGTH_LONG);
+        }
     }
 
     /**
@@ -350,12 +406,13 @@ public class MainActivity extends BaseActivity implements MainIView {
     @Override
     public void onLogoutSuccess() {
         tipDialog.dismiss();
+        logoutDialog.dismiss();
         ToastyUtil.setNormalSuccess(getApplicationContext(), "退出成功", Toasty.LENGTH_LONG);
         finish();
     }
 
     /**
-     * 退出登录 失败
+     * 退出登录失败
      *
      * @param error
      */

@@ -4,29 +4,41 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.liuyanggang.microdream.MainActivity;
+import com.bumptech.glide.Glide;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.adapter.HomepageAdapter;
 import com.liuyanggang.microdream.base.BaseActivity;
+import com.liuyanggang.microdream.components.SureDialog;
+import com.liuyanggang.microdream.components.UnauthorizedDialog;
 import com.liuyanggang.microdream.entity.HomepageEntity;
+import com.liuyanggang.microdream.manager.AppManager;
+import com.liuyanggang.microdream.presenter.HomepageIPeresenter;
 import com.liuyanggang.microdream.utils.CustomAnimation;
+import com.liuyanggang.microdream.utils.MMKVUtil;
+import com.liuyanggang.microdream.utils.ToastyUtil;
+import com.liuyanggang.microdream.view.HomepageIView;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG;
+import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
 
 /**
  * @ClassName HomepageActivity
@@ -35,9 +47,15 @@ import butterknife.ButterKnife;
  * @Date 2020/5/25
  * @Version 1.0
  */
-public class HomepageActivity extends BaseActivity {
-    private List<HomepageEntity> datas;
+public class HomepageActivity extends BaseActivity implements HomepageIView {
+    private HomepageIPeresenter mPresenter;
     private HomepageAdapter adapter;
+    private PageInfo pageInfo = new PageInfo();
+    private List<HomepageEntity> datas;
+    private SureDialog sureDialog;
+    private QMUITipDialog tipDialog;
+    private Long moodId;
+    private Integer mPosition;
     @BindString(R.string.choose_photo)
     String choosePhoto;
     @BindView(R.id.recyclerView)
@@ -59,6 +77,12 @@ public class HomepageActivity extends BaseActivity {
         initTopBar();
         initRecyclerView();
         onListener();
+        setData();
+    }
+
+    private void setData() {
+        this.mPresenter = new HomepageIPeresenter(this);
+        getLoadingView();
     }
 
     /**
@@ -67,7 +91,7 @@ public class HomepageActivity extends BaseActivity {
     private void initTopBar() {
         mCollapsingTopBarLayout.setStatusBarScrim(getDrawable(R.drawable.scooter_background));
         mCollapsingTopBarLayout.setContentScrim(getDrawable(R.drawable.scooter_background));
-        mCollapsingTopBarLayout.setTitle("Microdream");
+        mCollapsingTopBarLayout.setTitle(MMKVUtil.getStringInfo("nickName"));
 
         mTopBar.addLeftBackImageButton().setOnClickListener(v -> finish());
         mTopBar.addRightImageButton(R.mipmap.camera_fill, R.id.topbar_right_change_button).setOnClickListener(v -> {
@@ -92,46 +116,49 @@ public class HomepageActivity extends BaseActivity {
         mCollapsingTopBarLayout.setScrimUpdateListener(animation -> {
 
         });
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+
+        });
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+            HomepageEntity homepageEntity = (HomepageEntity) adapter.getData().get(position);
+            moodId = homepageEntity.getId();
+            mPosition = position;
+            sureDialog = new SureDialog(HomepageActivity.this, "确定删除吗？");
+            try {
+                Objects.requireNonNull(sureDialog.getWindow()).setWindowAnimations(R.style.DialogAnimations);
+            } catch (Exception ignored) {
+
+            }
+            sureDialog.setOnClickCloseListener(new SureDialog.OnClickCloseListener() {
+                @Override
+                public void onColseClick() {
+                    sureDialog.dismiss();
+                }
+
+                @Override
+                public void onEnterClick() {
+                    tipdialog("正在修改");
+                    mPresenter.onDeleteMood();
+                }
+            });
+            sureDialog.show();
+        });
     }
 
     /**
      * 初始化recyclerview
      */
     private void initRecyclerView() {
-        setdata();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new HomepageAdapter(R.layout.acticity_homepage_item, datas);
         adapter.setAnimationEnable(true);
         adapter.setAnimationFirstOnly(false);
         adapter.setAdapterAnimation(new CustomAnimation());
-        View errorView = getLayoutInflater().inflate(R.layout.layout_emptyview, recyclerView, false);
-        adapter.setEmptyView(errorView);
+        getEmptyView();
         //添加Android自带的分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
-    }
-
-    /**
-     * 初始化数据
-     */
-    private void setdata() {
-        datas = new ArrayList<>();
-        for (int i = 0; i <= 10; i++) {
-            HomepageEntity homepageEntity = new HomepageEntity();
-            homepageEntity.setAvatar("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg");
-            homepageEntity.setDelete(false);
-            homepageEntity.setNikeName("liu");
-            homepageEntity.setTxt("我喜欢你");
-            homepageEntity.setUpdateTime("2020-05-26 17:20:00");
-            homepageEntity.setImage1("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg");
-            homepageEntity.setImage2("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg");
-            homepageEntity.setImage3("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg");
-            homepageEntity.setImage4("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg");
-            homepageEntity.setImage5("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg");
-            homepageEntity.setImage6("https://img2.woyaogexing.com/2020/05/15/57bfa3a8f46943dd892729c06b3f96cf!400x400.jpeg");
-            datas.add(homepageEntity);
-        }
     }
 
     /**
@@ -139,6 +166,11 @@ public class HomepageActivity extends BaseActivity {
      */
     private void initView() {
         ButterKnife.bind(this);
+        Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + MMKVUtil.getStringInfo("avatarName"))
+                .placeholder(R.drawable.image_fill)
+                .error(R.drawable.logo)
+                .optionalCircleCrop()
+                .into(avatar);
     }
 
     /**
@@ -146,12 +178,12 @@ public class HomepageActivity extends BaseActivity {
      *
      * @return
      */
-    private View getErrorView() {
+    private void getErrorView() {
         View errorView = getLayoutInflater().inflate(R.layout.layout_errorview, recyclerView, false);
         errorView.setOnClickListener(v -> {
 
         });
-        return errorView;
+        adapter.setEmptyView(errorView);
     }
 
     /**
@@ -159,12 +191,12 @@ public class HomepageActivity extends BaseActivity {
      *
      * @return
      */
-    private View getLoadingView() {
+    private void getLoadingView() {
         View loadingView = getLayoutInflater().inflate(R.layout.layout_loadingview, recyclerView, false);
         loadingView.setOnClickListener(v -> {
 
         });
-        return loadingView;
+        adapter.setEmptyView(loadingView);
     }
 
     /**
@@ -172,16 +204,210 @@ public class HomepageActivity extends BaseActivity {
      *
      * @return
      */
-    private View getEmptyView() {
+    private void getEmptyView() {
         View emptyView = getLayoutInflater().inflate(R.layout.layout_emptyview, recyclerView, false);
         emptyView.setOnClickListener(v -> {
 
         });
-        return emptyView;
+        adapter.setEmptyView(emptyView);
+    }
+
+    /**
+     * 加载UI
+     *
+     * @param info
+     */
+    private void tipdialog(String info) {
+        tipDialog = new QMUITipDialog.Builder(HomepageActivity.this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord(info)
+                .create();
+        tipDialog.show();
+    }
+
+    /**
+     * 初始化加载更多
+     */
+    private void initLoadMore() {
+        //adapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        //adapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+        adapter.getLoadMoreModule().setEnableLoadMore(true);
+        adapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
+            //加载更多
+            mPresenter.getMoodList();
+        });
+    }
+
+    /**
+     * 刷新
+     */
+    private void refresh() {
+        // 这里的作用是防止下拉刷新的时候还可以上拉加载
+        adapter.getLoadMoreModule().setEnableLoadMore(false);
+        // 下拉刷新，需要重置页数
+        pageInfo.reset();
+    }
+
+
+    /**
+     * 接口成功返回数据
+     *
+     * @param homepageEntities
+     */
+    @Override
+    public void onHomepageSeccess(List<HomepageEntity> homepageEntities, Integer pages) {
+        if (homepageEntities.size() == 0) {
+            getEmptyView();
+        }
+        adapter.setList(homepageEntities);
+        pageInfo.pages = pages;
+        pageInfo.nextPage();
+        if (pages > 1) {
+            initLoadMore();
+        } else {
+            adapter.getLoadMoreModule().loadMoreEnd();
+        }
+    }
+
+    /**
+     * 接口返回错误信息
+     *
+     * @param error
+     */
+    @Override
+    public void onHomepageError(String error) {
+        adapter.getLoadMoreModule().setEnableLoadMore(false);
+        if (UNAUTHORIZED_STRING.equals(error)) {
+            UnauthorizedDialog unauthorizedDialog = new UnauthorizedDialog(this);
+            unauthorizedDialog.setOnClickCloseListener(new UnauthorizedDialog.OnClickCloseListener() {
+                @Override
+                public void onColseClick() {
+                    unauthorizedDialog.dismiss();
+                }
+
+                @Override
+                public void onEnterClick() {
+                    unauthorizedDialog.dismiss();
+                    AppManager.getInstance().finishOtherActivity(HomepageActivity.class);
+                    startActivity(new Intent(HomepageActivity.this, LoginActivity.class));
+                    finish();
+
+                }
+            });
+            unauthorizedDialog.show();
+        } else {
+            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+            getErrorView();
+        }
+    }
+
+    /**
+     * 加载更多
+     *
+     * @param homepageEntities
+     */
+    @Override
+    public void onLoadMore(List<HomepageEntity> homepageEntities, Integer current) {
+        adapter.addData(homepageEntities);
+        pageInfo.nextPage();
+        if (current == pageInfo.pages) {
+            adapter.getLoadMoreModule().setEnableLoadMore(false);
+            adapter.getLoadMoreModule().loadMoreComplete();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.mPresenter = null;
+    }
+
+    /**
+     * 获取当前页
+     *
+     * @return
+     */
+    @Override
+    public Integer getCurrent() {
+        return pageInfo.page;
+    }
+
+    /**
+     * 获取心情id
+     *
+     * @return
+     */
+    @Override
+    public Long getMoodId() {
+        return moodId;
+    }
+
+    /**
+     * 删除心情成功
+     */
+    @Override
+    public void onDeleteSeccess() {
+        tipDialog.dismiss();
+        sureDialog.dismiss();
+        ToastyUtil.setNormalSuccess(this, "删除成功", Toast.LENGTH_SHORT);
+        adapter.removeAt(mPosition);
+    }
+
+    /**
+     * 删除心情失败
+     *
+     * @param error
+     */
+    @Override
+    public void onDeleteError(String error) {
+        tipDialog.dismiss();
+        sureDialog.dismiss();
+        if (UNAUTHORIZED_STRING.equals(error)) {
+            UnauthorizedDialog unauthorizedDialog = new UnauthorizedDialog(this);
+            unauthorizedDialog.setOnClickCloseListener(new UnauthorizedDialog.OnClickCloseListener() {
+                @Override
+                public void onColseClick() {
+                    unauthorizedDialog.dismiss();
+                }
+
+                @Override
+                public void onEnterClick() {
+                    unauthorizedDialog.dismiss();
+                    AppManager.getInstance().finishOtherActivity(HomepageActivity.class);
+                    startActivity(new Intent(HomepageActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            unauthorizedDialog.show();
+        } else {
+            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+        }
+    }
+
+
+    class PageInfo {
+        int page = 1;
+        int pages = 0;
+
+        void nextPage() {
+            page++;
+        }
+
+        void reset() {
+            page = 1;
+            pages = 0;
+        }
+
+        boolean isFirstPage() {
+            return page == 1;
+        }
     }
 
     @Override
-    public Intent onLastActivityFinish() {
-        return new Intent(this, MainActivity.class);
+    protected void onResume() {
+        super.onResume();
+        mPresenter.getMoodList();
     }
 }

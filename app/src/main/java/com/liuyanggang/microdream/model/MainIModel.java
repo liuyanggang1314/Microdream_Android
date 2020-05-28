@@ -1,7 +1,7 @@
 package com.liuyanggang.microdream.model;
 
-import com.liuyanggang.microdream.base.BaseInitData;
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
+import com.liuyanggang.microdream.manager.AppDataManager;
 import com.liuyanggang.microdream.model.lisentener.ChangePasswordListener;
 import com.liuyanggang.microdream.model.lisentener.GetUserInfoLisentener;
 import com.liuyanggang.microdream.model.lisentener.LogoutLinstener;
@@ -15,11 +15,14 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import okhttp3.RequestBody;
 
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.CHANGEPASSWORD;
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.JSON;
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.LOGOUT;
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.REGISTER;
-import static com.liuyanggang.microdream.entity.MicrodreamEntity.UNAUTHORIZED;
+import static com.liuyanggang.microdream.entity.HttpEntity.CHANGEPASSWORD;
+import static com.liuyanggang.microdream.entity.HttpEntity.JSON;
+import static com.liuyanggang.microdream.entity.HttpEntity.LOGOUT;
+import static com.liuyanggang.microdream.entity.HttpEntity.OK;
+import static com.liuyanggang.microdream.entity.HttpEntity.REGISTER;
+import static com.liuyanggang.microdream.entity.HttpEntity.TIME_OUT;
+import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_INT;
+import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
 
 /**
  * @ClassName MainIModel
@@ -31,7 +34,7 @@ import static com.liuyanggang.microdream.entity.MicrodreamEntity.UNAUTHORIZED;
 public class MainIModel implements IModel {
 
     /**
-     * 密码修改
+     * 退出登录
      *
      * @param lisentener
      */
@@ -50,25 +53,23 @@ public class MainIModel implements IModel {
                     @Override
                     public void onSuccess(Response<String> response) {
                         int code = response.code();
-                        if (code != 500) {
-                            String str = response.body();
-
-                            if (!str.equals("")) {
-                                JSONObject jsonObject = new JSONObject(str);
-                                String status = jsonObject.getStr("status");
-                                String message = jsonObject.getStr("message");
-                                if (UNAUTHORIZED.equals(status)) {
-                                    //无token
-                                    lisentener.onLogoutError(UNAUTHORIZED);
-                                } else {
-                                    lisentener.onLogoutError(message);
-                                }
-                            } else {
-                                BaseInitData.removeData();
+                        String str = response.body();
+                        switch (code) {
+                            case OK:
+                                AppDataManager.removeData();
                                 lisentener.onLogoutSeccess();
-                            }
-                        } else {
-                            lisentener.onLogoutError("请求超时");
+                                break;
+                            case UNAUTHORIZED_INT:
+                                lisentener.onLogoutError(UNAUTHORIZED_STRING);
+                                break;
+                            case TIME_OUT:
+                                lisentener.onLogoutError("请求超时");
+                                break;
+                            default:
+                                JSONObject jsonObject = new JSONObject(str);
+                                String msg = jsonObject.getStr("message");
+                                lisentener.onLogoutError(msg);
+                                break;
                         }
 
                     }
@@ -97,26 +98,23 @@ public class MainIModel implements IModel {
                     @Override
                     public void onSuccess(Response<String> response) {
                         int code = response.code();
-                        if (code != 500) {
-                            String str = response.body();
-
-                            if (!str.equals("")) {
-                                JSONObject jsonObject = new JSONObject(str);
-                                String status = jsonObject.getStr("status");
-                                String message = jsonObject.getStr("message");
-                                if (UNAUTHORIZED.equals(status)) {
-                                    //无token
-                                    lisentener.onChangePasswordError(UNAUTHORIZED);
-                                } else {
-                                    lisentener.onChangePasswordError(message);
-                                }
-                            } else {
+                        String str = response.body();
+                        switch (code) {
+                            case OK:
                                 lisentener.onChangePasswordSuccess();
-                            }
-                        } else {
-                            lisentener.onChangePasswordError("请求超时");
+                                break;
+                            case UNAUTHORIZED_INT:
+                                lisentener.onChangePasswordError(UNAUTHORIZED_STRING);
+                                break;
+                            case TIME_OUT:
+                                lisentener.onChangePasswordError("请求超时");
+                                break;
+                            default:
+                                JSONObject jsonObject = new JSONObject(str);
+                                String msg = jsonObject.getStr("message");
+                                lisentener.onChangePasswordError(msg);
+                                break;
                         }
-
                     }
                 });
     }
@@ -141,53 +139,52 @@ public class MainIModel implements IModel {
                     @Override
                     public void onSuccess(Response<String> response) {
                         int code = response.code();
-                        if (code != 500) {
-                            String str = response.body();
-                            if (!str.equals("")) {
+                        String str = response.body();
+                        switch (code) {
+                            case OK:
                                 JSONObject jsonObject = new JSONObject(str);
-                                String status = jsonObject.getStr("status");
-                                String message = jsonObject.getStr("message");
-                                if (status == null) {
-                                    JSONObject user = jsonObject.getJSONObject("user");
-                                    JSONObject userInfo = user.getJSONObject("user");
-                                    String username = userInfo.getStr("username");
-                                    String nickName = userInfo.getStr("nickName");
-                                    String email = userInfo.getStr("email");
-                                    String phone = userInfo.getStr("phone");
-                                    String gender = userInfo.getStr("gender");
-                                    String avatarName = userInfo.getStr("avatarName");
-                                    String avatarPath = userInfo.getStr("avatarPath");
-                                    String pwdResetTime = userInfo.getStr("pwdResetTime");
-                                    String enabled = userInfo.getStr("enabled");
-                                    String createBy = userInfo.getStr("createBy");
-                                    String updatedBy = userInfo.getStr("updatedBy");
-                                    String createTime = userInfo.getStr("createTime");
-                                    String updateTime = userInfo.getStr("updateTime");
-                                    MMKVUtil.setStringInfo("username", username);
-                                    MMKVUtil.setStringInfo("nickName", nickName);
-                                    MMKVUtil.setStringInfo("email", email);
-                                    MMKVUtil.setStringInfo("phone", phone);
-                                    MMKVUtil.setStringInfo("gender", gender);
-                                    MMKVUtil.setStringInfo("avatarName", avatarName);
-                                    MMKVUtil.setStringInfo("avatarPath", avatarPath);
-                                    MMKVUtil.setStringInfo("pwdResetTime", pwdResetTime);
-                                    MMKVUtil.setBooleanInfo("enabled", enabled);
-                                    MMKVUtil.setStringInfo("createBy", createBy);
-                                    MMKVUtil.setStringInfo("updatedBy", updatedBy);
-                                    MMKVUtil.setStringInfo("createTime", createTime);
-                                    MMKVUtil.setStringInfo("updateTime", updateTime);
-                                    lisentener.onGetUserInfoSuccess();
-                                } else if (UNAUTHORIZED.equals(status)) {
-                                    //无token
-                                    lisentener.onGetUserInfoError(UNAUTHORIZED);
-                                } else {
-                                    lisentener.onGetUserInfoError(message);
-                                }
-                            }
-                        } else {
-                            lisentener.onGetUserInfoError("请求超时");
+                                JSONObject user = jsonObject.getJSONObject("user");
+                                JSONObject userInfo = user.getJSONObject("user");
+                                String username = userInfo.getStr("username");
+                                String nickName = userInfo.getStr("nickName");
+                                String email = userInfo.getStr("email");
+                                String phone = userInfo.getStr("phone");
+                                String gender = userInfo.getStr("gender");
+                                String avatarName = userInfo.getStr("avatarName");
+                                String avatarPath = userInfo.getStr("avatarPath");
+                                String pwdResetTime = userInfo.getStr("pwdResetTime");
+                                String enabled = userInfo.getStr("enabled");
+                                String createBy = userInfo.getStr("createBy");
+                                String updatedBy = userInfo.getStr("updatedBy");
+                                String createTime = userInfo.getStr("createTime");
+                                String updateTime = userInfo.getStr("updateTime");
+                                MMKVUtil.setStringInfo("username", username);
+                                MMKVUtil.setStringInfo("nickName", nickName);
+                                MMKVUtil.setStringInfo("email", email);
+                                MMKVUtil.setStringInfo("phone", phone);
+                                MMKVUtil.setStringInfo("gender", gender);
+                                MMKVUtil.setStringInfo("avatarName", avatarName);
+                                MMKVUtil.setStringInfo("avatarPath", avatarPath);
+                                MMKVUtil.setStringInfo("pwdResetTime", pwdResetTime);
+                                MMKVUtil.setBooleanInfo("enabled", enabled);
+                                MMKVUtil.setStringInfo("createBy", createBy);
+                                MMKVUtil.setStringInfo("updatedBy", updatedBy);
+                                MMKVUtil.setStringInfo("createTime", createTime);
+                                MMKVUtil.setStringInfo("updateTime", updateTime);
+                                lisentener.onGetUserInfoSuccess();
+                                break;
+                            case UNAUTHORIZED_INT:
+                                lisentener.onGetUserInfoError(UNAUTHORIZED_STRING);
+                                break;
+                            case TIME_OUT:
+                                lisentener.onGetUserInfoError("请求超时");
+                                break;
+                            default:
+                                JSONObject jsonObject1 = new JSONObject(str);
+                                String msg = jsonObject1.getStr("message");
+                                lisentener.onGetUserInfoError(msg);
+                                break;
                         }
-
                     }
                 });
     }

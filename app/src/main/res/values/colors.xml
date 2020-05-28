@@ -221,13 +221,13 @@
     <!-- ========================== 自定义 PhotoPicker 颜色 START ========================== -->
     <color name="bga_pp_eighteen_maskColor">#00000000</color>
     <!-- PhotoPicker 状态栏的颜色 -->
-    <color name="bga_pp_colorPrimaryDark">#79cbca</color>
+    <color name="bga_pp_colorPrimaryDark">@color/black</color>
     <!-- PhotoPicker 导航栏的颜色 -->
-    <color name="bga_pp_navigationBarColor">#79cbca</color>
+    <color name="bga_pp_navigationBarColor">@color/black</color>
     <!-- PhotoPicker Toolbar 的颜色 -->
-    <color name="bga_pp_colorPrimary">#79cbca</color>
+    <color name="bga_pp_colorPrimary">@color/black</color>
     <!-- 图片选择器库里所有Activity界面的背景色 -->
-    <color name="bga_pp_activity_bg">@android:color/white</color>
+    <color name="bga_pp_activity_bg">@color/black</color>
     <!-- 文字颜色 -->
     <color name="bga_pp_common_textColor">@android:color/white</color>
     <!-- 文件夹名称颜色 -->
@@ -247,7 +247,7 @@
     <!-- 右上角确认按钮按下时的颜色 -->
     <color name="bga_pp_btn_confirm_pressed">@color/lime</color>
     <!-- 预览界面底部背景色 -->
-    <color name="bga_pp_preview_bottom_bg">#79cbca</color>
+    <color name="bga_pp_preview_bottom_bg">@color/black</color>
     <!-- 数据加载对话框加载进度条的颜色 -->
     <color name="bga_pp_loading_progress_startColor">@android:color/white</color>
     <color name="bga_pp_loading_progress_centerColor">@color/colorPrimaryDark</color>
