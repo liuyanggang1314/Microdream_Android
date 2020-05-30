@@ -40,9 +40,9 @@
                 android:layout_width="74dp"
                 android:layout_height="74dp"
                 android:layout_gravity="center|bottom"
-                android:scaleType="centerCrop"
                 android:layout_marginBottom="?attr/qmui_topbar_height"
                 android:contentDescription="@null"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/logo" />
 
             <com.qmuiteam.qmui.widget.QMUITopBar
@@ -62,4 +62,5 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

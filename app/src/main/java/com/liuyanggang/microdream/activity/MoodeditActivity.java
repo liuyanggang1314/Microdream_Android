@@ -15,6 +15,7 @@ import com.liuyanggang.microdream.MainActivity;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
+import com.liuyanggang.microdream.entity.MessageEventEntity;
 import com.liuyanggang.microdream.manager.AppManager;
 import com.liuyanggang.microdream.presenter.MoodEditIPresenter;
 import com.liuyanggang.microdream.utils.AnimationUtil;
@@ -22,6 +23,8 @@ import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.view.MoodEditIView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -212,6 +215,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
     public void onMoodSaveSueccess() {
         tipDialog.dismiss();
         ToastyUtil.setNormalSuccess(this, "发表成功", Toast.LENGTH_SHORT);
+        EventBus.getDefault().post(new MessageEventEntity("onUpdateMoodListListener"));
         finish();
     }
 

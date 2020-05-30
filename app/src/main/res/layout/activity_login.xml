@@ -142,7 +142,7 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <TextView
+    <com.qmuiteam.qmui.widget.textview.QMUISpanTouchFixTextView
         android:id="@+id/copyright"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -150,6 +150,7 @@
         android:gravity="center"
         android:text="@string/about_copyright"
         android:textColor="@color/mistyrose"
+        android:padding="5dp"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

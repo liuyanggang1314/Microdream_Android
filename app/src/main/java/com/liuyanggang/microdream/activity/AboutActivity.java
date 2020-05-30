@@ -1,7 +1,11 @@
 package com.liuyanggang.microdream.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +19,8 @@ import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.manager.AppUpgradeManager;
 import com.liuyanggang.microdream.utils.AnimationUtil;
 import com.liuyanggang.microdream.utils.VersionUtil;
+import com.qmuiteam.qmui.span.QMUITouchableSpan;
+import com.qmuiteam.qmui.widget.textview.QMUISpanTouchFixTextView;
 import com.tapadoo.alerter.Alerter;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
@@ -38,7 +44,7 @@ public class AboutActivity extends BaseActivity {
     @BindView(R.id.check_updata)
     Button checkUpdate;
     @BindView(R.id.copyright)
-    TextView copyright;
+    QMUISpanTouchFixTextView copyright;
     @BindView(R.id.lottieAnimationView)
     LottieAnimationView lottieAnimationView;
     @BindView(R.id.lottieAnimationView_heart)
@@ -89,12 +95,34 @@ public class AboutActivity extends BaseActivity {
         ButterKnife.bind(this);
         commonTitleBar = findViewById(R.id.back);
         version.setText(VersionUtil.getversion(this));
-        copyright.setText(VersionUtil.getCopyrightInfo(this));
+        copyright.setMovementMethodDefault();
+        copyright.setText(generateSp(VersionUtil.getCopyrightInfo(this)));
         lottieAnimationView.setSpeed(0.5f);
         lottieAnimationViewHeart.setProgress(1f);
         lottieAnimationViewHeart.setSpeed(0.5f);
     }
 
+    private SpannableString generateSp(String text) {
+        String highlight1 = "微梦想";
+        SpannableString sp = new SpannableString(text);
+        int start = 0, end;
+        int index;
+        while ((index = text.indexOf(highlight1, start)) > -1) {
+            end = index + highlight1.length();
+            sp.setSpan(new QMUITouchableSpan(
+                    getColor(R.color.pink),
+                    Color.RED,
+                    Color.TRANSPARENT,
+                    Color.TRANSPARENT) {
+                @Override
+                public void onSpanClick(View widget) {
+                    startWebExplorerActivity(getString(R.string.microdream_web), AboutActivity.this);
+                }
+            }, index, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            start = end;
+        }
+        return sp;
+    }
 
     @Override
     public Intent onLastActivityFinish() {

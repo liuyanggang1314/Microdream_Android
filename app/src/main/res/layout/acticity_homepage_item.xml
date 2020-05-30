@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
+            android:textIsSelectable="true"
             android:text="@string/about_copyright"
             android:textSize="12sp" />
 

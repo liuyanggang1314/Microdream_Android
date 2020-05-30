@@ -16,7 +16,7 @@ public class MicrodreamEntity {
     /**
      * DrawerLayout边缘滑动距离
      */
-    public static final Integer DRAWERLEFTEDGESIZEDP = 200;
+    public static final Integer DRAWERLEFTEDGESIZEDP = 60;
     /**
      * 密码最低
      */

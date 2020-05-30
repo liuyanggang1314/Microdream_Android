@@ -77,6 +77,16 @@ public class HttpEntity {
 
 
     /**
+     * 获取首页列表
+     */
+    public static final String INDEX_LIST = "https://www.liuyanggang.com/bbs/wp-json/wp/v2/posts";
+
+    /**
+     * 获取首页轮播图列表
+     */
+    public static final String INDEX_BANNER = "https://www.liuyanggang.com/bbs/wp-json/watch-life-net/v1/post/swipe";
+
+    /**
      * 请求heard
      */
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

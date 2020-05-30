@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -199,7 +198,6 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
      * 初始化标题栏
      */
     private void initTopBar() {
-        Log.d("361", "initTopBar: " + new StringBuffer().append(MICRODREAM_SERVER_IMG).append(MMKVUtil.getStringInfo("avatarName")));
         mTopBar.setTitle("个人信息");
         mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();

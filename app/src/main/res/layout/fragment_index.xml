@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qmuiPullRefreshLayout"
+    style="@style/PullRefreshLayout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="1"
-        android:gravity="center">
+        android:scrollbars="vertical">
 
-    </TextView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.recyclerview.widget.RecyclerView>
+
+</com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout>

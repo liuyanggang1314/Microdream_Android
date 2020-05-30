@@ -8,6 +8,9 @@
         <item name="android:windowBackground">@drawable/navigationview_background</item>
         <item name="android:windowIsTranslucent">true</item>
 
+        <item name="qmui_skin_support_popup_bg">@color/pop_color</item>
+
+
         <item name="QMUITopBarStyle">@style/QDTopBar</item>
     </style>
 
@@ -45,6 +48,16 @@
         <item name="qmui_skin_support_dialog_message_text_color">@color/mistyrose</item>
     </style>
 
+
+    <!--下拉刷新-->
+    <style name="PullRefreshLayout">
+        <item name="qmui_target_init_offset">0dp</item>
+        <item name="qmui_target_refresh_offset">130dp</item>
+        <item name="qmui_auto_calculate_refresh_init_offset">true</item>
+        <item name="qmui_auto_calculate_refresh_end_offset">true</item>
+        <item name="qmui_equal_target_refresh_offset_to_refresh_view_height">false</item>
+    </style>
+    <!--dialog动画-->
     <style name="DialogAnimations" parent="android:Animation">
         <item name="android:windowEnterAnimation" >@anim/fragment_open_enter</item>
         <item name="android:windowExitAnimation" >@anim/fragment_open_exit</item>

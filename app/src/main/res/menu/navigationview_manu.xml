@@ -21,7 +21,7 @@
             android:title="@string/clear_cache" />
         <item
             android:id="@+id/menu_5"
-            android:icon="@mipmap/exit"
+            android:icon="@mipmap/logout"
             android:title="@string/sign_out" />
     </group>
     <group android:id="@+id/group3">

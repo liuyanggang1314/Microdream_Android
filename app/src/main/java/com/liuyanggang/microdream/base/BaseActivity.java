@@ -1,16 +1,23 @@
 package com.liuyanggang.microdream.base;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.liuyanggang.microdream.R;
+import com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity;
 import com.liuyanggang.microdream.manager.AppManager;
 import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.qmuiteam.qmui.arch.QMUIActivity;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
+
+import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_TITLE;
+import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_URL;
 
 /**
  * @ClassName BaseActivity
@@ -30,8 +37,16 @@ public class BaseActivity extends QMUIActivity {
         AppManager.getInstance().addActivity(this);
     }
 
+    protected void startWebExplorerActivity(String url, Activity activity) {
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_URL, url);
+        bundle.putString(EXTRA_TITLE, getString(R.string.app_name));
+        startActivity(new Intent(activity, MicrodreamWebExplorerActivity.class).putExtras(bundle));
+    }
+
     /**
      * 开启透明状态栏
+     *
      * @return
      */
     @Override
@@ -41,6 +56,7 @@ public class BaseActivity extends QMUIActivity {
 
     /**
      * 实体按键监听事件
+     *
      * @param keyCode
      * @param event
      * @return
@@ -66,6 +82,4 @@ public class BaseActivity extends QMUIActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
 }

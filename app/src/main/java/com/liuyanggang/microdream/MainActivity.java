@@ -428,6 +428,11 @@ public class MainActivity extends BaseActivity implements MainIView {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         this.mPresenter = null;

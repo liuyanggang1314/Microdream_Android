@@ -18,6 +18,7 @@ import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.components.SureDialog;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
 import com.liuyanggang.microdream.entity.HomepageEntity;
+import com.liuyanggang.microdream.entity.MessageEventEntity;
 import com.liuyanggang.microdream.manager.AppManager;
 import com.liuyanggang.microdream.presenter.HomepageIPeresenter;
 import com.liuyanggang.microdream.utils.CustomAnimation;
@@ -29,6 +30,10 @@ import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Objects;
@@ -82,6 +87,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
 
     private void setData() {
         this.mPresenter = new HomepageIPeresenter(this);
+        mPresenter.getMoodList();
         getLoadingView();
     }
 
@@ -113,9 +119,8 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
      * 监听事件
      */
     private void onListener() {
-        mCollapsingTopBarLayout.setScrimUpdateListener(animation -> {
 
-        });
+
         adapter.setOnItemClickListener((adapter, view, position) -> {
 
         });
@@ -159,6 +164,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
         //添加Android自带的分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
+        initLoadMore();
     }
 
     /**
@@ -166,6 +172,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
      */
     private void initView() {
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + MMKVUtil.getStringInfo("avatarName"))
                 .placeholder(R.drawable.image_fill)
                 .error(R.drawable.logo)
@@ -234,6 +241,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
         //adapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
         adapter.getLoadMoreModule().setEnableLoadMore(true);
         adapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
+            pageInfo.nextPage();
             //加载更多
             mPresenter.getMoodList();
         });
@@ -257,16 +265,14 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
      */
     @Override
     public void onHomepageSeccess(List<HomepageEntity> homepageEntities, Integer pages) {
-        if (homepageEntities.size() == 0) {
+        if (null == homepageEntities || homepageEntities.size() == 0) {
             getEmptyView();
-        }
-        adapter.setList(homepageEntities);
-        pageInfo.pages = pages;
-        pageInfo.nextPage();
-        if (pages > 1) {
-            initLoadMore();
         } else {
-            adapter.getLoadMoreModule().loadMoreEnd();
+            adapter.setList(homepageEntities);
+            pageInfo.pages = pages;
+            if (pages < 2) {
+                adapter.getLoadMoreModule().loadMoreEnd();
+            }
         }
     }
 
@@ -310,10 +316,10 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     @Override
     public void onLoadMore(List<HomepageEntity> homepageEntities, Integer current) {
         adapter.addData(homepageEntities);
-        pageInfo.nextPage();
+        adapter.getLoadMoreModule().loadMoreComplete();
         if (current == pageInfo.pages) {
             adapter.getLoadMoreModule().setEnableLoadMore(false);
-            adapter.getLoadMoreModule().loadMoreComplete();
+            adapter.getLoadMoreModule().loadMoreEnd();
         }
     }
 
@@ -322,6 +328,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     protected void onDestroy() {
         super.onDestroy();
         this.mPresenter = null;
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -386,6 +393,18 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
         }
     }
 
+    /**
+     * 心情发表成功刷新
+     */
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEventEntity messageEvent) {
+        if ("onUpdateMoodListListener".equals(messageEvent.getMessage())) {
+            refresh();
+            mPresenter.getMoodList();
+        }
+    }
+
 
     class PageInfo {
         int page = 1;
@@ -403,11 +422,5 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
         boolean isFirstPage() {
             return page == 1;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.getMoodList();
     }
 }

@@ -92,6 +92,13 @@
 
         </activity>
 
+        <activity
+            android:name=".activity.MicrodreamWebExplorerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
+
+        </activity>
 
     </application>
 

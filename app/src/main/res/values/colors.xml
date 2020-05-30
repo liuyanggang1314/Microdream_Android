@@ -23,6 +23,8 @@
     <color name="app_color_blue_3">#EBF9FF</color>
     <color name="app_color_blue_3_disabled">#7FEBF9FF</color>
     <color name="app_color_blue_3_pressed">#7FEBF9FF</color>
+    
+    <color name="pop_color">#5b86e5</color>
 
     <color name="app_color_theme_1">#EF5362</color> <!-- Grapefruit -->
     <color name="app_color_theme_2">#FE6D4B</color> <!-- Bittersweet -->
