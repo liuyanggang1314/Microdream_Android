@@ -99,7 +99,13 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
 
         </activity>
+        <activity
+            android:name=".activity.HtmlActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
 
+        </activity>
     </application>
 
 </manifest>

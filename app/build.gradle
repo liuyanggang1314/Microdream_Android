@@ -96,6 +96,8 @@ dependencies {
     implementation 'com.zzhoujay:html:1.0.1'
     //轮播图
     implementation 'com.youth.banner:banner:2.0.10'
+    //悬浮按钮
+    implementation 'com.nightonke:boommenu:2.1.1'
     //视频
     //implementation 'com.shuyu:GSYVideoPlayer:7.1.4'
 }

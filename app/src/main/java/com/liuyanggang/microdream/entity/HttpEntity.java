@@ -87,6 +87,11 @@ public class HttpEntity {
     public static final String INDEX_BANNER = "https://www.liuyanggang.com/bbs/wp-json/watch-life-net/v1/post/swipe";
 
     /**
+     * 公务员考试列表
+     */
+    public static final String EXAMINATION =  MICRODREAM_SERVER + "api/examination";
+
+    /**
      * 请求heard
      */
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

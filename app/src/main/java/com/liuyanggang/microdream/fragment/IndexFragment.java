@@ -25,7 +25,6 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.RectangleIndicator;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.transformer.ZoomOutPageTransformer;
 import com.youth.banner.util.BannerUtils;
 
@@ -85,12 +84,9 @@ public class IndexFragment extends BaseFragment implements IndexIView {
     }
 
     private void initListener() {
-        banner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(Object data, int position) {
-                DataBean dataBean = (DataBean) data;
-                startWebExplorerActivity(dataBean.getLink(), getActivity());
-            }
+        banner.setOnBannerListener((data, position) -> {
+            DataBean dataBean = (DataBean) data;
+            startWebExplorerActivity(dataBean.getLink(), getActivity());
         });
         qmuiPullRefreshLayout.setOnPullListener(new QMUIPullRefreshLayout.OnPullListener() {
             @Override
@@ -106,7 +102,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
             @Override
             public void onRefresh() {
                 tipdialog("获取数据ing...");
-                pageInfo.reset();
+                refresh();
                 mPresenter.getIndexList();
                 mPresenter.getIndexBannerList();
             }
@@ -281,6 +277,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
         }
 
     }
+
 
     /**
      * 加载UI

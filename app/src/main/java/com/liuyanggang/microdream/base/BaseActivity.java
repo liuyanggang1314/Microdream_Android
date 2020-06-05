@@ -35,6 +35,7 @@ public class BaseActivity extends QMUIActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getInstance().addActivity(this);
+        overridePendingTransition(R.anim.slide_right_in,0);
     }
 
     protected void startWebExplorerActivity(String url, Activity activity) {
@@ -81,5 +82,11 @@ public class BaseActivity extends QMUIActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0,R.anim.slide_right_out);
     }
 }

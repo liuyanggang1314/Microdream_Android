@@ -52,6 +52,12 @@
     <string name="account_registration_time">账号注册时间</string>
     <string name="last_password_modification_time">上次密码修改时间</string>
 
+    <string name="shennlu">申论资料</string>
+    <string name="xingce">行测资料</string>
+    <string name="changshi">常识资料</string>
+    <string name="mianshi">面试资料</string>
+    <string name="shiti">试题资料</string>
+
 
     <string name="test">测试\n测试\n测试\n测试\n测试\n测试\n测试</string>
     <string name="avatar">头像</string>

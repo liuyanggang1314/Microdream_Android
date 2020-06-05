@@ -25,13 +25,13 @@ import com.liuyanggang.microdream.activity.PersonalInformationActivity;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.components.ChangePasswordDialog;
 import com.liuyanggang.microdream.components.CleanDataCacheDialog;
-import com.liuyanggang.microdream.components.CustomScrollViewPager;
 import com.liuyanggang.microdream.components.LogoutDialog;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
+import com.liuyanggang.microdream.entity.MessageEventEntity;
 import com.liuyanggang.microdream.entity.TabEntity;
+import com.liuyanggang.microdream.fragment.ExaminationFragment;
 import com.liuyanggang.microdream.fragment.ImageFragment;
 import com.liuyanggang.microdream.fragment.IndexFragment;
-import com.liuyanggang.microdream.fragment.MoodFragment;
 import com.liuyanggang.microdream.manager.AppManager;
 import com.liuyanggang.microdream.presenter.MainIPresenter;
 import com.liuyanggang.microdream.utils.DrawerLayoutUtil;
@@ -45,11 +45,16 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.tapadoo.alerter.Alerter;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
@@ -73,9 +78,9 @@ public class MainActivity extends BaseActivity implements MainIView {
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
 
-    private String[] mTitles = {"首页", "心情", "图片"};
+    private String[] mTitles = {"首页", "公务员", "图片"};
     @BindView(R.id.viewPager)
-    CustomScrollViewPager mViewPager;
+    ViewPager mViewPager;
     @BindView(R.id.commonTabLayout)
     CommonTabLayout mTabLayout;
     private ArrayList<QMUIFragment> mFragments = new ArrayList<>();
@@ -92,6 +97,8 @@ public class MainActivity extends BaseActivity implements MainIView {
     private ImageView avatar;
     private ConstraintLayout constraintLayout;
     private Map<String, String> passwordMap;
+    @BindString(R.string.shennlu)
+    String examinationSubtext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,6 +273,7 @@ public class MainActivity extends BaseActivity implements MainIView {
 
     private void initView() {
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
     }
 
 
@@ -275,7 +283,7 @@ public class MainActivity extends BaseActivity implements MainIView {
 
     private void setFragmrnts() {
         mFragments.add(new IndexFragment());
-        mFragments.add(new MoodFragment());
+        mFragments.add(new ExaminationFragment());
         mFragments.add(new ImageFragment());
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
@@ -290,6 +298,11 @@ public class MainActivity extends BaseActivity implements MainIView {
             public void onTabSelect(int position) {
                 mViewPager.setCurrentItem(position);
                 mTopBar.setTitle(mTitles[position]);
+                if (position == 1) {
+                    mTopBar.setSubTitle(examinationSubtext);
+                } else {
+                    mTopBar.setSubTitle(null);
+                }
             }
 
             @Override
@@ -297,7 +310,6 @@ public class MainActivity extends BaseActivity implements MainIView {
 
             }
         });
-
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -316,6 +328,14 @@ public class MainActivity extends BaseActivity implements MainIView {
         });
         mViewPager.setCurrentItem(0);
         mViewPager.setOffscreenPageLimit(5);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEventEntity messageEvent) {
+        if (messageEvent.getType() == 1) {
+            examinationSubtext = messageEvent.getMessage();
+            mTopBar.setSubTitle(examinationSubtext);
+        }
     }
 
 
@@ -436,6 +456,7 @@ public class MainActivity extends BaseActivity implements MainIView {
     protected void onDestroy() {
         super.onDestroy();
         this.mPresenter = null;
+        EventBus.getDefault().unregister(this);
     }
 
     private class MyPagerAdapter extends QMUIFragmentPagerAdapter {

@@ -8,15 +8,27 @@ package com.liuyanggang.microdream.entity;
  * @Version 1.0
  */
 public class MessageEventEntity {
-    private  String message;
-    public MessageEventEntity(String message){
-        this.message=message;
+    private Integer type;
+    private String message;
+
+    public MessageEventEntity(Integer type, String message) {
+        this.message = message;
+        this.type = type;
     }
+
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

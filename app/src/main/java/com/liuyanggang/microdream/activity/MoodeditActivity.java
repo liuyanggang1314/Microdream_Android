@@ -215,7 +215,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
     public void onMoodSaveSueccess() {
         tipDialog.dismiss();
         ToastyUtil.setNormalSuccess(this, "发表成功", Toast.LENGTH_SHORT);
-        EventBus.getDefault().post(new MessageEventEntity("onUpdateMoodListListener"));
+        EventBus.getDefault().post(new MessageEventEntity(2,"onUpdateMoodListListener"));
         finish();
     }
 
