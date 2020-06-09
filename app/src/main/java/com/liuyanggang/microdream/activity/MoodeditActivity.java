@@ -214,7 +214,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
     @Override
     public void onMoodSaveSueccess() {
         tipDialog.dismiss();
-        ToastyUtil.setNormalSuccess(this, "发表成功", Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalSuccess(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT);
         EventBus.getDefault().post(new MessageEventEntity(2,"onUpdateMoodListListener"));
         finish();
     }
@@ -240,7 +240,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
             unauthorizedDialog.show();
         } else {
             tipDialog.dismiss();
-            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+            ToastyUtil.setNormalDanger(getApplicationContext(), error, Toast.LENGTH_SHORT);
         }
     }
 

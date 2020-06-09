@@ -10,11 +10,18 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okserver.OkDownload;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
+import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.mmkv.MMKV;
+import com.tencent.qcloud.tim.uikit.TUIKit;
+import com.tencent.qcloud.tim.uikit.config.CustomFaceConfig;
+import com.tencent.qcloud.tim.uikit.config.GeneralConfig;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
+
+import static com.liuyanggang.microdream.entity.MicrodreamEntity.TUIKIT_SDKAPPID;
 
 /**
  * @ClassName MicrodreamApplication
@@ -40,6 +47,16 @@ public class MicrodreamApplication extends Application {
         initQmui();
         initOkgo();
         initUpdateConfig();
+        initTUIKit();
+    }
+
+    private void initTUIKit() {
+        // 配置 Config，请按需配置
+        TUIKitConfigs configs = TUIKit.getConfigs();
+        configs.setSdkConfig(new TIMSdkConfig(TUIKIT_SDKAPPID));
+        configs.setCustomFaceConfig(new CustomFaceConfig());
+        configs.setGeneralConfig(new GeneralConfig());
+        TUIKit.init(this, TUIKIT_SDKAPPID, configs);
     }
 
     /**

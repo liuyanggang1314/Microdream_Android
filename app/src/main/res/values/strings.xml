@@ -4,6 +4,7 @@
     <string name="permissions_photo">图片选择需要以下权限:\n1.访问设备上的照片\n2.拍照</string>
     <string name="about_copyright">Microdream 微梦想 版权所有\nCopyright ©2020-%1$s Microdream.\nAll Rights Reserved.</string>
     <string name="microdream_web">https://www.liuyanggang.com</string>
+    <string name="feedback_web">https://www.liuyanggang.com/feedback/</string>
 
     <string name="heartinfo">如果事与愿违\n相信上天会有更好的安排</string>
     <string name="memories">目之所及，皆是回忆\n心之所想，皆是过往\n眼之所看，皆是遗憾</string>
@@ -61,4 +62,25 @@
 
     <string name="test">测试\n测试\n测试\n测试\n测试\n测试\n测试</string>
     <string name="avatar">头像</string>
+    <string name="title">标题</string>
+
+    // 好友
+    <string name="blacklist">黑名单</string>
+    <string name="request_agree">同意</string>
+    <string name="request_accepted">已接受</string>
+    <string name="request_waiting">等待验证</string>
+    <string name="add_friend">添加好友</string>
+    <string name="add_group">添加群聊</string>
+    <string name="start_conversation">发起会话</string>
+    <string name="create_group_chat">创建群聊</string>
+    <string name="create_chat_room">创建聊天室</string>
+    <string name="create_private_group">创建讨论组</string>
+    <string name="hint_add_user_id">请输入ID</string>
+    <string name="hint_add_wording">请输入验证消息</string>
+    <string name="contact_add">添加</string>
+    <string name="user_id">对方ID</string>
+    <string name="add_wording">验证消息</string>
+    <string name="tips_empty_group_member">请选择群成员</string>
+    <string name="tips_empty_group_type">请选择加群方式</string>
+    <string name="no_friend_apply">暂无好友申请</string>
 </resources>

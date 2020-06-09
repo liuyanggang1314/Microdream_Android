@@ -3,10 +3,13 @@ package com.liuyanggang.microdream.model;
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
 import com.liuyanggang.microdream.entity.UserEntity;
 import com.liuyanggang.microdream.model.lisentener.LoginLisentener;
+import com.liuyanggang.microdream.utils.GenerateUserSig;
 import com.liuyanggang.microdream.utils.MMKVUtil;
 import com.liuyanggang.microdream.utils.RsaUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.tencent.qcloud.tim.uikit.TUIKit;
+import com.tencent.qcloud.tim.uikit.base.IUIKitCallBack;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -89,6 +92,7 @@ public class LoginIModel implements IModel {
                                 MMKVUtil.setStringInfo("updatedBy", updatedBy);
                                 MMKVUtil.setStringInfo("createTime", createTime);
                                 MMKVUtil.setStringInfo("updateTime", updateTime);
+                                loginIM();
                                 lisentener.onSeccess();
                                 break;
                             case UNAUTHORIZED_INT:
@@ -105,6 +109,20 @@ public class LoginIModel implements IModel {
                         }
                     }
                 });
+    }
 
+    private void loginIM() {
+        String userSig = GenerateUserSig.genTestUserSig(MMKVUtil.getStringInfo("username"));
+        TUIKit.login(MMKVUtil.getStringInfo("username"), userSig, new IUIKitCallBack() {
+            @Override
+            public void onError(String module, final int code, final String desc) {
+
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
     }
 }

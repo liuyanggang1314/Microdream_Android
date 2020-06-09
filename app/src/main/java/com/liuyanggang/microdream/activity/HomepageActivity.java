@@ -42,6 +42,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.liuyanggang.microdream.MicrodreamApplication.getContext;
 import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG;
 import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
 
@@ -156,7 +157,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     private void initRecyclerView() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
-        adapter = new HomepageAdapter(R.layout.acticity_homepage_item, datas);
+        adapter = new HomepageAdapter(R.layout.activity_homepage_item, datas);
         adapter.setAnimationEnable(true);
         adapter.setAnimationFirstOnly(false);
         adapter.setAdapterAnimation(new CustomAnimation());
@@ -266,6 +267,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     @Override
     public void onHomepageSeccess(List<HomepageEntity> homepageEntities, Integer pages) {
         if (null == homepageEntities || homepageEntities.size() == 0) {
+            adapter.setList(null);
             getEmptyView();
         } else {
             adapter.setList(homepageEntities);
@@ -303,7 +305,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
             });
             unauthorizedDialog.show();
         } else {
-            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+            ToastyUtil.setNormalDanger(getApplicationContext(), error, Toast.LENGTH_SHORT);
             getErrorView();
         }
     }
@@ -358,7 +360,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     public void onDeleteSeccess() {
         tipDialog.dismiss();
         sureDialog.dismiss();
-        ToastyUtil.setNormalSuccess(this, "删除成功", Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalSuccess(getApplicationContext(), "删除成功", Toast.LENGTH_SHORT);
         adapter.removeAt(mPosition);
     }
 
@@ -383,13 +385,13 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
                 public void onEnterClick() {
                     unauthorizedDialog.dismiss();
                     AppManager.getInstance().finishOtherActivity(HomepageActivity.class);
-                    startActivity(new Intent(HomepageActivity.this, LoginActivity.class));
+                    startActivity(new Intent(getContext(), LoginActivity.class));
                     finish();
                 }
             });
             unauthorizedDialog.show();
         } else {
-            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+            ToastyUtil.setNormalDanger(getApplicationContext(), error, Toast.LENGTH_SHORT);
         }
     }
 

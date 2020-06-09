@@ -235,7 +235,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
 
     @Override
     public void onBannerError(String error) {
-        ToastyUtil.setNormalDanger(getActivity(), "轮播图获取失败", Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalDanger(getContext(), "轮播图获取失败", Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -248,6 +248,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
         tipDialog.dismiss();
         qmuiPullRefreshLayout.finishRefresh();
         if (null == indexList || indexList.size() == 0) {
+            adapter.setList(null);
             getEmptyView();
         } else if (indexList.size() < 10) {
             adapter.setList(indexList);
@@ -262,7 +263,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
         tipDialog.dismiss();
         qmuiPullRefreshLayout.finishRefresh();
         adapter.getLoadMoreModule().setEnableLoadMore(false);
-        ToastyUtil.setNormalDanger(getActivity(), error, Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalDanger(getContext(), error, Toast.LENGTH_SHORT);
         getErrorView();
     }
 
@@ -285,7 +286,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
      * @param info
      */
     private void tipdialog(String info) {
-        tipDialog = new QMUITipDialog.Builder(getActivity())
+        tipDialog = new QMUITipDialog.Builder(getContext())
                 .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
                 .setTipWord(info)
                 .create();

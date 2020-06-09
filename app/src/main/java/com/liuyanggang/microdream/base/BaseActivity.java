@@ -1,7 +1,6 @@
 package com.liuyanggang.microdream.base;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,6 +15,7 @@ import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.qmuiteam.qmui.arch.QMUIActivity;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 
+import static com.liuyanggang.microdream.MicrodreamApplication.getContext;
 import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_TITLE;
 import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_URL;
 
@@ -35,14 +35,14 @@ public class BaseActivity extends QMUIActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getInstance().addActivity(this);
-        overridePendingTransition(R.anim.slide_right_in,0);
+        overridePendingTransition(R.anim.slide_left_in,0);
     }
 
-    protected void startWebExplorerActivity(String url, Activity activity) {
+    protected void startWebExplorerActivity(String url) {
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_URL, url);
         bundle.putString(EXTRA_TITLE, getString(R.string.app_name));
-        startActivity(new Intent(activity, MicrodreamWebExplorerActivity.class).putExtras(bundle));
+        startActivity(new Intent(getContext(), MicrodreamWebExplorerActivity.class).putExtras(bundle));
     }
 
     /**
@@ -75,7 +75,8 @@ public class BaseActivity extends QMUIActivity {
                     ToastyUtil.setNormalWarning(getApplicationContext(), "再按一次退出应用", Toast.LENGTH_SHORT);
                     exitTime = System.currentTimeMillis();
                 } else {
-                    System.exit(0);
+                    //System.exit(0);
+                    finish();
                 }
 
                 return true;

@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/app_color_blue</item>
         <item name="colorPrimaryDark">@color/app_color_blue</item>
         <item name="colorAccent">@color/app_color_blue</item>
-        <item name="android:windowBackground">@drawable/navigationview_background</item>
+        <item name="android:windowBackground">@color/dise</item>
         <item name="android:windowIsTranslucent">true</item>
 
         <item name="qmui_skin_support_popup_bg">@color/pop_color</item>

@@ -12,7 +12,10 @@ public class MicrodreamEntity {
      * token
      */
     public static final String TOKEN_STRING = "token";
-
+    /**
+     * TUIKITSDKAPPID
+     */
+    public static final int TUIKIT_SDKAPPID = 1400274442;
     /**
      * DrawerLayout边缘滑动距离
      */

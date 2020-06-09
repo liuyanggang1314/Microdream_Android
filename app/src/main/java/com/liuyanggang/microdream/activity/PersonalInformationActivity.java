@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
@@ -36,8 +37,12 @@ import com.liuyanggang.microdream.view.PersonallnformationIView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMFriendshipManager;
+import com.tencent.imsdk.TIMUserProfile;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,6 +69,8 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
     private QMUITipDialog tipDialog;
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
+    @BindView(R.id.lottieAnimationView)
+    LottieAnimationView lottieAnimationView;
 
     @BindViews({R.id.linearLayout_useername, R.id.linearLayout_nickName, R.id.linearLayout_email, R.id.linearLayout_tel, R.id.linearLayout_sex,
             R.id.linearLayout_account_registration_time, R.id.linearLayout_last_password_modification_time})
@@ -134,7 +141,7 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
                             textView.setText(text);
                             dialog.dismiss();
                         } else {
-                            ToastyUtil.setNormalInfo(PersonalInformationActivity.this, "请检查是否有误", Toast.LENGTH_SHORT);
+                            ToastyUtil.setNormalInfo(getApplicationContext(), "请检查是否有误", Toast.LENGTH_SHORT);
                         }
                     })
                     .create(R.style.MyDialogPink).show();
@@ -149,7 +156,7 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
                             textView.setText(text);
                             dialog.dismiss();
                         } else {
-                            ToastyUtil.setNormalInfo(PersonalInformationActivity.this, "请检查是否有误", Toast.LENGTH_SHORT);
+                            ToastyUtil.setNormalInfo(getApplicationContext(), "请检查是否有误", Toast.LENGTH_SHORT);
                         }
                     })
                     .create(R.style.MyDialogPink).show();
@@ -164,7 +171,7 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
                             textView.setText(text);
                             dialog.dismiss();
                         } else {
-                            ToastyUtil.setNormalInfo(PersonalInformationActivity.this, "请检查是否有误", Toast.LENGTH_SHORT);
+                            ToastyUtil.setNormalInfo(getApplicationContext(), "请检查是否有误", Toast.LENGTH_SHORT);
                         }
                     })
                     .create(R.style.MyDialogPink).show();
@@ -192,6 +199,8 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
 
     private void initView() {
         ButterKnife.bind(this);
+        //开启播放速度
+        lottieAnimationView.setSpeed(0.5f);
     }
 
     /**
@@ -320,11 +329,24 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
     @Override
     public void onUpdateAvatarSuccess(String avatarName) {
         tipDialog.dismiss();
-        ToastyUtil.setNormalSuccess(this, "头像更新成功", Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalSuccess(getApplicationContext(), "头像更新成功", Toast.LENGTH_SHORT);
         Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + MMKVUtil.getStringInfo("avatarName"))
                 .placeholder(R.drawable.image_fill)
                 .error(R.drawable.logo)
                 .into(avatar);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put(TIMUserProfile.TIM_PROFILE_TYPE_KEY_FACEURL, MICRODREAM_SERVER_IMG + MMKVUtil.getStringInfo("avatarName"));
+        TIMFriendshipManager.getInstance().modifySelfProfile(hashMap, new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+
+            }
+
+            @Override
+            public void onSuccess() {
+
+            }
+        });
     }
 
     /**
@@ -353,7 +375,7 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
             unauthorizedDialog.show();
         } else {
             tipDialog.dismiss();
-            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+            ToastyUtil.setNormalDanger(getApplicationContext(), error, Toast.LENGTH_SHORT);
         }
 
     }
@@ -378,7 +400,7 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
     @Override
     public void onUpdateUserSuccess() {
         tipDialog.dismiss();
-        ToastyUtil.setNormalSuccess(this, "信息更新成功", Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalSuccess(getApplicationContext(), "信息更新成功", Toast.LENGTH_SHORT);
     }
 
     /**
@@ -405,9 +427,9 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
                 }
             });
             unauthorizedDialog.show();
-        }else {
+        } else {
             tipDialog.dismiss();
-            ToastyUtil.setNormalDanger(this, error, Toast.LENGTH_SHORT);
+            ToastyUtil.setNormalDanger(getApplicationContext(), error, Toast.LENGTH_SHORT);
         }
     }
 

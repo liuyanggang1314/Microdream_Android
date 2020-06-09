@@ -1,6 +1,7 @@
 package com.liuyanggang.microdream.fragment;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -27,7 +28,6 @@ import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.OnBoomListener;
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,7 +53,6 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     private Unbinder unbinder;
     private ExaminationAdapter adapter;
     private List<ExaminationEntity> datas;
-    private QMUITipDialog tipDialog;
     private PageInfo pageInfo = new PageInfo();
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -96,7 +95,6 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
 
             @Override
             public void onRefresh() {
-                tipdialog("获取数据ing...");
                 refresh();
                 mPresenter.getExaminationList();
             }
@@ -121,7 +119,6 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
 
     private void setData() {
         this.mPresenter = new ExaminationIPeresenter(this);
-        tipdialog("加载中");
         mPresenter.getExaminationList();
         getLoadingView();
     }
@@ -166,23 +163,28 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         mBoomMenuButton.addBuilder(new HamButton.Builder()
                 .normalImageRes(R.drawable.logo)
                 .normalTextRes(R.string.shennlu)
-                .subNormalTextRes(R.string.shennlu));
+                .subNormalTextRes(R.string.shennlu)
+                .imagePadding(new Rect(30, 30, 30, 30)));
         mBoomMenuButton.addBuilder(new HamButton.Builder()
                 .normalImageRes(R.drawable.logo)
                 .normalTextRes(R.string.xingce)
-                .subNormalTextRes(R.string.xingce));
+                .subNormalTextRes(R.string.xingce)
+                .imagePadding(new Rect(30, 30, 30, 30)));
         mBoomMenuButton.addBuilder(new HamButton.Builder()
                 .normalImageRes(R.drawable.logo)
                 .normalTextRes(R.string.changshi)
-                .subNormalTextRes(R.string.changshi));
+                .subNormalTextRes(R.string.changshi)
+                .imagePadding(new Rect(30, 30, 30, 30)));
         mBoomMenuButton.addBuilder(new HamButton.Builder()
                 .normalImageRes(R.drawable.logo)
                 .normalTextRes(R.string.mianshi)
-                .subNormalTextRes(R.string.mianshi));
+                .subNormalTextRes(R.string.mianshi)
+                .imagePadding(new Rect(30, 30, 30, 30)));
         mBoomMenuButton.addBuilder(new HamButton.Builder()
                 .normalImageRes(R.drawable.logo)
                 .normalTextRes(R.string.shiti)
-                .subNormalTextRes(R.string.shiti));
+                .subNormalTextRes(R.string.shiti)
+                .imagePadding(new Rect(30, 30, 30, 30)));
         mBoomMenuButton.setDuration(374);
         mBoomMenuButton.setOnBoomListener(new OnBoomListener() {
             @Override
@@ -190,7 +192,6 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
                 TextView textView = boomButton.getTextView();
                 examinationSubtext = textView.getText().toString();
                 EventBus.getDefault().post(new MessageEventEntity(1, examinationSubtext));
-                tipdialog("加载中");
                 refresh();
                 mPresenter.getExaminationList();
             }
@@ -283,8 +284,8 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     @Override
     public void onHomepageSeccess(List<ExaminationEntity> examinationEntities, Integer pages) {
         qmuiPullRefreshLayout.finishRefresh();
-        tipDialog.dismiss();
         if (null == examinationEntities || examinationEntities.size() == 0) {
+            adapter.setList(null);
             getEmptyView();
         } else {
             adapter.setList(examinationEntities);
@@ -298,7 +299,6 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     @Override
     public void onHomepageError(String error) {
         qmuiPullRefreshLayout.finishRefresh();
-        tipDialog.dismiss();
         adapter.getLoadMoreModule().setEnableLoadMore(false);
         if (UNAUTHORIZED_STRING.equals(error)) {
             UnauthorizedDialog unauthorizedDialog = new UnauthorizedDialog(getActivity());
@@ -317,7 +317,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
             });
             unauthorizedDialog.show();
         } else {
-            ToastyUtil.setNormalDanger(getActivity(), error, Toast.LENGTH_SHORT);
+            ToastyUtil.setNormalDanger(getContext(), error, Toast.LENGTH_SHORT);
             getErrorView();
         }
     }
@@ -330,19 +330,6 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
             adapter.getLoadMoreModule().setEnableLoadMore(false);
             adapter.getLoadMoreModule().loadMoreEnd();
         }
-    }
-
-    /**
-     * 加载UI
-     *
-     * @param info
-     */
-    private void tipdialog(String info) {
-        tipDialog = new QMUITipDialog.Builder(getActivity())
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                .setTipWord(info)
-                .create();
-        tipDialog.show();
     }
 
     class PageInfo {

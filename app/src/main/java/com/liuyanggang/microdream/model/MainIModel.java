@@ -8,6 +8,8 @@ import com.liuyanggang.microdream.model.lisentener.LogoutLinstener;
 import com.liuyanggang.microdream.utils.MMKVUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMManager;
 
 import java.util.Map;
 
@@ -74,6 +76,20 @@ public class MainIModel implements IModel {
 
                     }
                 });
+        /**
+         * 退出IM
+         */
+        TIMManager.getInstance().logout(new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+
+            }
+
+            @Override
+            public void onSuccess() {
+
+            }
+        });
     }
 
     /**

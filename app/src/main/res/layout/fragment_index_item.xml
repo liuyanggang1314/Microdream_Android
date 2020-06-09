@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="8dp"
     android:background="@drawable/index_background">
 
     <ImageView
@@ -40,9 +42,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/about"
+        android:textColor="@color/huise"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +54,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_margin="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +85,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:text="2020-09-09"
-            android:textColor="@color/mistyrose"
+            android:textColor="@color/index_text"
             android:textSize="13sp" />
 
         <ImageView
@@ -99,7 +102,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:text="120"
-            android:textColor="@color/mistyrose"
+            android:textColor="@color/index_text"
             android:textSize="14sp" />
 
         <ImageView
@@ -116,7 +119,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:text="134"
-            android:textColor="@color/mistyrose"
+            android:textColor="@color/index_text"
             android:textSize="14sp" />
 
         <ImageView
@@ -124,7 +127,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
-            android:src="@mipmap/heart" />
+            android:src="@mipmap/heart_hui" />
 
         <TextView
             android:id="@+id/like_count"
@@ -133,7 +136,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:text="142"
-            android:textColor="@color/mistyrose"
+            android:textColor="@color/index_text"
             android:textSize="14sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

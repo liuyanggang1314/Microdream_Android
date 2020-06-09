@@ -7,7 +7,6 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.chad.library.adapter.base.animation.BaseAnimation;
 
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @ClassName CustomAnimation
@@ -17,9 +16,8 @@ import org.jetbrains.annotations.NotNull;
  * @Version 1.0
  */
 public class CustomAnimation implements BaseAnimation {
-    @NotNull
     @Override
-    public Animator[] animators(@NotNull View view) {
+    public Animator[] animators(View view) {
         Animator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1.3f, 1);
         Animator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1.3f, 1);
         Animator alpha = ObjectAnimator.ofFloat(view, "alpha", 0, 1f);

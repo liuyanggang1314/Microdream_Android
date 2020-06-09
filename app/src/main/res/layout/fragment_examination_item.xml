@@ -2,14 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="8dp"
     android:background="@drawable/examination_background">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/category"
@@ -17,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:text="【判断】"
-            android:textColor="@color/white"
+            android:textColor="@color/pink"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -34,9 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textColor="@color/mistyrose"
             android:layout_marginEnd="8dp"
             android:text="@string/time_ag"
+            android:textColor="@color/lanse"
             android:textSize="12sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,9 @@
     <color name="info">#909399</color>
     <color name="primary">#409EFF</color>
 
+    <color name="dise">#EDEDED</color>
+    <color name="huise">#a7b1c2</color>
+    <color name="index_text">#8a8a8a</color>
 
     <color name="app_color_blue">#00A8E1</color>
     <color name="app_color_blue_disabled">#8000A8E1</color>

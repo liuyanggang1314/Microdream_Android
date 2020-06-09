@@ -1,16 +1,13 @@
 package com.liuyanggang.microdream.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -24,13 +21,12 @@ import com.liuyanggang.microdream.utils.KeybordUtil;
 import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.utils.VersionUtil;
 import com.liuyanggang.microdream.view.LoginIView;
-import com.qmuiteam.qmui.span.QMUITouchableSpan;
-import com.qmuiteam.qmui.widget.textview.QMUISpanTouchFixTextView;
 import com.tapadoo.alerter.Alerter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.liuyanggang.microdream.MicrodreamApplication.getContext;
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.PASSWORD_LESS;
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.PASSWORD_MORE;
 
@@ -63,7 +59,7 @@ public class LoginActivity extends BaseActivity implements LoginIView {
     @BindView(R.id.registered)
     Button registered;
     @BindView(R.id.copyright)
-    QMUISpanTouchFixTextView copyright;
+    TextView copyright;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +90,13 @@ public class LoginActivity extends BaseActivity implements LoginIView {
             }
         });
         registered.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisteredActivity.class));
+            startActivity(new Intent(getContext(), RegisteredActivity.class));
         });
         logo.setOnClickListener(v -> {
             AnimationUtil.initAnimationBounceInDown(logo);
+        });
+        copyright.setOnClickListener(view -> {
+            startWebExplorerActivity(getString(R.string.microdream_web));
         });
     }
 
@@ -110,31 +109,9 @@ public class LoginActivity extends BaseActivity implements LoginIView {
         //开启播放速度
         lottieAnimationView.setSpeed(0.5f);
 
-        copyright.setMovementMethodDefault();
-        copyright.setText(generateSp(VersionUtil.getCopyrightInfo(this)));
+        copyright.setText(VersionUtil.getCopyrightInfo(getContext()));
     }
 
-    private SpannableString generateSp(String text) {
-        String highlight1 = "微梦想";
-        SpannableString sp = new SpannableString(text);
-        int start = 0, end;
-        int index;
-        while ((index = text.indexOf(highlight1, start)) > -1) {
-            end = index + highlight1.length();
-            sp.setSpan(new QMUITouchableSpan(
-                    getColor(R.color.pink),
-                    Color.RED,
-                    Color.TRANSPARENT,
-                    Color.TRANSPARENT) {
-                @Override
-                public void onSpanClick(View widget) {
-                    startWebExplorerActivity(getString(R.string.microdream_web), LoginActivity.this);
-                }
-            }, index, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            start = end;
-        }
-        return sp;
-    }
 
     private void setData() {
         this.mPresenter = new LoginIPresenter(this);
@@ -186,7 +163,7 @@ public class LoginActivity extends BaseActivity implements LoginIView {
     @Override
     public void onLoginSeccess() {
         loginDialog.dismiss();
-        ToastyUtil.setNormalSuccess(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalSuccess(getContext(), "登录成功", Toast.LENGTH_SHORT);
         finish();
     }
 
@@ -206,7 +183,7 @@ public class LoginActivity extends BaseActivity implements LoginIView {
 
     @Override
     public Intent onLastActivityFinish() {
-        return new Intent(this, MainActivity.class);
+        return new Intent(getContext(), MainActivity.class);
     }
 
 

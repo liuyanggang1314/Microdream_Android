@@ -10,13 +10,18 @@
     android:orientation="horizontal">
 
 
-    <ImageView
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
         android:id="@+id/avatar"
         android:layout_width="42dp"
         android:layout_height="42dp"
-        android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@mipmap/logo" />
+        android:src="@mipmap/logo"
+        app:qmui_border_color="?attr/qmui_config_color_gray_6"
+        app:qmui_border_width="1px"
+        app:qmui_corner_radius="5dp"
+        app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+        app:qmui_selected_border_width="1px"
+        app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,8 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:textIsSelectable="true"
             android:text="@string/about_copyright"
+            android:textIsSelectable="true"
             android:textSize="12sp" />
 
 

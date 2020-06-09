@@ -2,6 +2,7 @@ package com.liuyanggang.microdream;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.liuyanggang.microdream.activity.AboutActivity;
 import com.liuyanggang.microdream.activity.HomepageActivity;
 import com.liuyanggang.microdream.activity.LoginActivity;
 import com.liuyanggang.microdream.activity.PersonalInformationActivity;
+import com.liuyanggang.microdream.activity.chat.ContactActivity;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.components.ChangePasswordDialog;
 import com.liuyanggang.microdream.components.CleanDataCacheDialog;
@@ -29,6 +31,7 @@ import com.liuyanggang.microdream.components.LogoutDialog;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
 import com.liuyanggang.microdream.entity.MessageEventEntity;
 import com.liuyanggang.microdream.entity.TabEntity;
+import com.liuyanggang.microdream.fragment.ConversationFragment;
 import com.liuyanggang.microdream.fragment.ExaminationFragment;
 import com.liuyanggang.microdream.fragment.ImageFragment;
 import com.liuyanggang.microdream.fragment.IndexFragment;
@@ -44,6 +47,7 @@ import com.qmuiteam.qmui.arch.QMUIFragmentPagerAdapter;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.tapadoo.alerter.Alerter;
+import com.tencent.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -59,6 +63,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 
+import static com.liuyanggang.microdream.MicrodreamApplication.getContext;
 import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG;
 import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
 import static com.liuyanggang.microdream.entity.MicrodreamEntity.DRAWERLEFTEDGESIZEDP;
@@ -70,7 +75,7 @@ import static com.liuyanggang.microdream.entity.MicrodreamEntity.DRAWERLEFTEDGES
  * @Date 2020/5/19
  * @Version 1.0
  */
-public class MainActivity extends BaseActivity implements MainIView {
+public class MainActivity extends BaseActivity implements MainIView, ConversationManagerKit.MessageUnreadWatcher {
     private ChangePasswordDialog changePasswordDialog;
     private MainIPresenter mPresenter;
     private QMUITipDialog tipDialog;
@@ -78,15 +83,15 @@ public class MainActivity extends BaseActivity implements MainIView {
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
 
-    private String[] mTitles = {"首页", "公务员", "图片"};
+    private String[] mTitles = {"首页", "公务员", "图片", "chat"};
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
     @BindView(R.id.commonTabLayout)
     CommonTabLayout mTabLayout;
     private ArrayList<QMUIFragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private int[] mIconUnselectIds = {R.mipmap.tab_01, R.mipmap.tab_02, R.mipmap.tab_03};
-    private int[] mIconSelectIds = {R.mipmap.tab_1, R.mipmap.tab_2, R.mipmap.tab_3};
+    private int[] mIconUnselectIds = {R.mipmap.tab_01, R.mipmap.tab_02, R.mipmap.tab_03, R.mipmap.tab_04};
+    private int[] mIconSelectIds = {R.mipmap.tab_1, R.mipmap.tab_2, R.mipmap.tab_3, R.mipmap.tab_4};
 
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
@@ -105,12 +110,18 @@ public class MainActivity extends BaseActivity implements MainIView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initMsg();
         initTopBar();
         setFragmrnts();
         initViewPage();
         initNavigationView();
         initListener();
         setData();
+    }
+
+    private void initMsg() {
+        // 未读消息监视器
+        ConversationManagerKit.getInstance().addUnreadWatcher(this);
     }
 
     /**
@@ -137,13 +148,13 @@ public class MainActivity extends BaseActivity implements MainIView {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_1: //个人信息
-                    startActivity(new Intent(this, PersonalInformationActivity.class));
+                    startActivity(new Intent(getContext(), PersonalInformationActivity.class));
                     break;
                 case R.id.menu_2: //密码修改
                     initChangePassword();
                     break;
                 case R.id.menu_3://反馈
-
+                    startWebExplorerActivity(getString(R.string.feedback_web));
                     break;
                 case R.id.menu_4: //清除缓存
                     initCleanDataCache();
@@ -152,14 +163,14 @@ public class MainActivity extends BaseActivity implements MainIView {
                     logout();
                     break;
                 case R.id.menu_6: // 关于
-                    startActivity(new Intent(this, AboutActivity.class));
+                    startActivity(new Intent(getContext(), AboutActivity.class));
                     break;
             }
             //drawerLayout.closeDrawers();//关闭侧滑
             return true;
         });
         constraintLayout.setOnClickListener(v -> {
-            startActivity(new Intent(this, HomepageActivity.class));
+            startActivity(new Intent(getContext(), HomepageActivity.class));
         });
     }
 
@@ -206,7 +217,7 @@ public class MainActivity extends BaseActivity implements MainIView {
 
             @Override
             public void onEnterClick() {
-                ToastyUtil.setNormalSuccess(MainActivity.this, getString(R.string.clear_cache_success), Toast.LENGTH_SHORT);
+                ToastyUtil.setNormalSuccess(getContext(), getString(R.string.clear_cache_success), Toast.LENGTH_SHORT);
                 cleanDataCacheDialog.dismiss();
             }
         });
@@ -274,6 +285,7 @@ public class MainActivity extends BaseActivity implements MainIView {
     private void initView() {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        overridePendingTransition(R.anim.fragment_open_enter, 0);
     }
 
 
@@ -285,6 +297,7 @@ public class MainActivity extends BaseActivity implements MainIView {
         mFragments.add(new IndexFragment());
         mFragments.add(new ExaminationFragment());
         mFragments.add(new ImageFragment());
+        mFragments.add(new ConversationFragment());
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
@@ -298,10 +311,16 @@ public class MainActivity extends BaseActivity implements MainIView {
             public void onTabSelect(int position) {
                 mViewPager.setCurrentItem(position);
                 mTopBar.setTitle(mTitles[position]);
+                mTopBar.removeAllRightViews();
                 if (position == 1) {
                     mTopBar.setSubTitle(examinationSubtext);
                 } else {
                     mTopBar.setSubTitle(null);
+                }
+                if (position == 3) {
+                    mTopBar.addRightImageButton(R.mipmap.address_book, R.id.topbar_right_change_button).setOnClickListener(v -> {
+                        startActivity(new Intent(getContext(), ContactActivity.class));
+                    });
                 }
             }
 
@@ -319,6 +338,18 @@ public class MainActivity extends BaseActivity implements MainIView {
             @Override
             public void onPageSelected(int position) {
                 mTabLayout.setCurrentTab(position);
+                mTopBar.setTitle(mTitles[position]);
+                mTopBar.removeAllRightViews();
+                if (position == 1) {
+                    mTopBar.setSubTitle(examinationSubtext);
+                } else {
+                    mTopBar.setSubTitle(null);
+                }
+                if (position == 3) {
+                    mTopBar.addRightImageButton(R.mipmap.address_book, R.id.topbar_right_change_button).setOnClickListener(v -> {
+                        startActivity(new Intent(getContext(), ContactActivity.class));
+                    });
+                }
             }
 
             @Override
@@ -338,11 +369,6 @@ public class MainActivity extends BaseActivity implements MainIView {
         }
     }
 
-
-    @Override
-    protected boolean translucentFull() {
-        return false;
-    }
 
     /**
      * 获取用户信息成功返回
@@ -428,6 +454,7 @@ public class MainActivity extends BaseActivity implements MainIView {
         tipDialog.dismiss();
         logoutDialog.dismiss();
         ToastyUtil.setNormalSuccess(getApplicationContext(), "退出成功", Toasty.LENGTH_LONG);
+        startActivity(new Intent(getContext(), LoginActivity.class));
         finish();
     }
 
@@ -443,13 +470,20 @@ public class MainActivity extends BaseActivity implements MainIView {
     }
 
     @Override
-    public Intent onLastActivityFinish() {
-        return new Intent(this, LoginActivity.class);
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onStop() {
+        super.onStop();
+        ConversationManagerKit.getInstance().destroyConversation();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.fragment_close_exit);
     }
 
     @Override
@@ -457,6 +491,22 @@ public class MainActivity extends BaseActivity implements MainIView {
         super.onDestroy();
         this.mPresenter = null;
         EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 消息数量
+     *
+     * @param count
+     */
+    @Override
+    public void updateUnread(int count) {
+        if (count > 0) {
+            Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);//振动
+            vibrator.vibrate(200);
+            mTabLayout.showMsg(3, count);
+        } else {
+            mTabLayout.hideMsg(3);
+        }
     }
 
     private class MyPagerAdapter extends QMUIFragmentPagerAdapter {
