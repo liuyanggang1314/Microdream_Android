@@ -11,6 +11,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import okhttp3.RequestBody;
 
+import static com.liuyanggang.microdream.entity.HttpEntity.CREATED_OK;
 import static com.liuyanggang.microdream.entity.HttpEntity.JSON;
 import static com.liuyanggang.microdream.entity.HttpEntity.OK;
 import static com.liuyanggang.microdream.entity.HttpEntity.REGISTER;
@@ -50,6 +51,9 @@ public class RegisteredIModel implements IModel {
                         String str = response.body();
                         switch (code) {
                             case OK:
+                                lisentener.onSeccess();
+                                break;
+                            case CREATED_OK:
                                 lisentener.onSeccess();
                                 break;
                             case UNAUTHORIZED_INT:

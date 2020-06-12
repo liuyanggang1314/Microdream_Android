@@ -3,6 +3,7 @@ package com.liuyanggang.microdream;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 
 import com.liuyanggang.microdream.manager.AppUpgradeManager;
 import com.lzy.okgo.OkGo;
@@ -17,6 +18,7 @@ import com.tencent.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.tencent.qcloud.tim.uikit.config.GeneralConfig;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
@@ -89,8 +91,11 @@ public class MicrodreamApplication extends Application {
                 //全局统一超时重连次数，默认为三次
                 .setRetryCount(3);
         OkDownload instance = OkDownload.getInstance();
+        String galleryPath = Environment.getExternalStorageDirectory()
+                + File.separator + Environment.DIRECTORY_DCIM
+                + File.separator;
         //存储路径
-        String stringBuilder = getCacheDir() + "/microdream_file/";
+        String stringBuilder = galleryPath + "/Microdream/";
         instance.setFolder(stringBuilder);
         //最大下载线程
         instance.getThreadPool().setCorePoolSize(3);

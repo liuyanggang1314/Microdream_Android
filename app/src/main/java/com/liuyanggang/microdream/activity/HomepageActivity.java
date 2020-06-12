@@ -27,6 +27,7 @@ import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.view.HomepageIView;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView2;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -42,7 +43,6 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.liuyanggang.microdream.MicrodreamApplication.getContext;
 import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG;
 import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
 
@@ -71,7 +71,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     @BindView(R.id.topbar)
     QMUITopBar mTopBar;
     @BindView(R.id.avatar)
-    ImageView avatar;
+    QMUIRadiusImageView2 avatar;
     @BindView(R.id.slfe_background)
     ImageView slfeBackground;
 
@@ -177,7 +177,6 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
         Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + MMKVUtil.getStringInfo("avatarName"))
                 .placeholder(R.drawable.image_fill)
                 .error(R.drawable.logo)
-                .optionalCircleCrop()
                 .into(avatar);
     }
 
@@ -297,10 +296,9 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
                 @Override
                 public void onEnterClick() {
                     unauthorizedDialog.dismiss();
-                    AppManager.getInstance().finishOtherActivity(HomepageActivity.class);
-                    startActivity(new Intent(HomepageActivity.this, LoginActivity.class));
-                    finish();
-
+                    AppManager.getInstance().finishOtherActivity(AppManager.getInstance().currentActivity());
+                    startActivity(new Intent(AppManager.getInstance().currentActivity(), LoginActivity.class));
+                    AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
                 }
             });
             unauthorizedDialog.show();
@@ -384,9 +382,9 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
                 @Override
                 public void onEnterClick() {
                     unauthorizedDialog.dismiss();
-                    AppManager.getInstance().finishOtherActivity(HomepageActivity.class);
-                    startActivity(new Intent(getContext(), LoginActivity.class));
-                    finish();
+                    AppManager.getInstance().finishOtherActivity(AppManager.getInstance().currentActivity());
+                    startActivity(new Intent(AppManager.getInstance().currentActivity(), LoginActivity.class));
+                    AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
                 }
             });
             unauthorizedDialog.show();

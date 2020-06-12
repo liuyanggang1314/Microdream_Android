@@ -16,7 +16,7 @@ public class RegisterJson {
     public static List<Map<String, String>> getRoles() {
         Map<String, String> map = new HashMap<>();
         List<Map<String, String>> list = new ArrayList();
-        map.put("id", "1");
+        map.put("id", "2");
         list.add(map);
         return list;
     }
@@ -24,14 +24,14 @@ public class RegisterJson {
     public static List<Map<String, String>> getJob() {
         Map<String, String> map = new HashMap<>();
         List<Map<String, String>> list = new ArrayList();
-        map.put("id", "8");
+        map.put("id", "13");
         list.add(map);
         return list;
     }
 
     public static Map<String, String> getDept() {
         Map<String, String> map = new HashMap<>();
-        map.put("id", "2");
+        map.put("id", "16");
         return map;
     }
 }

@@ -35,15 +35,21 @@
                 app:qmui_layout_collapseParallaxMultiplier="0.7"
                 tools:ignore="MissingPrefix" />
 
-            <ImageView
+            <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
                 android:id="@+id/avatar"
-                android:layout_width="74dp"
-                android:layout_height="74dp"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
                 android:layout_gravity="center|bottom"
                 android:layout_marginBottom="?attr/qmui_topbar_height"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/logo" />
+                android:src="@mipmap/logo"
+                app:qmui_border_color="?attr/qmui_config_color_gray_6"
+                app:qmui_border_width="1px"
+                app:qmui_corner_radius="5dp"
+                app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+                app:qmui_selected_border_width="1px"
+                app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8" />
 
             <com.qmuiteam.qmui.widget.QMUITopBar
                 android:id="@+id/topbar"

@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liuyanggang.microdream.MainActivity;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
@@ -233,8 +232,9 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
                 @Override
                 public void onEnterClick() {
                     unauthorizedDialog.dismiss();
-                    AppManager.getInstance().finishOtherActivity(MainActivity.class);
-                    finish();
+                    AppManager.getInstance().finishOtherActivity(AppManager.getInstance().currentActivity());
+                    startActivity(new Intent(AppManager.getInstance().currentActivity(), LoginActivity.class));
+                    AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
                 }
             });
             unauthorizedDialog.show();

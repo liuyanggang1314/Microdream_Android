@@ -40,8 +40,14 @@ public class AppUpgradeManager {
                         update.setVersionCode(object.getInt("updateVerCode"));
                         // 此apk包的版本名称
                         update.setVersionName(object.getStr("updateVerName"));
+                        String content = object.getStr("updateContent");
+                        if (content != null) {
+                            if (content.contains("\\n")) {
+                                content = content.replace("\\n", "\n");
+                            }
+                        }
                         // 此apk包的更新内容
-                        update.setUpdateContent(object.getStr("updateContent"));
+                        update.setUpdateContent(content);
                         // 此apk包是否为强制更新
                         update.setForced(false);
                         // 是否显示忽略此次版本更新按钮

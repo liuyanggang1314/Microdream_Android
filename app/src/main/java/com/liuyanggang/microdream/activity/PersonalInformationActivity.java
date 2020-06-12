@@ -422,8 +422,9 @@ public class PersonalInformationActivity extends BaseActivity implements TakePho
                 @Override
                 public void onEnterClick() {
                     unauthorizedDialog.dismiss();
-                    AppManager.getInstance().finishOtherActivity(MainActivity.class);
-                    finish();
+                    AppManager.getInstance().finishOtherActivity(AppManager.getInstance().currentActivity());
+                    startActivity(new Intent(AppManager.getInstance().currentActivity(), LoginActivity.class));
+                    AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
                 }
             });
             unauthorizedDialog.show();

@@ -151,7 +151,6 @@ public class IndexIModel implements IModel {
                             case BAD_REQUEST:
                                 JSONObject jsonObject = new JSONObject(str);
                                 String msg = jsonObject.getStr("message");
-                                lisentener.onIndexSeccess(null);
                                 lisentener.onIndexError(msg);
                                 break;
                             default:

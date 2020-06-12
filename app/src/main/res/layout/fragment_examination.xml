@@ -48,7 +48,8 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:src="@mipmap/logo_white" />
+            android:src="@mipmap/logo_white"
+            android:contentDescription="@null" />
 
     </com.nightonke.boommenu.BoomMenuButton>
 

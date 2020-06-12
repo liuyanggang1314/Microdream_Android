@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.liuyanggang.microdream.R;
-import com.liuyanggang.microdream.activity.HomepageActivity;
 import com.liuyanggang.microdream.activity.HtmlActivity;
+import com.liuyanggang.microdream.activity.LoginActivity;
 import com.liuyanggang.microdream.adapter.ExaminationAdapter;
 import com.liuyanggang.microdream.base.BaseFragment;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
@@ -28,6 +27,7 @@ import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.OnBoomListener;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -62,12 +62,12 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     QMUIPullRefreshLayout qmuiPullRefreshLayout;
     @BindString(R.string.shennlu)
     String examinationSubtext;
+    private QMUITipDialog tipDialog;
 
     @Override
     protected View onCreateView() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_examination, null);
         unbinder = ButterKnife.bind(this, view);
-        initView();
         initRecyclerView();
         initBoomMenu();
         initListener();
@@ -95,6 +95,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
 
             @Override
             public void onRefresh() {
+                tipdialog("获取数据ing...");
                 refresh();
                 mPresenter.getExaminationList();
             }
@@ -112,7 +113,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         //adapter.addHeaderView(getLayoutInflater().inflate(R.layout.layout_horizontal_line, recyclerView, false));
         getEmptyView();
         //添加Android自带的分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
         initLoadMore();
     }
@@ -129,8 +130,17 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         return view;
     }
 
-    private void initView() {
-
+    /**
+     * 加载UI
+     *
+     * @param info
+     */
+    private void tipdialog(String info) {
+        tipDialog = new QMUITipDialog.Builder(getContext())
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord(info)
+                .create();
+        tipDialog.show();
     }
 
     /**
@@ -189,6 +199,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         mBoomMenuButton.setOnBoomListener(new OnBoomListener() {
             @Override
             public void onClicked(int index, BoomButton boomButton) {
+                tipdialog("获取数据ing...");
                 TextView textView = boomButton.getTextView();
                 examinationSubtext = textView.getText().toString();
                 EventBus.getDefault().post(new MessageEventEntity(1, examinationSubtext));
@@ -283,6 +294,9 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
 
     @Override
     public void onHomepageSeccess(List<ExaminationEntity> examinationEntities, Integer pages) {
+        if (tipDialog != null) {
+            tipDialog.dismiss();
+        }
         qmuiPullRefreshLayout.finishRefresh();
         if (null == examinationEntities || examinationEntities.size() == 0) {
             adapter.setList(null);
@@ -298,6 +312,9 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
 
     @Override
     public void onHomepageError(String error) {
+        if (tipDialog != null) {
+            tipDialog.dismiss();
+        }
         qmuiPullRefreshLayout.finishRefresh();
         adapter.getLoadMoreModule().setEnableLoadMore(false);
         if (UNAUTHORIZED_STRING.equals(error)) {
@@ -311,8 +328,9 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
                 @Override
                 public void onEnterClick() {
                     unauthorizedDialog.dismiss();
-                    AppManager.getInstance().finishOtherActivity(HomepageActivity.class);
-                    getActivity().finish();
+                    AppManager.getInstance().finishOtherActivity(AppManager.getInstance().currentActivity());
+                    startActivity(new Intent(AppManager.getInstance().currentActivity(), LoginActivity.class));
+                    AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
                 }
             });
             unauthorizedDialog.show();
@@ -324,6 +342,9 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
 
     @Override
     public void onLoadMore(List<ExaminationEntity> examinationEntities, Integer current) {
+        if (tipDialog != null) {
+            tipDialog.dismiss();
+        }
         adapter.addData(examinationEntities);
         adapter.getLoadMoreModule().loadMoreComplete();
         if (current == pageInfo.pages) {

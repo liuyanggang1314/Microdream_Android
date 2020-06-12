@@ -44,8 +44,8 @@
     <string name="cancel">关闭</string>
     <string name="choose_photo">从相册选择照片</string>
     <string name="mood_edit">这一刻的想法&#8230;</string>
-    <string name="error">错误</string>
-    <string name="empty">空</string>
+    <string name="error">加载错误</string>
+    <string name="empty">暂无数据</string>
     <string name="remind">提示</string>
     <string name="loading">加载中</string>
     <string name="time_ag">2020&#8211;05&#8211;26 16:22:00</string>
@@ -63,6 +63,7 @@
     <string name="test">测试\n测试\n测试\n测试\n测试\n测试\n测试</string>
     <string name="avatar">头像</string>
     <string name="title">标题</string>
+    <string name="rest_post_invalid_page_number">请求的页码大于总页数。</string>
 
     // 好友
     <string name="blacklist">黑名单</string>

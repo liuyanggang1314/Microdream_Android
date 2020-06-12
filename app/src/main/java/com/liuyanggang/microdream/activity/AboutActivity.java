@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -14,9 +15,14 @@ import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.manager.AppUpgradeManager;
 import com.liuyanggang.microdream.utils.AnimationUtil;
+import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.utils.VersionUtil;
 import com.tapadoo.alerter.Alerter;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+
+import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.base.CheckCallback;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -59,6 +65,37 @@ public class AboutActivity extends BaseActivity {
         checkUpdate.setOnClickListener(v -> {
             AnimationUtil.initAnimationBounceIn(checkUpdate);
             lottieAnimationViewHeart.playAnimation();
+            UpdateConfig.getConfig().setCheckCallback(new CheckCallback() {
+                @Override
+                public void onCheckStart() {
+
+                }
+
+                @Override
+                public void hasUpdate(Update update) {
+
+                }
+
+                @Override
+                public void noUpdate() {
+                    ToastyUtil.setNormalInfo(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT);
+                }
+
+                @Override
+                public void onCheckError(Throwable t) {
+
+                }
+
+                @Override
+                public void onUserCancel() {
+
+                }
+
+                @Override
+                public void onCheckIgnore(Update update) {
+
+                }
+            });
             AppUpgradeManager.check();
         });
         lottieAnimationViewHeart.setOnClickListener(v -> {

@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -125,7 +124,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
         adapter.addHeaderView(getLayoutInflater().inflate(R.layout.layout_horizontal_line, recyclerView, false));
         getEmptyView();
         //添加Android自带的分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
         initLoadMore();
     }
@@ -261,10 +260,15 @@ public class IndexFragment extends BaseFragment implements IndexIView {
     @Override
     public void onIndexError(String error) {
         tipDialog.dismiss();
-        qmuiPullRefreshLayout.finishRefresh();
-        adapter.getLoadMoreModule().setEnableLoadMore(false);
-        ToastyUtil.setNormalDanger(getContext(), error, Toast.LENGTH_SHORT);
-        getErrorView();
+        if (getString(R.string.rest_post_invalid_page_number).equals(error)) {
+            adapter.getLoadMoreModule().setEnableLoadMore(false);
+            adapter.getLoadMoreModule().loadMoreComplete();
+        } else {
+            qmuiPullRefreshLayout.finishRefresh();
+            adapter.getLoadMoreModule().setEnableLoadMore(false);
+            ToastyUtil.setNormalDanger(getContext(), error, Toast.LENGTH_SHORT);
+            getErrorView();
+        }
     }
 
     @Override

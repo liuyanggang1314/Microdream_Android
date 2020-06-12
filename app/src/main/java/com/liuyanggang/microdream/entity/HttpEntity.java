@@ -89,8 +89,15 @@ public class HttpEntity {
     /**
      * 公务员考试列表
      */
-    public static final String EXAMINATION =  MICRODREAM_SERVER + "api/examination";
-
+    public static final String EXAMINATION = MICRODREAM_SERVER + "api/examination";
+    /**
+     * 获取图片列表
+     */
+    public static final String IMAGE_LIST = MICRODREAM_SERVER + "api/android_img";
+    /**
+     * 根据type获取图片
+     */
+    public static final String IMAGE_BYTYPE = MICRODREAM_SERVER + "api/android_img/bytype";
     /**
      * 请求heard
      */
@@ -99,6 +106,10 @@ public class HttpEntity {
      * 请求成功code
      */
     public static final int OK = 200;
+    /**
+     * CREATED成功code
+     */
+    public static final int CREATED_OK = 201;
     /**
      * 请求失败401 UNAUTHORIZED授权错误
      */

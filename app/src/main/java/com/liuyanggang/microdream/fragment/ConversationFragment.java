@@ -16,6 +16,7 @@ import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.OnBoomListener;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMFriendAllowType;
@@ -49,17 +50,42 @@ public class ConversationFragment extends BaseFragment {
     TitleBarLayout titleBarLayout;
     @BindView(R.id.action_bar_right_bmb)
     BoomMenuButton mBoomMenuButton;
+    @BindView(R.id.qmuiPullRefreshLayout)
+    QMUIPullRefreshLayout qmuiPullRefreshLayout;
 
     @Override
     protected View onCreateView() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_conversation, null);
         unbinder = ButterKnife.bind(this, view);
         initView();
-        initAvatar();
+        initChat();
         initBoomMenu();
+        initListener();
         return view;
     }
 
+    private void initListener() {
+        qmuiPullRefreshLayout.setOnPullListener(new QMUIPullRefreshLayout.OnPullListener() {
+            @Override
+            public void onMoveTarget(int offset) {
+
+            }
+
+            @Override
+            public void onMoveRefreshView(int offset) {
+
+            }
+
+            @Override
+            public void onRefresh() {
+                initView();
+            }
+        });
+    }
+
+    /**
+     * 初始化boom
+     */
     private void initBoomMenu() {
         mBoomMenuButton.setShowDuration(450);
         mBoomMenuButton.setHideDuration(375);
@@ -140,11 +166,11 @@ public class ConversationFragment extends BaseFragment {
         });
     }
 
-    private void initAvatar() {
-
+    /**
+     * 初始化个人聊天设置
+     */
+    private void initChat() {
         HashMap<String, Object> hashMap = new HashMap<>();
-        // 头像
-        //hashMap.put(TIMUserProfile.TIM_PROFILE_TYPE_KEY_FACEURL, R.mipmap.logo);
         // 加我验证方式
         hashMap.put(TIMUserProfile.TIM_PROFILE_TYPE_KEY_ALLOWTYPE, TIMFriendAllowType.TIM_FRIEND_NEED_CONFIRM);
         TIMFriendshipManager.getInstance().modifySelfProfile(hashMap, new TIMCallBack() {
@@ -171,6 +197,9 @@ public class ConversationFragment extends BaseFragment {
         });
     }
 
+    /**
+     * 初始化界面
+     */
     private void initView() {
         mConversationLayout.initDefault();
         titleBarLayout.setVisibility(View.GONE);
@@ -198,6 +227,7 @@ public class ConversationFragment extends BaseFragment {
                     })
                     .create(R.style.MyDialogPink).show();
         });
+        qmuiPullRefreshLayout.finishRefresh();
     }
 
     private void startChatActivity(ConversationInfo conversationInfo) {

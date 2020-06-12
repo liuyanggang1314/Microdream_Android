@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ import com.liuyanggang.microdream.fragment.ExaminationFragment;
 import com.liuyanggang.microdream.fragment.ImageFragment;
 import com.liuyanggang.microdream.fragment.IndexFragment;
 import com.liuyanggang.microdream.manager.AppManager;
+import com.liuyanggang.microdream.manager.AppUpgradeManager;
 import com.liuyanggang.microdream.presenter.MainIPresenter;
 import com.liuyanggang.microdream.utils.DrawerLayoutUtil;
 import com.liuyanggang.microdream.utils.MMKVUtil;
@@ -44,6 +47,8 @@ import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.view.MainIView;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentPagerAdapter;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView2;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.tapadoo.alerter.Alerter;
@@ -99,7 +104,7 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
     NavigationView navigationView;
     private TextView nikeName;
     private TextView userName;
-    private ImageView avatar;
+    private QMUIRadiusImageView2 avatar;
     private ConstraintLayout constraintLayout;
     private Map<String, String> passwordMap;
     @BindString(R.string.shennlu)
@@ -137,8 +142,8 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + avatarName)
                 .placeholder(R.drawable.image_fill)
                 .error(R.drawable.logo)
-                .optionalCircleCrop()
                 .into(avatar);
+        AppUpgradeManager.checkTask();
     }
 
     /**
@@ -169,6 +174,7 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
             //drawerLayout.closeDrawers();//关闭侧滑
             return true;
         });
+
         constraintLayout.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), HomepageActivity.class));
         });
@@ -291,6 +297,21 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
 
     private void initTopBar() {
         mTopBar.setTitle("主页");
+        String avatarName = MMKVUtil.getStringInfo("avatarName");
+        ImageView imageView = new ImageView(getApplicationContext());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(QMUIDisplayHelper.dpToPx(30), QMUIDisplayHelper.dpToPx(30));
+        imageView.setLayoutParams(lp);
+        Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + avatarName)
+                .error(R.drawable.logo)
+                .into(imageView);
+
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(QMUIDisplayHelper.dpToPx(30), QMUIDisplayHelper.dpToPx(30));
+        rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        rlp.setMarginStart(QMUIDisplayHelper.dpToPx(8));
+        mTopBar.addLeftView(imageView, R.id.topbar_left_about_button, rlp);
+        imageView.setOnClickListener(view -> {
+            drawerLayout.openDrawer(navigationView);
+        });
     }
 
     private void setFragmrnts() {
@@ -435,8 +456,9 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
                 @Override
                 public void onEnterClick() {
                     unauthorizedDialog.dismiss();
-                    AppManager.getInstance().finishOtherActivity(MainActivity.class);
-                    finish();
+                    AppManager.getInstance().finishOtherActivity(AppManager.getInstance().currentActivity());
+                    startActivity(new Intent(AppManager.getInstance().currentActivity(), LoginActivity.class));
+                    AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
                 }
             });
             unauthorizedDialog.show();

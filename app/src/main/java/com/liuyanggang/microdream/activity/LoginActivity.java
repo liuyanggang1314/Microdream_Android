@@ -90,7 +90,7 @@ public class LoginActivity extends BaseActivity implements LoginIView {
             }
         });
         registered.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), RegisteredActivity.class));
+            startActivity(new Intent(getApplicationContext(), RegisteredActivity.class));
         });
         logo.setOnClickListener(v -> {
             AnimationUtil.initAnimationBounceInDown(logo);
@@ -163,7 +163,8 @@ public class LoginActivity extends BaseActivity implements LoginIView {
     @Override
     public void onLoginSeccess() {
         loginDialog.dismiss();
-        ToastyUtil.setNormalSuccess(getContext(), "登录成功", Toast.LENGTH_SHORT);
+        ToastyUtil.setNormalSuccess(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT);
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 
@@ -179,11 +180,6 @@ public class LoginActivity extends BaseActivity implements LoginIView {
                 .enableSwipeToDismiss()
                 .setBackgroundResource(R.drawable.atlas_background)
                 .show();
-    }
-
-    @Override
-    public Intent onLastActivityFinish() {
-        return new Intent(getContext(), MainActivity.class);
     }
 
 
