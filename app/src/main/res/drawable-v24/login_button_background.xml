@@ -1,37 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#A62E3192">
+    android:color="#6dd5fa">
     <item>
-        <selector>
-            <item android:state_pressed="true">
-                <shape>
-                    <gradient
-                        android:angle="0"
-                        android:centerColor="#20e3b2"
-                        android:endColor="#29ffc6"
-                        android:startColor="#0cebeb"
-                        android:type="linear" />
-                    <corners
-                        android:bottomLeftRadius="3dp"
-                        android:bottomRightRadius="3dp"
-                        android:topLeftRadius="3dp"
-                        android:topRightRadius="3dp" />
-                </shape>
-            </item>
-            <item android:state_pressed="false">
-                <shape>
-                    <gradient
-                        android:angle="0"
-                        android:endColor="#fffcdc"
-                        android:startColor="#d9a7c7"
-                        android:type="linear" />
-                    <corners
-                        android:bottomLeftRadius="3dp"
-                        android:bottomRightRadius="3dp"
-                        android:topLeftRadius="3dp"
-                        android:topRightRadius="3dp" />
-                </shape>
-            </item>
-        </selector>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="0"
+                android:endColor="#fffcdc"
+                android:startColor="#d9a7c7"
+                android:type="linear" />
+            <corners
+                android:bottomLeftRadius="3dp"
+                android:bottomRightRadius="3dp"
+                android:topLeftRadius="3dp"
+                android:topRightRadius="3dp" />
+        </shape>
     </item>
 </ripple>

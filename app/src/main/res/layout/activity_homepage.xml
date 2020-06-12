@@ -14,7 +14,7 @@
             android:id="@+id/mCollapsingTopBarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/navigationview_background"
+            android:background="@drawable/titile_background"
             android:minHeight="?attr/qmui_topbar_height"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:qmui_collapsedTitleGravity="center"
@@ -24,16 +24,19 @@
             app:qmui_followTopBarCommonSkin="true"
             app:qmui_statusBarScrim="?attr/qmui_config_color_blue">
 
-            <ImageView
-                android:id="@+id/slfe_background"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieAnimationView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="@null"
                 android:fitsSystemWindows="false"
                 android:scaleType="centerCrop"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="color_confetti.json"
+                app:lottie_loop="true"
                 app:qmui_layout_collapseMode="parallax"
                 app:qmui_layout_collapseParallaxMultiplier="0.7"
                 tools:ignore="MissingPrefix" />
+
 
             <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
                 android:id="@+id/avatar"

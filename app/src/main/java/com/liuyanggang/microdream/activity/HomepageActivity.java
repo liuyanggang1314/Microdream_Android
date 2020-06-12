@@ -1,9 +1,9 @@
 package com.liuyanggang.microdream.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -72,8 +72,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     QMUITopBar mTopBar;
     @BindView(R.id.avatar)
     QMUIRadiusImageView2 avatar;
-    @BindView(R.id.slfe_background)
-    ImageView slfeBackground;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +97,8 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     private void initTopBar() {
         mCollapsingTopBarLayout.setStatusBarScrim(getDrawable(R.drawable.scooter_background));
         mCollapsingTopBarLayout.setContentScrim(getDrawable(R.drawable.scooter_background));
+        mCollapsingTopBarLayout.setExpandedTitleColor(Color.WHITE);
+        mCollapsingTopBarLayout.setCollapsedTitleTextColor(Color.WHITE);
         mCollapsingTopBarLayout.setTitle(MMKVUtil.getStringInfo("nickName"));
 
         mTopBar.addLeftBackImageButton().setOnClickListener(v -> finish());

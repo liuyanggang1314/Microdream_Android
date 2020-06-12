@@ -299,15 +299,16 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         mTopBar.setTitle("主页");
         String avatarName = MMKVUtil.getStringInfo("avatarName");
         ImageView imageView = new ImageView(getApplicationContext());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(QMUIDisplayHelper.dpToPx(30), QMUIDisplayHelper.dpToPx(30));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(QMUIDisplayHelper.dpToPx(28), QMUIDisplayHelper.dpToPx(28));
         imageView.setLayoutParams(lp);
         Glide.with(getApplicationContext()).load(MICRODREAM_SERVER_IMG + avatarName)
                 .error(R.drawable.logo)
+                .optionalCircleCrop()
                 .into(imageView);
 
-        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(QMUIDisplayHelper.dpToPx(30), QMUIDisplayHelper.dpToPx(30));
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(QMUIDisplayHelper.dpToPx(28), QMUIDisplayHelper.dpToPx(28));
         rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
-        rlp.setMarginStart(QMUIDisplayHelper.dpToPx(8));
+        rlp.setMarginStart(QMUIDisplayHelper.dpToPx(16));
         mTopBar.addLeftView(imageView, R.id.topbar_left_about_button, rlp);
         imageView.setOnClickListener(view -> {
             drawerLayout.openDrawer(navigationView);
