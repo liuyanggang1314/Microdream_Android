@@ -13,6 +13,7 @@ import com.qmuiteam.qmui.arch.QMUIFragment;
 import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_TITLE;
 import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_URL;
 
+
 /**
  * @ClassName BaseFragment
  * @Description TODO
