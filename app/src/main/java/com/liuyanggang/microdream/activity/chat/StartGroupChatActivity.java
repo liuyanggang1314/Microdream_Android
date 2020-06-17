@@ -191,7 +191,7 @@ public class StartGroupChatActivity extends BaseActivity {
                 chatInfo.setChatName(groupInfo.getGroupName());
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 intent.putExtra("chatInfo", chatInfo);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 finish();
             }

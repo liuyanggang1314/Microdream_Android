@@ -57,7 +57,7 @@ public class ChatActivity extends BaseActivity {
         mTopBar.addRightImageButton(R.mipmap.user_withe, R.id.topbar_right_change_button).setOnClickListener(v -> {
             if (mChatInfo.getType() == TIMConversationType.C2C) {
                 Intent intent = new Intent(getContext(), FriendProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
                 startActivity(intent);
             } else {
@@ -93,7 +93,7 @@ public class ChatActivity extends BaseActivity {
                 ChatInfo info = new ChatInfo();
                 info.setId(messageInfo.getFromUser());
                 Intent intent = new Intent(getContext(), FriendProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(TUIKitConstants.ProfileType.CONTENT, info);
                 startActivity(intent);
             }

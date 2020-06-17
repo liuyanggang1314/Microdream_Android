@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
 
-    private String[] mTitles = {"首页", "公务员", "图片", "chat"};
+    private String[] mTitles = {"首页", "examination", "图片", "chat"};
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
     @BindView(R.id.commonTabLayout)
@@ -124,8 +124,8 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         setData();
     }
 
+    // 未读消息监视器
     private void initMsg() {
-        // 未读消息监视器
         ConversationManagerKit.getInstance().addUnreadWatcher(this);
     }
 
@@ -153,7 +153,9 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_1: //个人信息
-                    startActivity(new Intent(getContext(), PersonalInformationActivity.class));
+                    Intent intent = new Intent(getApplicationContext(), PersonalInformationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
                     break;
                 case R.id.menu_2: //密码修改
                     initChangePassword();
@@ -168,7 +170,9 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
                     logout();
                     break;
                 case R.id.menu_6: // 关于
-                    startActivity(new Intent(getContext(), AboutActivity.class));
+                    Intent intent6 = new Intent(getApplicationContext(), AboutActivity.class);
+                    intent6.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent6);
                     break;
             }
             //drawerLayout.closeDrawers();//关闭侧滑
@@ -176,7 +180,9 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         });
 
         constraintLayout.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), HomepageActivity.class));
+            Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
         });
     }
 
@@ -341,7 +347,9 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
                 }
                 if (position == 3) {
                     mTopBar.addRightImageButton(R.mipmap.address_book, R.id.topbar_right_change_button).setOnClickListener(v -> {
-                        startActivity(new Intent(getContext(), ContactActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent);
                     });
                 }
             }
@@ -369,7 +377,9 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
                 }
                 if (position == 3) {
                     mTopBar.addRightImageButton(R.mipmap.address_book, R.id.topbar_right_change_button).setOnClickListener(v -> {
-                        startActivity(new Intent(getContext(), ContactActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent);
                     });
                 }
             }
@@ -478,7 +488,7 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         logoutDialog.dismiss();
         ToastyUtil.setNormalSuccess(getApplicationContext(), "退出成功", Toasty.LENGTH_LONG);
         startActivity(new Intent(getContext(), LoginActivity.class));
-        finish();
+        AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
     }
 
     /**

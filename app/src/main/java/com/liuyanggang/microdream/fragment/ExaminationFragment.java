@@ -79,7 +79,10 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         adapter.setOnItemClickListener((adapter, view, position) -> {
             ExaminationEntity examinationEntity = (ExaminationEntity) adapter.getData().get(position);
             String content = examinationEntity.getContent();
-            startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("content", content));
+            Intent intent = new Intent(getContext(), HtmlActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtra("content",content);
+            startActivity(intent);
         });
 
         qmuiPullRefreshLayout.setOnPullListener(new QMUIPullRefreshLayout.OnPullListener() {
@@ -243,7 +246,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     private void getErrorView() {
         View errorView = getLayoutInflater().inflate(R.layout.layout_errorview, recyclerView, false);
         errorView.setOnClickListener(v -> {
-
+            this.mPresenter.getExaminationList();
         });
         adapter.setEmptyView(errorView);
     }

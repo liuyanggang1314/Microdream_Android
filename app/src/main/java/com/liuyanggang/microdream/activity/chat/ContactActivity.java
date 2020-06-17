@@ -81,7 +81,7 @@ public class ContactActivity extends BaseActivity {
                     startActivity(new Intent(getContext(), BlackListActivity.class));
                 } else {
                     Intent intent = new Intent(getContext(), FriendProfileActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact);
                     startActivity(intent);
                 }

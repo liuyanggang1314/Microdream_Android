@@ -25,10 +25,13 @@ public abstract class BaseFragment extends QMUIFragment {
 
 
     protected void startWebExplorerActivity(@NonNull String url, Activity activity) {
+        Intent intent = new Intent(activity, MicrodreamWebExplorerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_URL, url);
         bundle.putString(EXTRA_TITLE, getString(R.string.app_name));
-        startActivity(new Intent(activity, MicrodreamWebExplorerActivity.class).putExtras(bundle));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     /**

@@ -71,7 +71,7 @@ public class GroupListActivity extends BaseActivity {
             chatInfo.setId(contact.getId());
             Intent intent = new Intent(getContext(), ChatActivity.class);
             intent.putExtra("chatInfo", chatInfo);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
     }

@@ -90,7 +90,10 @@ public class ImageFragment extends BaseFragment implements ImageIView {
             ImageEntity imageEntity = (ImageEntity) adapter.getData().get(position);
             Bundle bundle = new Bundle();
             bundle.putLong("type", imageEntity.getType());
-            startActivity(new Intent(getContext(), ImagePreviewActivity.class).putExtras(bundle));
+            Intent intent = new Intent(getContext(), ImagePreviewActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 
@@ -157,7 +160,7 @@ public class ImageFragment extends BaseFragment implements ImageIView {
     private void getErrorView() {
         View errorView = getLayoutInflater().inflate(R.layout.layout_errorview, recyclerView, false);
         errorView.setOnClickListener(v -> {
-
+            this.mPresenter.getImageList();
         });
         adapter.setEmptyView(errorView);
     }

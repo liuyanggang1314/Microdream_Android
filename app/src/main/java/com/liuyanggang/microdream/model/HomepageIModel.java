@@ -5,12 +5,15 @@ import com.liuyanggang.microdream.entity.HomepageEntity;
 import com.liuyanggang.microdream.model.lisentener.DeleteMoodListener;
 import com.liuyanggang.microdream.model.lisentener.GetMoodListListener;
 import com.liuyanggang.microdream.utils.MyListUtil;
+import com.liuyanggang.microdream.utils.TimeUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 
@@ -67,13 +70,14 @@ public class HomepageIModel implements IModel {
                                         String avatarName = jsonObject1.getStr("avatarName");
                                         Boolean isDelete = jsonObject1.getBool("isDelete");
 
+                                        Date date = DateUtil.parse(creatTime);
                                         homepageEntity.setId(id);
                                         homepageEntity.setUserId(userId);
                                         homepageEntity.setAvatar(avatarName);
                                         homepageEntity.setNikeName(nikeName);
                                         homepageEntity.setContent(content);
                                         homepageEntity.setImages(MyListUtil.setString(images));
-                                        homepageEntity.setCreatTime(creatTime);
+                                        homepageEntity.setCreatTime(TimeUtil.getTimeFormatText(date));
                                         homepageEntity.setDelete(isDelete);
                                         list.add(homepageEntity);
                                     }

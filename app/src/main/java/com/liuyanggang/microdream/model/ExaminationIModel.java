@@ -1,7 +1,5 @@
 package com.liuyanggang.microdream.model;
 
-import android.util.Log;
-
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
 import com.liuyanggang.microdream.entity.ExaminationEntity;
 import com.liuyanggang.microdream.model.lisentener.ExaminationListener;
@@ -9,8 +7,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 
@@ -67,7 +67,10 @@ public class ExaminationIModel implements IModel {
                                         String createTime = jsonObject1.getStr("createTime");
                                         Long readingSum = jsonObject1.getLong("readingSum");
 
-                                        examinationEntity.setUpdateTime(updateTime);
+                                        Date date = DateUtil.parse(updateTime);
+                                        String formatDate = DateUtil.formatDate(date);
+
+                                        examinationEntity.setUpdateTime(formatDate);
                                         examinationEntity.setTitle(title);
                                         examinationEntity.setCategory(category);
                                         examinationEntity.setContent(content);

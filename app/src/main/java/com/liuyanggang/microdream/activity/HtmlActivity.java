@@ -26,7 +26,7 @@ public class HtmlActivity extends BaseActivity {
     TextView html;
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
-
+    private static String HTMLINFO="html";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +40,8 @@ public class HtmlActivity extends BaseActivity {
     private void initView(String text) {
         ButterKnife.bind(this);
         RichText.initCacheDir(this);
-        RichText.fromHtml(text)
-                .autoFix(true)
-                .noImage(false)
+        RichText.from(text)
+                .bind(HTMLINFO)
                 .into(html);
     }
 
@@ -56,6 +55,6 @@ public class HtmlActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RichText.recycle();
+        RichText.clear(HTMLINFO);
     }
 }

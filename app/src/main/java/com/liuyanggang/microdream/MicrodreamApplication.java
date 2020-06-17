@@ -112,7 +112,7 @@ public class MicrodreamApplication extends Application {
      * 初始化APP更新
      */
     private void initUpdateConfig() {
-        AppUpgradeManager.initUpgrade();
+        AppUpgradeManager.initUpgrade(getApplicationContext());
     }
 
 }

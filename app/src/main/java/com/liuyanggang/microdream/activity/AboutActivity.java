@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -15,14 +14,9 @@ import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.base.BaseActivity;
 import com.liuyanggang.microdream.manager.AppUpgradeManager;
 import com.liuyanggang.microdream.utils.AnimationUtil;
-import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.utils.VersionUtil;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.tapadoo.alerter.Alerter;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
-
-import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.base.CheckCallback;
-import org.lzh.framework.updatepluginlib.model.Update;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -36,7 +30,8 @@ import butterknife.ButterKnife;
  * @Version 1.0
  */
 public class AboutActivity extends BaseActivity {
-    private CommonTitleBar commonTitleBar;
+    @BindView(R.id.topbar)
+    QMUITopBarLayout mTopBar;
     @BindView(R.id.version)
     TextView version;
     @BindView(R.id.logo)
@@ -65,37 +60,7 @@ public class AboutActivity extends BaseActivity {
         checkUpdate.setOnClickListener(v -> {
             AnimationUtil.initAnimationBounceIn(checkUpdate);
             lottieAnimationViewHeart.playAnimation();
-            UpdateConfig.getConfig().setCheckCallback(new CheckCallback() {
-                @Override
-                public void onCheckStart() {
 
-                }
-
-                @Override
-                public void hasUpdate(Update update) {
-
-                }
-
-                @Override
-                public void noUpdate() {
-                    ToastyUtil.setNormalInfo(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT);
-                }
-
-                @Override
-                public void onCheckError(Throwable t) {
-
-                }
-
-                @Override
-                public void onUserCancel() {
-
-                }
-
-                @Override
-                public void onCheckIgnore(Update update) {
-
-                }
-            });
             AppUpgradeManager.check();
         });
         lottieAnimationViewHeart.setOnClickListener(v -> {
@@ -118,16 +83,14 @@ public class AboutActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        commonTitleBar.setListener((v, action, extra) -> {
-            if (action == commonTitleBar.ACTION_LEFT_BUTTON) {
-                finish();
-            }
+        mTopBar.setTitle(getString(R.string.about));
+        mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
+            finish();
         });
     }
 
     private void initView() {
         ButterKnife.bind(this);
-        commonTitleBar = findViewById(R.id.back);
         version.setText(VersionUtil.getversion(this));
         copyright.setText(VersionUtil.getCopyrightInfo(this));
         lottieAnimationView.setSpeed(0.5f);
@@ -139,4 +102,5 @@ public class AboutActivity extends BaseActivity {
     public Intent onLastActivityFinish() {
         return new Intent(this, MainActivity.class);
     }
+
 }

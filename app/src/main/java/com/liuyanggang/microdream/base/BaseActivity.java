@@ -15,7 +15,6 @@ import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.qmuiteam.qmui.arch.QMUIActivity;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 
-import static com.liuyanggang.microdream.MicrodreamApplication.getContext;
 import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_TITLE;
 import static com.liuyanggang.microdream.activity.MicrodreamWebExplorerActivity.EXTRA_URL;
 
@@ -38,11 +37,16 @@ public class BaseActivity extends QMUIActivity {
         overridePendingTransition(R.anim.slide_left_in,0);
     }
 
+
+
     protected void startWebExplorerActivity(String url) {
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_URL, url);
         bundle.putString(EXTRA_TITLE, getString(R.string.app_name));
-        startActivity(new Intent(getContext(), MicrodreamWebExplorerActivity.class).putExtras(bundle));
+        Intent intent = new Intent(getApplicationContext(), MicrodreamWebExplorerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     /**

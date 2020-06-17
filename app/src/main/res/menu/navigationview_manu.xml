@@ -7,11 +7,11 @@
             android:title="@string/selfinfo" />
         <item
             android:id="@+id/menu_2"
-            android:icon="@mipmap/lock_fill"
+            android:icon="@mipmap/lock"
             android:title="@string/change_password" />
         <item
             android:id="@+id/menu_3"
-            android:icon="@mipmap/mail_fill"
+            android:icon="@mipmap/mail"
             android:title="@string/feedback" />
     </group>
     <group android:id="@+id/group2">

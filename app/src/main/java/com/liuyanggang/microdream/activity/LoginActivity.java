@@ -164,7 +164,9 @@ public class LoginActivity extends BaseActivity implements LoginIView {
     public void onLoginSeccess() {
         loginDialog.dismiss();
         ToastyUtil.setNormalSuccess(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT);
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
         finish();
     }
 

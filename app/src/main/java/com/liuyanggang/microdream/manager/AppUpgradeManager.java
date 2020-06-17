@@ -1,5 +1,9 @@
 package com.liuyanggang.microdream.manager;
 
+import android.content.Context;
+
+import com.liuyanggang.microdream.callback.ToastCallback;
+
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
@@ -19,7 +23,11 @@ import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_FIL
  * @Version 1.0
  */
 public class AppUpgradeManager {
-    public static void initUpgrade() {
+    private static String mw = "\\n";
+
+    public static void initUpgrade(Context context) {
+        ToastCallback toastCallback = new ToastCallback(context);
+        UpdateConfig.LogEnable(false);
         UpdateConfig.getConfig()
                 // 必填：数据更新接口,url与checkEntity两种方式任选一种填写
                 .setUrl(LAST_VERSION)
@@ -42,19 +50,23 @@ public class AppUpgradeManager {
                         update.setVersionName(object.getStr("updateVerName"));
                         String content = object.getStr("updateContent");
                         if (content != null) {
-                            if (content.contains("\\n")) {
-                                content = content.replace("\\n", "\n");
+                            if (content.contains(mw)) {
+                                content = content.replace(mw, "\n");
                             }
                         }
                         // 此apk包的更新内容
                         update.setUpdateContent(content);
                         // 此apk包是否为强制更新
-                        update.setForced(false);
+                        update.setForced(object.getBool("ignoreAble", false));
                         // 是否显示忽略此次版本更新按钮
-                        update.setIgnore(object.getBool("ignoreAble", false));
+                        update.setIgnore(!object.getBool("ignoreAble", false));
+                        //md5
+                        update.setMd5(object.getStr("md5"));
                         return update;
                     }
-                });
+                })
+                .setCheckCallback(toastCallback)
+                .setDownloadCallback(toastCallback);
     }
 
     /**
@@ -69,7 +81,9 @@ public class AppUpgradeManager {
      */
     public static void checkTask() {
         UpdateBuilder task = UpdateBuilder.create();
-        task.stopDaemon();
+        // 后台更新时间间隔设置为5秒
+        task.checkWithDaemon(10800);
+        //task.stopDaemon();
     }
 
 }

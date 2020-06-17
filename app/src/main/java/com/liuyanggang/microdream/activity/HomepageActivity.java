@@ -110,7 +110,9 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
                     .setAllowDrag(true)
                     .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                         dialog.dismiss();
-                        startActivity(new Intent(HomepageActivity.this, MoodeditActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), MoodeditActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent);
                     });
             builder.addItem(getDrawable(R.mipmap.heart_fill), choosePhoto);
             builder.build().show();
@@ -189,7 +191,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     private void getErrorView() {
         View errorView = getLayoutInflater().inflate(R.layout.layout_errorview, recyclerView, false);
         errorView.setOnClickListener(v -> {
-
+            this.mPresenter.getMoodList();
         });
         adapter.setEmptyView(errorView);
     }

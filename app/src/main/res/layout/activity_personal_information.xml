@@ -61,7 +61,7 @@
                         android:layout_weight="1"
                         android:gravity="start|center"
                         android:text="@string/avatar"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -100,7 +100,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/edit_username"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -111,7 +111,7 @@
                         android:layout_weight="1"
                         android:gravity="center|end"
                         android:text="@string/edit_username"
-                        android:textColor="#646161"
+                        android:textColor="@color/index_text"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -135,7 +135,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/edit_nikename"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -145,7 +145,7 @@
                         android:layout_weight="1"
                         android:gravity="center|end"
                         android:text="@string/edit_nikename"
-                        android:textColor="#646161"
+                        android:textColor="@color/index_text"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -175,7 +175,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/edit_email"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -185,7 +185,7 @@
                         android:layout_weight="1"
                         android:gravity="center|end"
                         android:text="@string/edit_email"
-                        android:textColor="#646161"
+                        android:textColor="@color/index_text"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -216,7 +216,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/edit_tel"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -226,7 +226,7 @@
                         android:layout_weight="1"
                         android:gravity="center|end"
                         android:text="@string/edit_tel"
-                        android:textColor="#646161"
+                        android:textColor="@color/index_text"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -256,7 +256,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/sex"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -266,7 +266,7 @@
                         android:layout_weight="1"
                         android:gravity="center|end"
                         android:text="@string/sex"
-                        android:textColor="#646161"
+                        android:textColor="@color/index_text"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -296,7 +296,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/account_registration_time"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -307,7 +307,7 @@
                         android:layout_weight="1"
                         android:gravity="center|end"
                         android:text="@string/account_registration_time"
-                        android:textColor="#646161"
+                        android:textColor="@color/index_text"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -331,7 +331,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/last_password_modification_time"
-                        android:textColor="@color/mistyrose"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -342,7 +342,7 @@
                         android:layout_weight="1"
                         android:gravity="center|end"
                         android:text="@string/last_password_modification_time"
-                        android:textColor="#646161"
+                        android:textColor="@color/index_text"
                         android:textSize="14sp" />
                 </LinearLayout>
 

@@ -151,7 +151,8 @@ public class IndexFragment extends BaseFragment implements IndexIView {
     private void getErrorView() {
         View errorView = getLayoutInflater().inflate(R.layout.layout_errorview, recyclerView, false);
         errorView.setOnClickListener(v -> {
-
+            this.mPresenter.getIndexBannerList();
+            this.mPresenter.getIndexList();
         });
         adapter.setEmptyView(errorView);
     }

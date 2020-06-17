@@ -44,7 +44,7 @@
     <string name="cancel">关闭</string>
     <string name="choose_photo">从相册选择照片</string>
     <string name="mood_edit">这一刻的想法&#8230;</string>
-    <string name="error">加载错误</string>
+    <string name="error">加载错误,点我刷新</string>
     <string name="empty">暂无数据</string>
     <string name="remind">提示</string>
     <string name="loading">加载中</string>

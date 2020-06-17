@@ -116,24 +116,24 @@ public class ConversationFragment extends BaseFragment {
                 String subtext = textView.getText().toString();
                 if (subtext.equals(getString(R.string.start_conversation))) {
                     Intent intent = new Intent(getContext(), StartC2CChatActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                 }
                 if (subtext.equals(getString(R.string.create_private_group))) {
                     Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PRIVATE);
                     startActivity(intent);
                 }
                 if (subtext.equals(getString(R.string.create_group_chat))) {
                     Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
                     startActivity(intent);
                 }
                 if (subtext.equals(getString(R.string.create_chat_room))) {
                     Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.CHAT_ROOM);
                     startActivity(intent);
                 }
@@ -237,7 +237,7 @@ public class ConversationFragment extends BaseFragment {
         chatInfo.setChatName(conversationInfo.getTitle());
         Intent intent = new Intent(getContext(), ChatActivity.class);
         intent.putExtra("chatInfo", chatInfo);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 

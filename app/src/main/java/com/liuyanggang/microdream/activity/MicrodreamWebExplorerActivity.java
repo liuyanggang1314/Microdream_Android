@@ -108,7 +108,7 @@ public class MicrodreamWebExplorerActivity extends BaseActivity implements Fragm
 
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent(linearLayout, -1, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))//传入AgentWeb的父控件。
-                .useDefaultIndicator(-1, 3)//设置进度条颜色与高度，-1为默认值，高度为2，单位为dp。
+                .useDefaultIndicator(getColor(R.color.pink), 3)//设置进度条颜色与高度，-1为默认值，高度为2，单位为dp。
                 .setAgentWebWebSettings(getSettings())//设置 IAgentWebSettings。
                 .setWebViewClient(mWebViewClient)//WebViewClient ， 与 WebView 使用一致 ，但是请勿获取WebView调用setWebViewClient(xx)方法了,会覆盖AgentWeb DefaultWebClient,同时相应的中间件也会失效。
                 .setWebChromeClient(mWebChromeClient) //WebChromeClient
@@ -259,8 +259,8 @@ public class MicrodreamWebExplorerActivity extends BaseActivity implements Fragm
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
             if (mTopBarLayout != null && !TextUtils.isEmpty(title)) {
-                if (title.length() > 15) {
-                    title = title.substring(0, 15).concat("...");
+                if (title.length() > 12) {
+                    title = title.substring(0, 12).concat("...");
                 }
             }
             mTopBarLayout.setTitle(title);
@@ -329,8 +329,6 @@ public class MicrodreamWebExplorerActivity extends BaseActivity implements Fragm
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             super.onReceivedHttpError(view, request, errorResponse);
-
-//			Log.i(TAG, "onReceivedHttpError:" + 3 + "  request:" + mGson.toJson(request) + "  errorResponse:" + mGson.toJson(errorResponse));
         }
 
         @Override
@@ -342,8 +340,6 @@ public class MicrodreamWebExplorerActivity extends BaseActivity implements Fragm
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
-
-//			Log.i(TAG, "onReceivedError:" + errorCode + "  description:" + description + "  errorResponse:" + failingUrl);
         }
     };
 
@@ -360,7 +356,9 @@ public class MicrodreamWebExplorerActivity extends BaseActivity implements Fragm
                 finish();
             }
         });
-
+        mTopBarLayout.addLeftImageButton(R.mipmap.close, R.id.topbar_left_about_button).setOnClickListener(v -> {
+            finish();
+        });
         mTopBarLayout.addRightImageButton(R.mipmap.ellipsis, R.id.topbar_right_change_button).setOnClickListener(v -> {
             initRightButton();
         });
