@@ -474,24 +474,38 @@ public class MicrodreamWebExplorerActivity extends BaseActivity implements Fragm
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (mAgentWeb != null && mAgentWeb.handleKeyEvent(keyCode, event)) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     public void onResume() {
-        mAgentWeb.getWebLifeCycle().onResume();//恢复
+        if (mAgentWeb != null) {
+            //恢复
+            mAgentWeb.getWebLifeCycle().onResume();
+        }
         super.onResume();
     }
 
     @Override
     public void onPause() {
-
-        mAgentWeb.getWebLifeCycle().onPause(); //暂停应用内所有WebView ， 调用mWebView.resumeTimers();/mAgentWeb.getWebLifeCycle().onResume(); 恢复。
+        //暂停应用内所有WebView ， 调用mWebView.resumeTimers();/mAgentWeb.getWebLifeCycle().onResume(); 恢复。
+        if (mAgentWeb != null) {
+            mAgentWeb.getWebLifeCycle().onPause();
+        }
         super.onPause();
     }
 
 
     @Override
     protected void onDestroy() {
-        mAgentWeb.getWebLifeCycle().onDestroy();
+        if (mAgentWeb != null) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
         super.onDestroy();
     }
 

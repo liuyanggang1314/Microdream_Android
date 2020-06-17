@@ -39,15 +39,17 @@ public class TimeUtil {
         if (date == null) {
             return null;
         }
+        String formatDate = DateUtil.formatDate(date);
         long diff = new Date().getTime() - date.getTime();
         long r = 0;
         if (diff > year) {
-            r = (diff / year);
-            return r + "年前";
+            return formatDate;
         }
         if (diff > month) {
-            r = (diff / month);
-            return r + "个月前";
+            return formatDate;
+        }
+        if (diff > (day * 7)) {
+            return formatDate;
         }
         if (diff > day) {
             r = (diff / day);
