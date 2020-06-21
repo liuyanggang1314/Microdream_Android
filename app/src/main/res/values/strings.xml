@@ -52,13 +52,14 @@
     <string name="delete">删除</string>
     <string name="account_registration_time">账号注册时间</string>
     <string name="last_password_modification_time">上次密码修改时间</string>
+    <string name="getdata">获取数据ing</string>
 
     <string name="shennlu">申论资料</string>
     <string name="xingce">行测资料</string>
     <string name="changshi">常识资料</string>
     <string name="mianshi">面试资料</string>
     <string name="shiti">试题资料</string>
-
+    <string name="module_name">模块名称</string>
 
     <string name="test">测试\n测试\n测试\n测试\n测试\n测试\n测试</string>
     <string name="avatar">头像</string>
@@ -84,4 +85,6 @@
     <string name="tips_empty_group_member">请选择群成员</string>
     <string name="tips_empty_group_type">请选择加群方式</string>
     <string name="no_friend_apply">暂无好友申请</string>
+    <string name="top_info">顶部</string>
+    <string name="bottom_info">最底部</string>
 </resources>

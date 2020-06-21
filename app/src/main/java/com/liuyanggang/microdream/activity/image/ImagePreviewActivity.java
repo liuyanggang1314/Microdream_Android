@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,8 +13,6 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildLongClickListener;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.activity.LoginActivity;
 import com.liuyanggang.microdream.adapter.ImagePreviewAdapter;
@@ -27,8 +24,9 @@ import com.liuyanggang.microdream.presenter.ImageIPeresenter;
 import com.liuyanggang.microdream.utils.DownloadUtils;
 import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.view.ImageByTypeIView;
+import com.qmuiteam.qmui.widget.QMUIVerticalTextView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
+import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
 
 import java.util.List;
 
@@ -53,7 +51,12 @@ public class ImagePreviewActivity extends BaseActivity implements ImageByTypeIVi
     private Long type;
     @BindView(R.id.back)
     ImageView back;
-    private QMUIPopup mNormalPopup;
+    @BindView(R.id.pull_layout)
+    QMUIPullLayout mPullLayout;
+    @BindView(R.id.image_top)
+    QMUIVerticalTextView topQMUIVerticalTextView;
+    @BindView(R.id.image_bottom)
+    QMUIVerticalTextView bottomQMUIVerticalTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,19 +110,19 @@ public class ImagePreviewActivity extends BaseActivity implements ImageByTypeIVi
     }
 
     private void initListener() {
-        adapter.setOnItemChildLongClickListener(new OnItemChildLongClickListener() {
-            @Override
-            public boolean onItemChildLongClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                ImageEntity imageEntity = (ImageEntity) adapter.getData().get(position);
-                initPopup(imageEntity);
-                return false;
-            }
+        adapter.setOnItemChildLongClickListener((adapter, view, position) -> {
+            ImageEntity imageEntity = (ImageEntity) adapter.getData().get(position);
+            initPopup(imageEntity);
+            return false;
         });
+        mPullLayout.setActionListener(pullAction -> mPullLayout.postDelayed(() -> mPullLayout.finishActionRun(pullAction), 1000));
     }
 
     private void initView() {
         ButterKnife.bind(this);
-        ToastyUtil.setNormalPrimary(getApplicationContext(), "向上滑可查看更多", Toast.LENGTH_LONG);
+        ToastyUtil.setNormalPrimary(getApplicationContext(), "向上滑可查看更多", Toast.LENGTH_SHORT);
+        topQMUIVerticalTextView.setVerticalMode(false);
+        bottomQMUIVerticalTextView.setVerticalMode(false);
     }
 
     @Override

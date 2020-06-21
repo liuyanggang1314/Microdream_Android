@@ -47,7 +47,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/about_copyright"
-            android:textIsSelectable="true"
+            android:background="@drawable/homepage_background"
             android:textSize="15sp" />
 
         <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout

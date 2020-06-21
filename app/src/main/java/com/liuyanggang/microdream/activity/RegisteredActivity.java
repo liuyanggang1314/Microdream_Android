@@ -1,6 +1,5 @@
 package com.liuyanggang.microdream.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -160,10 +159,6 @@ public class RegisteredActivity extends BaseActivity implements RegisterView {
         return valid;
     }
 
-    @Override
-    public Intent onLastActivityFinish() {
-        return new Intent(this, LoginActivity.class);
-    }
 
     @Override
     public UserEntity getRegisterInfo() {

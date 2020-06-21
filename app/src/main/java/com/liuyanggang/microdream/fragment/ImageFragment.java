@@ -81,7 +81,7 @@ public class ImageFragment extends BaseFragment implements ImageIView {
 
             @Override
             public void onRefresh() {
-                tipdialog("获取数据ing...");
+                tipdialog(getString(R.string.getdata));
                 refresh();
                 mPresenter.getImageList();
             }

@@ -63,4 +63,8 @@
         <item name="android:windowExitAnimation" >@anim/fragment_open_exit</item>
     </style>
 
+    <style name="custom_popup">
+        <item name="qmui_skin_support_popup_bg">@color/qmui_config_color_black</item>
+        <item name="android:textColor">@color/qmui_config_color_white</item>
+    </style>
 </resources>

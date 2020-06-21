@@ -81,7 +81,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
             String content = examinationEntity.getContent();
             Intent intent = new Intent(getContext(), HtmlActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.putExtra("content",content);
+            intent.putExtra("content", content);
             startActivity(intent);
         });
 
@@ -98,7 +98,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
 
             @Override
             public void onRefresh() {
-                tipdialog("获取数据ing...");
+                tipdialog(getString(R.string.getdata));
                 refresh();
                 mPresenter.getExaminationList();
             }
@@ -202,7 +202,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         mBoomMenuButton.setOnBoomListener(new OnBoomListener() {
             @Override
             public void onClicked(int index, BoomButton boomButton) {
-                tipdialog("获取数据ing...");
+                tipdialog(getString(R.string.getdata));
                 TextView textView = boomButton.getTextView();
                 examinationSubtext = textView.getText().toString();
                 EventBus.getDefault().post(new MessageEventEntity(1, examinationSubtext));

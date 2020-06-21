@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import butterknife.BindArray;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,7 +89,8 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
 
-    private String[] mTitles = {"首页", "examination", "图片", "chat"};
+    @BindArray(R.array.mTitles)
+    String[] mTitles;
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
     @BindView(R.id.commonTabLayout)
@@ -302,7 +304,7 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
 
 
     private void initTopBar() {
-        mTopBar.setTitle("主页");
+        mTopBar.setTitle(getString(R.string.app_name));
         String avatarName = MMKVUtil.getStringInfo("avatarName");
         ImageView imageView = new ImageView(getApplicationContext());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(QMUIDisplayHelper.dpToPx(28), QMUIDisplayHelper.dpToPx(28));
@@ -487,6 +489,7 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         tipDialog.dismiss();
         logoutDialog.dismiss();
         ToastyUtil.setNormalSuccess(getApplicationContext(), "退出成功", Toasty.LENGTH_LONG);
+        AppManager.getInstance().finishOtherActivity(AppManager.getInstance().currentActivity());
         startActivity(new Intent(getContext(), LoginActivity.class));
         AppManager.getInstance().finishActivity(AppManager.getInstance().currentActivity());
     }

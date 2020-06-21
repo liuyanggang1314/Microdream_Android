@@ -2,31 +2,65 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black">
+    android:layout_height="match_parent">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
+    <com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout
+        android:id="@+id/pull_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/dise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            app:qmui_is_target="true" />
+
+        <com.qmuiteam.qmui.widget.QMUIVerticalTextView
+            android:id="@+id/image_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/memories"
+            android:textColor="@color/qmui_config_color_pure_black"
+            android:textSize="16sp"
+            android:gravity="center"
+            app:qmui_action_view_init_offset="-50dp"
+            app:qmui_can_over_pull="true"
+            app:qmui_pull_edge="top"
+            app:qmui_pull_rate="0.45"
+            app:qmui_target_view_trigger_offset="wrap" />
+
+        <com.qmuiteam.qmui.widget.QMUIVerticalTextView
+            android:id="@+id/image_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/memories"
+            android:textColor="@color/qmui_config_color_pure_black"
+            android:textSize="16sp"
+            android:gravity="center"
+            app:qmui_action_view_init_offset="-50dp"
+            app:qmui_can_over_pull="true"
+            app:qmui_pull_edge="bottom"
+            app:qmui_pull_rate="0.45"
+            app:qmui_target_view_trigger_offset="wrap" />
+    </com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout>
 
     <ImageView
         android:id="@+id/back"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/qmui_icon_topbar_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        android:contentDescription="@null" />
+        app:layout_constraintVertical_bias="0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

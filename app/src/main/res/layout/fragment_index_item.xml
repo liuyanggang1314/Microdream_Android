@@ -9,16 +9,23 @@
     android:layout_marginRight="8dp"
     android:background="@drawable/index_background">
 
-    <ImageView
+
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
         android:id="@+id/post_medium_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="170dp"
         android:layout_margin="8dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/scooter_background"
+        android:src="@mipmap/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:qmui_border_color="?attr/qmui_config_color_gray_6"
+        app:qmui_border_width="1px"
+        app:qmui_corner_radius="4dp"
+        app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+        app:qmui_selected_border_width="1px"
+        app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8" />
 
     <TextView
         android:id="@+id/title"
@@ -26,16 +33,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:shadowColor="@color/black"
+        android:layout_marginBottom="8dp"
+        android:shadowColor="@color/dise"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
         android:text="@string/clear_cache"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:textStyle="bold"
+
         app:layout_constraintBottom_toBottomOf="@+id/post_medium_image"
         app:layout_constraintEnd_toEndOf="@+id/post_medium_image"
         app:layout_constraintStart_toStartOf="@+id/post_medium_image"
         app:layout_constraintTop_toTopOf="@+id/post_medium_image"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="1" />
 
     <TextView
         android:id="@+id/content"
@@ -45,7 +56,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/about"
-        android:textColor="@color/huise"
+        android:textColor="@color/index_text"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,8 +83,8 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:src="@mipmap/time_circle" />
@@ -84,13 +95,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
-            android:text="2020-09-09"
+            android:text="@string/time_ag"
             android:textColor="@color/index_text"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:src="@mipmap/comment" />
@@ -103,11 +114,11 @@
             android:layout_marginStart="4dp"
             android:text="120"
             android:textColor="@color/index_text"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:src="@mipmap/eye" />
@@ -120,11 +131,11 @@
             android:layout_marginStart="4dp"
             android:text="134"
             android:textColor="@color/index_text"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:src="@mipmap/heart_hui" />
@@ -137,6 +148,6 @@
             android:layout_marginStart="4dp"
             android:text="142"
             android:textColor="@color/index_text"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

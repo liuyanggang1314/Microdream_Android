@@ -1,5 +1,8 @@
 package com.liuyanggang.microdream.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,11 +30,14 @@ import com.liuyanggang.microdream.utils.MMKVUtil;
 import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.view.HomepageIView;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView2;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.qmuiteam.qmui.widget.popup.QMUIPopups;
+import com.qmuiteam.qmui.widget.popup.QMUIQuickAction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -146,12 +153,39 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
 
                 @Override
                 public void onEnterClick() {
-                    tipdialog("正在修改");
+                    tipdialog("正在删除");
                     mPresenter.onDeleteMood();
                 }
             });
             sureDialog.show();
         });
+        adapter.setOnItemChildLongClickListener((adapter, view, position) -> {
+            String content = ((HomepageEntity) adapter.getData().get(position)).getContent();
+            initquickAction(view, content);
+            return false;
+        });
+    }
+
+    /**
+     * 内容长按
+     * @param v
+     * @param content
+     */
+    private void initquickAction(View v, String content) {
+        Context context = new ContextThemeWrapper(this, R.style.custom_popup);
+        QMUIPopups.quickAction(context,
+                QMUIDisplayHelper.dp2px(getApplicationContext(), 56),
+                QMUIDisplayHelper.dp2px(getApplicationContext(), 56))
+                .shadow(true)
+                .edgeProtection(QMUIDisplayHelper.dp2px(getApplicationContext(), 20))
+                .addAction(new QMUIQuickAction.Action().icon(R.drawable.icon_quick_action_copy).text("复制").onClick(
+                        (quickAction, action, position) -> {
+                            quickAction.dismiss();
+                            ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            mClipboardManager.setPrimaryClip(ClipData.newPlainText(null, content));
+                            ToastyUtil.setNormalSuccess(getApplicationContext(), "复制成功", Toast.LENGTH_SHORT);
+                        }
+                )).show(v);
     }
 
     /**

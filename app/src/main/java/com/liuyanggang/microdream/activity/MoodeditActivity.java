@@ -146,9 +146,17 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
         startActivityForResult(photoPickerPreviewIntent, RC_PHOTO_PREVIEW);
     }
 
+    /**
+     * 排序发生变化
+     *
+     * @param sortableNinePhotoLayout
+     * @param fromPosition
+     * @param toPosition
+     * @param models
+     */
     @Override
     public void onNinePhotoItemExchanged(BGASortableNinePhotoLayout sortableNinePhotoLayout, int fromPosition, int toPosition, ArrayList<String> models) {
-        Toast.makeText(this, "排序发生变化", Toast.LENGTH_SHORT).show();
+
     }
 
     @AfterPermissionGranted(PRC_PHOTO_PICKER)
@@ -214,7 +222,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
     public void onMoodSaveSueccess() {
         tipDialog.dismiss();
         ToastyUtil.setNormalSuccess(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT);
-        EventBus.getDefault().post(new MessageEventEntity(2,"onUpdateMoodListListener"));
+        EventBus.getDefault().post(new MessageEventEntity(2, "onUpdateMoodListListener"));
         finish();
     }
 

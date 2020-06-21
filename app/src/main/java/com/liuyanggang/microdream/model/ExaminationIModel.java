@@ -3,6 +3,7 @@ package com.liuyanggang.microdream.model;
 import com.liuyanggang.microdream.callback.AbstractStringCallback;
 import com.liuyanggang.microdream.entity.ExaminationEntity;
 import com.liuyanggang.microdream.model.lisentener.ExaminationListener;
+import com.liuyanggang.microdream.utils.TimeUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
@@ -68,9 +69,8 @@ public class ExaminationIModel implements IModel {
                                         Long readingSum = jsonObject1.getLong("readingSum");
 
                                         Date date = DateUtil.parse(updateTime);
-                                        String formatDate = DateUtil.formatDate(date);
 
-                                        examinationEntity.setUpdateTime(formatDate);
+                                        examinationEntity.setUpdateTime(TimeUtil.getTimeFormatText(date));
                                         examinationEntity.setTitle(title);
                                         examinationEntity.setCategory(category);
                                         examinationEntity.setContent(content);

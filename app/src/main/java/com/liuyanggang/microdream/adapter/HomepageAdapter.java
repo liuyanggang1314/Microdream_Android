@@ -40,6 +40,7 @@ public class HomepageAdapter extends BaseQuickAdapter<HomepageEntity, BaseViewHo
     public HomepageAdapter(int layoutResId, @Nullable List<HomepageEntity> data) {
         super(layoutResId, data);
         addChildClickViewIds(R.id.delete);
+        addChildLongClickViewIds(R.id.text);
     }
 
     @Override

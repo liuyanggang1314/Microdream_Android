@@ -8,7 +8,7 @@
     android:layout_marginTop="8dp"
     android:background="@drawable/examination_background">
 
-    <ImageView
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -19,8 +19,13 @@
         android:src="@mipmap/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:qmui_border_color="?attr/qmui_config_color_gray_6"
+        app:qmui_border_width="1px"
+        app:qmui_corner_radius="4dp"
+        app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+        app:qmui_selected_border_width="1px"
+        app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8" />
     <TextView
         android:id="@+id/img_name"
         android:layout_width="match_parent"
@@ -32,7 +37,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
-        android:text="@string/test"
+        android:text="@string/module_name"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

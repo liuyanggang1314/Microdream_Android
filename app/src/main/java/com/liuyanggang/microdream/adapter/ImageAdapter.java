@@ -1,7 +1,5 @@
 package com.liuyanggang.microdream.adapter;
 
-import android.widget.ImageView;
-
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
@@ -10,6 +8,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.entity.ImageEntity;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView2;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class ImageAdapter extends BaseQuickAdapter<ImageEntity, BaseViewHolder> 
         Glide.with(getContext()).load(item.getUrl())
                 .placeholder(R.drawable.image_fill)
                 .error(R.drawable.logo)
-                .into((ImageView) helper.getView(R.id.img));
+                .into((QMUIRadiusImageView2) helper.getView(R.id.img));
     }
 
 }

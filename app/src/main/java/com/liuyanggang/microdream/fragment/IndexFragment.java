@@ -24,7 +24,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.RectangleIndicator;
-import com.youth.banner.transformer.ZoomOutPageTransformer;
+import com.youth.banner.transformer.DepthPageTransformer;
 import com.youth.banner.util.BannerUtils;
 
 import java.util.List;
@@ -73,13 +73,22 @@ public class IndexFragment extends BaseFragment implements IndexIView {
     private void initBanner() {
         banner.setAdapter(new ImageTitleAdapter(null));
         banner.setIndicator(new RectangleIndicator(getActivity()));
-        banner.setIndicatorNormalWidth((int) BannerUtils.dp2px(12));
+        //设置指示器选中和未选中的宽度，直接影响绘制指示器的大小
+        banner.setIndicatorWidth((int) BannerUtils.dp2px(12), (int) BannerUtils.dp2px(12));
+        //设置指示器之间的间距
         banner.setIndicatorSpace((int) BannerUtils.dp2px(4));
-        banner.setIndicatorRadius(0);
+        //设置指示器圆角，不要圆角可以设置为0
+        banner.setIndicatorRadius((int) BannerUtils.dp2px(0));
+        //设置指示器选中颜色
         banner.setIndicatorSelectedColor(getActivity().getColor(R.color.pink));
-        banner.setDelayTime(5000);
-        banner.setPageTransformer(new ZoomOutPageTransformer());
-        banner.setBannerGalleryMZ(30, 0.8f);
+        //跳转时间
+        banner.setDelayTime(8000);
+        //设置圆角
+        banner.setBannerRound(BannerUtils.dp2px(4));
+        //动画
+        banner.setPageTransformer(new DepthPageTransformer());
+        //设置魅族效果
+        //banner.setBannerGalleryMZ(30);
     }
 
     private void initListener() {
@@ -100,7 +109,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
 
             @Override
             public void onRefresh() {
-                tipdialog("获取数据ing...");
+                tipdialog(getString(R.string.getdata));
                 refresh();
                 mPresenter.getIndexList();
                 mPresenter.getIndexBannerList();
@@ -134,7 +143,7 @@ public class IndexFragment extends BaseFragment implements IndexIView {
         this.mPresenter.getIndexList();
         this.mPresenter.getIndexBannerList();
         getLoadingView();
-        tipdialog("获取数据ing...");
+        tipdialog(getString(R.string.getdata));
     }
 
     private View getHeaderView() {
