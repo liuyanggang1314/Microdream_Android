@@ -1,5 +1,7 @@
 package com.liuyanggang.microdream.adapter;
 
+import android.view.View;
+
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -28,6 +30,9 @@ public class ExaminationAdapter extends BaseQuickAdapter<ExaminationEntity, Base
         helper.setText(R.id.category, item.getCategory())
                 .setText(R.id.title, item.getTitle())
                 .setText(R.id.update_time, item.getUpdateTime());
+        if (item.getCategory()==null){
+            helper.getView(R.id.category).setVisibility(View.GONE);
+        }
     }
 
 }

@@ -30,16 +30,16 @@ public class ExaminationIPeresenter extends IPresenter {
             //此时LoginListener作为匿名内部类是持有外部类的引用的。
             ((ExaminationIModel) mImodel).getExaminationList(current, moduleName, new ExaminationListener() {
                 @Override
-                public void onHomepageSeccess(List<ExaminationEntity> examinationEntities, Integer pages) {
+                public void onExaminationSeccess(List<ExaminationEntity> examinationEntities, Integer pages) {
                     if (mViewReference.get() != null) {
-                        ((ExaminationIView) mViewReference.get()).onHomepageSeccess(examinationEntities, pages);
+                        ((ExaminationIView) mViewReference.get()).onExaminationSeccess(examinationEntities, pages);
                     }
                 }
 
                 @Override
-                public void onHomepageError(String error) {
+                public void onExaminationError(String error) {
                     if (mViewReference.get() != null) {
-                        ((ExaminationIView) mViewReference.get()).onHomepageError(error);
+                        ((ExaminationIView) mViewReference.get()).onExaminationError(error);
                     }
                 }
 

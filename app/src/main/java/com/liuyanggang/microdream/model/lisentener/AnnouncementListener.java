@@ -11,10 +11,10 @@ import java.util.List;
  * @Date 2020/5/31
  * @Version 1.0
  */
-public interface ExaminationListener {
-    void onExaminationSeccess(List<ExaminationEntity> examinationEntities, Integer pages);
+public interface AnnouncementListener {
+    void onAnnouncementSeccess(List<ExaminationEntity> examinationEntities, Integer pages);
 
-    void onExaminationError(String error);
+    void onAnnouncementError(String error);
 
     void onLoadMore(List<ExaminationEntity> examinationEntities, Integer current);
 }

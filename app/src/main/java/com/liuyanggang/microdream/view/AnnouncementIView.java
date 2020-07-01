@@ -11,14 +11,13 @@ import java.util.List;
  * @Date 2020/5/31
  * @Version 1.0
  */
-public interface ExaminationIView extends IView {
-    String getModuleName();
+public interface AnnouncementIView extends IView {
 
     Integer getCurrent();
 
-    void onExaminationSeccess(List<ExaminationEntity> examinationEntities, Integer pages);
+    void onAnnouncementSeccess(List<ExaminationEntity> examinationEntities, Integer pages);
 
-    void onExaminationError(String error);
+    void onAnnouncementError(String error);
 
     void onLoadMore(List<ExaminationEntity> examinationEntities, Integer current);
 }

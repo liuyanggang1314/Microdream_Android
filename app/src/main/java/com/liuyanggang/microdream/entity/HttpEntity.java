@@ -91,6 +91,10 @@ public class HttpEntity {
      */
     public static final String EXAMINATION = MICRODREAM_SERVER + "api/examination";
     /**
+     * 公务员考试列表
+     */
+    public static final String ANNOUNCEMENT = "https://m.ynzp.com/km/publicnotice/type1/index.html?isapp=true";
+    /**
      * 获取图片列表
      */
     public static final String IMAGE_LIST = MICRODREAM_SERVER + "api/android_img";

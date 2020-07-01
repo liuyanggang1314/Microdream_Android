@@ -10,5 +10,6 @@
         <item>Examination</item>
         <item>Picture</item>
         <item>Chat</item>
+        <item>公告</item>
     </string-array>
 </resources>

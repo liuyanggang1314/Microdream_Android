@@ -33,6 +33,7 @@ import com.liuyanggang.microdream.components.LogoutDialog;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
 import com.liuyanggang.microdream.entity.MessageEventEntity;
 import com.liuyanggang.microdream.entity.TabEntity;
+import com.liuyanggang.microdream.fragment.AnnouncementFragment;
 import com.liuyanggang.microdream.fragment.ConversationFragment;
 import com.liuyanggang.microdream.fragment.ExaminationFragment;
 import com.liuyanggang.microdream.fragment.ImageFragment;
@@ -97,8 +98,8 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
     CommonTabLayout mTabLayout;
     private ArrayList<QMUIFragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private int[] mIconUnselectIds = {R.mipmap.tab_01, R.mipmap.tab_02, R.mipmap.tab_03, R.mipmap.tab_04};
-    private int[] mIconSelectIds = {R.mipmap.tab_1, R.mipmap.tab_2, R.mipmap.tab_3, R.mipmap.tab_4};
+    private int[] mIconUnselectIds = {R.mipmap.tab_01, R.mipmap.tab_02, R.mipmap.tab_03, R.mipmap.tab_04, R.mipmap.tab_05};
+    private int[] mIconSelectIds = {R.mipmap.tab_1, R.mipmap.tab_2, R.mipmap.tab_3, R.mipmap.tab_4, R.mipmap.tab_5};
 
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
@@ -328,6 +329,7 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
         mFragments.add(new ExaminationFragment());
         mFragments.add(new ImageFragment());
         mFragments.add(new ConversationFragment());
+        mFragments.add(new AnnouncementFragment());
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }

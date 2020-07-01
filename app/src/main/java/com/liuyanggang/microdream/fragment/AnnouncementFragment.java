@@ -1,40 +1,29 @@
 package com.liuyanggang.microdream.fragment;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.liuyanggang.microdream.R;
-import com.liuyanggang.microdream.activity.HtmlActivity;
 import com.liuyanggang.microdream.activity.LoginActivity;
 import com.liuyanggang.microdream.adapter.ExaminationAdapter;
 import com.liuyanggang.microdream.base.BaseFragment;
 import com.liuyanggang.microdream.components.UnauthorizedDialog;
 import com.liuyanggang.microdream.entity.ExaminationEntity;
-import com.liuyanggang.microdream.entity.MessageEventEntity;
 import com.liuyanggang.microdream.manager.AppManager;
-import com.liuyanggang.microdream.presenter.ExaminationIPeresenter;
+import com.liuyanggang.microdream.presenter.AnnouncementIPeresenter;
 import com.liuyanggang.microdream.utils.CustomAnimation;
 import com.liuyanggang.microdream.utils.ToastyUtil;
-import com.liuyanggang.microdream.view.ExaminationIView;
-import com.nightonke.boommenu.BoomButtons.BoomButton;
-import com.nightonke.boommenu.BoomButtons.HamButton;
-import com.nightonke.boommenu.BoomMenuButton;
-import com.nightonke.boommenu.OnBoomListener;
+import com.liuyanggang.microdream.view.AnnouncementIView;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -48,28 +37,23 @@ import static com.liuyanggang.microdream.entity.HttpEntity.UNAUTHORIZED_STRING;
  * @Date 2020/5/24
  * @Version 1.0
  */
-public class ExaminationFragment extends BaseFragment implements ExaminationIView {
-    private ExaminationIPeresenter mPresenter;
+public class AnnouncementFragment extends BaseFragment implements AnnouncementIView {
+    private AnnouncementIPeresenter mPresenter;
     private Unbinder unbinder;
     private ExaminationAdapter adapter;
     private List<ExaminationEntity> datas;
     private PageInfo pageInfo = new PageInfo();
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.mBoomMenuButton)
-    BoomMenuButton mBoomMenuButton;
     @BindView(R.id.qmuiPullRefreshLayout)
     QMUIPullRefreshLayout qmuiPullRefreshLayout;
-    @BindString(R.string.shennlu)
-    String examinationSubtext;
     private QMUITipDialog tipDialog;
 
     @Override
     protected View onCreateView() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_examination, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_announcement, null);
         unbinder = ButterKnife.bind(this, view);
         initRecyclerView();
-        initBoomMenu();
         initListener();
         setData();
         return view;
@@ -78,11 +62,8 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     private void initListener() {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             ExaminationEntity examinationEntity = (ExaminationEntity) adapter.getData().get(position);
-            String content = examinationEntity.getContent();
-            Intent intent = new Intent(getContext(), HtmlActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.putExtra("content", content);
-            startActivity(intent);
+            String url = "https://m.ynzp.com/cms/PublicNotice/Content/" + examinationEntity.getId() + ".html?isapp=true";
+            startWebExplorerActivity(url, getActivity());
         });
 
         qmuiPullRefreshLayout.setOnPullListener(new QMUIPullRefreshLayout.OnPullListener() {
@@ -100,7 +81,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
             public void onRefresh() {
                 tipdialog(getString(R.string.getdata));
                 refresh();
-                mPresenter.getExaminationList();
+                mPresenter.getAnnouncementList();
             }
         });
     }
@@ -122,8 +103,8 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     }
 
     private void setData() {
-        this.mPresenter = new ExaminationIPeresenter(this);
-        mPresenter.getExaminationList();
+        this.mPresenter = new AnnouncementIPeresenter(this);
+        mPresenter.getAnnouncementList();
         getLoadingView();
     }
 
@@ -154,7 +135,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         adapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
             pageInfo.nextPage();
             //加载更多
-            mPresenter.getExaminationList();
+            mPresenter.getAnnouncementList();
         });
         //adapter.getLoadMoreModule().setAutoLoadMore(true);
         //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
@@ -171,72 +152,6 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
         pageInfo.reset();
     }
 
-    private void initBoomMenu() {
-        //mBoomMenuButton.setUse3DTransformAnimation(true);
-        mBoomMenuButton.addBuilder(new HamButton.Builder()
-                .normalImageRes(R.drawable.logo)
-                .normalTextRes(R.string.shennlu)
-                .subNormalTextRes(R.string.shennlu)
-                .imagePadding(new Rect(30, 30, 30, 30)));
-        mBoomMenuButton.addBuilder(new HamButton.Builder()
-                .normalImageRes(R.drawable.logo)
-                .normalTextRes(R.string.xingce)
-                .subNormalTextRes(R.string.xingce)
-                .imagePadding(new Rect(30, 30, 30, 30)));
-        mBoomMenuButton.addBuilder(new HamButton.Builder()
-                .normalImageRes(R.drawable.logo)
-                .normalTextRes(R.string.changshi)
-                .subNormalTextRes(R.string.changshi)
-                .imagePadding(new Rect(30, 30, 30, 30)));
-        mBoomMenuButton.addBuilder(new HamButton.Builder()
-                .normalImageRes(R.drawable.logo)
-                .normalTextRes(R.string.mianshi)
-                .subNormalTextRes(R.string.mianshi)
-                .imagePadding(new Rect(30, 30, 30, 30)));
-        mBoomMenuButton.addBuilder(new HamButton.Builder()
-                .normalImageRes(R.drawable.logo)
-                .normalTextRes(R.string.shiti)
-                .subNormalTextRes(R.string.shiti)
-                .imagePadding(new Rect(30, 30, 30, 30)));
-        mBoomMenuButton.setDuration(374);
-        mBoomMenuButton.setOnBoomListener(new OnBoomListener() {
-            @Override
-            public void onClicked(int index, BoomButton boomButton) {
-                tipdialog(getString(R.string.getdata));
-                TextView textView = boomButton.getTextView();
-                examinationSubtext = textView.getText().toString();
-                EventBus.getDefault().post(new MessageEventEntity(1, examinationSubtext));
-                refresh();
-                mPresenter.getExaminationList();
-            }
-
-            @Override
-            public void onBackgroundClick() {
-
-            }
-
-            @Override
-            public void onBoomWillHide() {
-
-            }
-
-            @Override
-            public void onBoomDidHide() {
-
-            }
-
-            @Override
-            public void onBoomWillShow() {
-
-            }
-
-            @Override
-            public void onBoomDidShow() {
-
-            }
-        });
-    }
-
 
     /**
      * 取recyclerview错误布局
@@ -246,7 +161,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     private void getErrorView() {
         View errorView = getLayoutInflater().inflate(R.layout.layout_errorview, recyclerView, false);
         errorView.setOnClickListener(v -> {
-            this.mPresenter.getExaminationList();
+            this.mPresenter.getAnnouncementList();
         });
         adapter.setEmptyView(errorView);
     }
@@ -286,17 +201,12 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     }
 
     @Override
-    public String getModuleName() {
-        return examinationSubtext;
-    }
-
-    @Override
     public Integer getCurrent() {
         return pageInfo.page;
     }
 
     @Override
-    public void onExaminationSeccess(List<ExaminationEntity> examinationEntities, Integer pages) {
+    public void onAnnouncementSeccess(List<ExaminationEntity> examinationEntities, Integer pages) {
         if (tipDialog != null) {
             tipDialog.dismiss();
         }
@@ -314,7 +224,7 @@ public class ExaminationFragment extends BaseFragment implements ExaminationIVie
     }
 
     @Override
-    public void onExaminationError(String error) {
+    public void onAnnouncementError(String error) {
         if (tipDialog != null) {
             tipDialog.dismiss();
         }
