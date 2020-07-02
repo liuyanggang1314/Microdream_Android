@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.liuyanggang.microdream.manager.AppUpgradeManager;
 import com.lzy.okgo.OkGo;
@@ -11,6 +12,9 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okserver.OkDownload;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.mmkv.MMKV;
 import com.tencent.qcloud.tim.uikit.TUIKit;
@@ -50,6 +54,31 @@ public class MicrodreamApplication extends Application {
         initOkgo();
         initUpdateConfig();
         initTUIKit();
+        initXG();
+    }
+
+    private void initXG() {
+        XGPushConfig.enableDebug(this,false);
+        XGPushManager.registerPush(this, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object data, int flag) {
+                //token在设备卸载重装的时候有可能会变
+                Log.d("TPush", "注册成功，设备token为：" + data);
+            }
+
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+            }
+        });
+        //小米推送
+        XGPushConfig.setMiPushAppId(this, "2882303761518457749");
+        XGPushConfig.setMiPushAppKey(this, "5311845716749");
+        //魅族
+        XGPushConfig.setMzPushAppId(this, "132066");
+        XGPushConfig.setMzPushAppKey(this, "1c1e86fdf85d4e89a3ffae841891e0c5");
+        //打开第三方推送
+        XGPushConfig.enableOtherPush(getApplicationContext(), true);
     }
 
     private void initTUIKit() {

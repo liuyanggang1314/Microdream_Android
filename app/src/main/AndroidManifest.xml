@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" /><!--录音-->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /><!--声音-->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!--系统弹窗-->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE "/> <!--华为角标申请-->
     <application
         android:name=".MicrodreamApplication"
         android:allowBackup="false"
@@ -30,6 +31,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
             android:name=".LauncherActivity"
             android:theme="@style/AppTheme">
@@ -135,6 +140,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
     </application>
 
 </manifest>
