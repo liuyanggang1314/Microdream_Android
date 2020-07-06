@@ -12,7 +12,6 @@ import org.junit.Test;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        String str = "logo-20200528071112227.png,logo-20200528071112281.png";
-        System.out.println(MyListUtil.setString(str));
+        System.out.println(MyListUtil.setString(null));
     }
 }

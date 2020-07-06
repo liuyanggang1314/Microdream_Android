@@ -64,6 +64,10 @@ public class HttpEntity {
      * 发表心情
      */
     public static final String SAVE_MOOD = MICRODREAM_SERVER + "api/mood";
+    /**
+     * 发表心情(视频)
+     */
+    public static final String SAVE_MOODVIDEO = MICRODREAM_SERVER + "api/mood/video";
 
     /**
      * 删除心情

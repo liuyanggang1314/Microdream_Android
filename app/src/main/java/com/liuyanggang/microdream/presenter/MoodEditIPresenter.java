@@ -45,4 +45,30 @@ public class MoodEditIPresenter extends IPresenter {
             });
         }
     }
+
+    public void onSaveMoodVideo() {
+        if (mImodel != null && mViewReference != null && mViewReference.get() != null) {
+            MoodEditIView moodEditIView = (MoodEditIView) mViewReference.get();
+            List<String> images = moodEditIView.getimages();
+            String content = moodEditIView.getContent();
+            moodEditIView = null;
+            //此时LoginListener作为匿名内部类是持有外部类的引用的。
+            ((MoodEditIModel) mImodel).onSaveMoodVideo(content, images, new MoodSaveListener() {
+                @Override
+                public void onMoodSaveSueccess() {
+                    if (mViewReference.get() != null) {
+                        ((MoodEditIView) mViewReference.get()).onMoodSaveSueccess();
+                    }
+                }
+
+                @Override
+                public void onModdSavaError(String error) {
+                    if (mViewReference.get() != null) {
+                        ((MoodEditIView) mViewReference.get()).onModdSavaError(error);
+                    }
+                }
+            });
+        }
+    }
+
 }

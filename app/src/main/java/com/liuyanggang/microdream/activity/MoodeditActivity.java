@@ -20,6 +20,7 @@ import com.liuyanggang.microdream.presenter.MoodEditIPresenter;
 import com.liuyanggang.microdream.utils.AnimationUtil;
 import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.view.MoodEditIView;
+import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
@@ -77,6 +78,7 @@ public class MoodeditActivity extends BaseActivity implements EasyPermissions.Pe
             finish();
         });
         mTopBar.addRightTextButton("发表", R.id.topbar_right_change_button).setOnClickListener(v -> {
+            QMUIKeyboardHelper.hideKeyboard(v);
             if (!validate()) {
                 AnimationUtil.initAnimationShake(moodText);
                 ToastyUtil.setNormalWarning(getApplicationContext(), "请先填写信息", Toast.LENGTH_SHORT);

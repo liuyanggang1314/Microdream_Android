@@ -65,11 +65,11 @@ public class HomepageIModel implements IModel {
                                         Long userId = jsonObject1.getLong("userId");
                                         String content = jsonObject1.getStr("content");
                                         String images = jsonObject1.getStr("images");
+                                        String video = jsonObject1.getStr("video");
                                         String creatTime = jsonObject1.getStr("creatTime");
                                         String nikeName = jsonObject1.getStr("nikeName");
                                         String avatarName = jsonObject1.getStr("avatarName");
                                         Boolean isDelete = jsonObject1.getBool("isDelete");
-
                                         Date date = DateUtil.parse(creatTime);
                                         homepageEntity.setId(id);
                                         homepageEntity.setUserId(userId);
@@ -77,6 +77,7 @@ public class HomepageIModel implements IModel {
                                         homepageEntity.setNikeName(nikeName);
                                         homepageEntity.setContent(content);
                                         homepageEntity.setImages(MyListUtil.setString(images));
+                                        homepageEntity.setVideo(video);
                                         homepageEntity.setCreatTime(TimeUtil.getTimeFormatText(date));
                                         homepageEntity.setDelete(isDelete);
                                         list.add(homepageEntity);

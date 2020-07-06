@@ -5,8 +5,10 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -31,6 +33,7 @@ import com.liuyanggang.microdream.utils.ToastyUtil;
 import com.liuyanggang.microdream.view.HomepageIView;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.QMUIAppBarLayout;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView2;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -38,6 +41,11 @@ import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.qmuiteam.qmui.widget.popup.QMUIQuickAction;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
+import com.shuyu.gsyvideoplayer.utils.CommonUtil;
+import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
+import com.shuyu.gsyvideoplayer.video.NormalGSYVideoPlayer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -71,6 +79,8 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     private Integer mPosition;
     @BindString(R.string.choose_photo)
     String choosePhoto;
+    @BindString(R.string.choose_video)
+    String chooseVideo;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.mCollapsingTopBarLayout)
@@ -79,7 +89,15 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
     QMUITopBar mTopBar;
     @BindView(R.id.avatar)
     QMUIRadiusImageView2 avatar;
-
+    @BindView(R.id.mQMUIAppBarLayout)
+    QMUIAppBarLayout mQMUIAppBarLayout;
+    private GridLayoutManager gridLayoutManager;
+    GSYVideoHelper smallVideoHelper;
+    GSYVideoHelper.GSYVideoHelperBuilder gsySmallVideoHelperBuilder;
+    int lastVisibleItem;
+    int firstVisibleItem;
+    @BindView(R.id.video_full_container)
+    FrameLayout videoFullContainer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +108,93 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
         initRecyclerView();
         onListener();
         setData();
+        initVideo();
+    }
+
+    private void initVideo() {
+        //创建小窗口帮助类
+        smallVideoHelper = new GSYVideoHelper(this, new NormalGSYVideoPlayer(this));
+        smallVideoHelper.setFullViewContainer(videoFullContainer);
+        //配置
+        gsySmallVideoHelperBuilder = new GSYVideoHelper.GSYVideoHelperBuilder();
+        gsySmallVideoHelperBuilder
+                .setHideActionBar(true)
+                .setHideStatusBar(true)
+                .setNeedLockFull(true)
+                .setCacheWithPlay(true)
+                .setAutoFullWithSize(true)
+                .setShowFullAnimation(true)
+                .setLooping(true)
+                .setLockLand(true).setVideoAllCallBack(new GSYSampleCallBack() {
+            @Override
+            public void onEnterFullscreen(String url, Object... objects) {
+                super.onEnterFullscreen(url, objects);
+                mQMUIAppBarLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onQuitFullscreen(String url, Object... objects) {
+                super.onQuitFullscreen(url, objects);
+                mQMUIAppBarLayout.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPrepared(String url, Object... objects) {
+                super.onPrepared(url, objects);
+            }
+
+            @Override
+            public void onQuitSmallWidget(String url, Object... objects) {
+                super.onQuitSmallWidget(url, objects);
+                //大于0说明有播放,//对应的播放列表TAG
+                if (smallVideoHelper.getPlayPosition() >= 0 && smallVideoHelper.getPlayTAG().equals(HomepageAdapter.TAG)) {
+                    //当前播放的位置
+                    int position = smallVideoHelper.getPlayPosition();
+                    //不可视的是时候
+                    if ((position < firstVisibleItem || position > lastVisibleItem)) {
+                        //释放掉视频
+                        smallVideoHelper.releaseVideoPlayer();
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+            }
+        });
+        smallVideoHelper.setGsyVideoOptionBuilder(gsySmallVideoHelperBuilder);
+        adapter.setVideoHelper(smallVideoHelper, gsySmallVideoHelperBuilder);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                firstVisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition();
+                //大于0说明有播放,//对应的播放列表TAG
+                if (smallVideoHelper.getPlayPosition() >= 0 && smallVideoHelper.getPlayTAG().equals(HomepageAdapter.TAG)) {
+                    //当前播放的位置
+                    int position = smallVideoHelper.getPlayPosition();
+                    //不可视的是时候
+                    if ((position < firstVisibleItem || position > lastVisibleItem)) {
+                        //如果是小窗口就不需要处理
+                        if (!smallVideoHelper.isSmall() && !smallVideoHelper.isFull()) {
+                            //小窗口
+                            int size = CommonUtil.dip2px(HomepageActivity.this, 150);
+                            //actionbar为true才不会掉下面去
+                            smallVideoHelper.showSmallVideo(new Point(size, size), true, true);
+                        }
+                    } else {
+                        if (smallVideoHelper.isSmall()) {
+                            smallVideoHelper.smallVideoToNormal();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void setData() {
@@ -117,11 +222,22 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
                     .setAllowDrag(true)
                     .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                         dialog.dismiss();
-                        Intent intent = new Intent(getApplicationContext(), MoodeditActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(intent);
+                        switch (position) {
+                            case 0:
+                                Intent intent = new Intent(getApplicationContext(), MoodeditActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                Intent intent1 = new Intent(getApplicationContext(), MoodVideoeditActivity.class);
+                                intent1.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(intent1);
+                                break;
+                        }
+
                     });
-            builder.addItem(getDrawable(R.mipmap.heart_fill), choosePhoto);
+            builder.addItem(getDrawable(R.mipmap.image), choosePhoto);
+            builder.addItem(getDrawable(R.mipmap.video), chooseVideo);
             builder.build().show();
         });
     }
@@ -168,6 +284,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
 
     /**
      * 内容长按
+     *
      * @param v
      * @param content
      */
@@ -192,7 +309,7 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
      * 初始化recyclerview
      */
     private void initRecyclerView() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new HomepageAdapter(R.layout.activity_homepage_item, datas);
         adapter.setAnimationEnable(true);
@@ -360,12 +477,33 @@ public class HomepageActivity extends BaseActivity implements HomepageIView {
         }
     }
 
+    @Override
+    protected void doOnBackPressed() {
+        if (smallVideoHelper.backFromFull()) {
+            return;
+        }
+        super.doOnBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        smallVideoHelper.getGsyVideoPlayer().onVideoPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        smallVideoHelper.getGsyVideoPlayer().onVideoResume();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         this.mPresenter = null;
         EventBus.getDefault().unregister(this);
+        smallVideoHelper.releaseVideoPlayer();
+        GSYVideoManager.releaseAllVideos();
     }
 
     /**

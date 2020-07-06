@@ -66,7 +66,8 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".activity.HomepageActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
@@ -138,6 +139,12 @@
         <activity
             android:name=".activity.image.ImagePreviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".activity.MoodVideoeditActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 

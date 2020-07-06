@@ -3,7 +3,9 @@ package com.liuyanggang.microdream.adapter;
 import android.Manifest;
 import android.os.Environment;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +16,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.entity.HomepageEntity;
 import com.liuyanggang.microdream.manager.AppManager;
+import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
 
 import java.io.File;
 import java.util.List;
@@ -25,6 +28,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG;
+import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_MOOD;
 
 /**
  * @ClassName HomepageAdapter
@@ -36,6 +40,9 @@ import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG
 public class HomepageAdapter extends BaseQuickAdapter<HomepageEntity, BaseViewHolder> implements LoadMoreModule, BGANinePhotoLayout.Delegate {
     private BGANinePhotoLayout mCurrentClickNpl;
     private static final int PRC_PHOTO_PREVIEW = 1;
+    public final static String TAG = "HomepageAdapter";
+    private GSYVideoHelper smallVideoHelper;
+    private GSYVideoHelper.GSYVideoHelperBuilder gsySmallVideoHelperBuilder;
 
     public HomepageAdapter(int layoutResId, @Nullable List<HomepageEntity> data) {
         super(layoutResId, data);
@@ -58,8 +65,51 @@ public class HomepageAdapter extends BaseQuickAdapter<HomepageEntity, BaseViewHo
                 .error(R.drawable.logo)
                 .into((ImageView) helper.getView(R.id.avatar));
         mCurrentClickNpl = helper.getView(R.id.npl_item_moment_photos);
-        mCurrentClickNpl.setDelegate(this);
-        mCurrentClickNpl.setData(item.getImages());
+
+        if (item.getImages() != null) {
+            mCurrentClickNpl.setVisibility(View.VISIBLE);
+            mCurrentClickNpl.setDelegate(this);
+            mCurrentClickNpl.setData(item.getImages());
+        } else {
+            mCurrentClickNpl.setVisibility(View.GONE);
+        }
+        RelativeLayout relativeLayout = helper.getView(R.id.relativeLayout);
+        String url;
+        if (item.getVideo() != null) {
+            relativeLayout.setVisibility(View.VISIBLE);
+            if (item.getVideo().contains("http")) {
+                url = item.getVideo();
+            } else {
+                url = MICRODREAM_SERVER_MOOD + item.getVideo();
+            }
+        } else {
+            url = null;
+            relativeLayout.setVisibility(View.GONE);
+        }
+        FrameLayout listItemContainer = helper.getView(R.id.list_item_container);
+        ImageView listItemBtn = helper.getView(R.id.list_item_btn);
+        ImageView imageView = new ImageView(getContext());
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        Glide.with(getContext()).load(R.drawable.logo)
+                .placeholder(R.drawable.image_fill)
+                .error(R.drawable.logo)
+                .into(imageView);
+        smallVideoHelper.addVideoPlayer(helper.getAdapterPosition(), imageView, TAG, listItemContainer, listItemBtn);
+
+        listItemBtn.setOnClickListener(v -> {
+            smallVideoHelper.setPlayPositionAndTag(helper.getAdapterPosition(), TAG);
+            notifyDataSetChanged();
+            gsySmallVideoHelperBuilder.setVideoTitle(item.getNikeName())
+                    .setUrl(url);
+            smallVideoHelper.startPlay();
+            smallVideoHelper.getGsyVideoPlayer().getTitleTextView().setVisibility(View.VISIBLE);
+        });
+
+    }
+
+    public void setVideoHelper(GSYVideoHelper smallVideoHelper, GSYVideoHelper.GSYVideoHelperBuilder gsySmallVideoHelperBuilder) {
+        this.smallVideoHelper = smallVideoHelper;
+        this.gsySmallVideoHelperBuilder = gsySmallVideoHelperBuilder;
     }
 
     @Override
@@ -102,4 +152,6 @@ public class HomepageAdapter extends BaseQuickAdapter<HomepageEntity, BaseViewHo
             EasyPermissions.requestPermissions(Objects.requireNonNull(AppManager.getInstance().currentActivity()), "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, perms);
         }
     }
+
+
 }

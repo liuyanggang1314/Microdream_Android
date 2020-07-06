@@ -12,6 +12,11 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okserver.OkDownload;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
+import com.shuyu.gsyvideoplayer.cache.CacheFactory;
+import com.shuyu.gsyvideoplayer.cache.ProxyCacheManager;
+import com.shuyu.gsyvideoplayer.player.PlayerFactory;
+import com.shuyu.gsyvideoplayer.player.SystemPlayerManager;
+import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -55,10 +60,18 @@ public class MicrodreamApplication extends Application {
         initUpdateConfig();
         initTUIKit();
         initXG();
+        initGSYVideo();
+    }
+
+    private void initGSYVideo() {
+        GSYVideoType.enableMediaCodec();
+        GSYVideoType.enableMediaCodecTexture();
+        PlayerFactory.setPlayManager(SystemPlayerManager.class);//系统模式
+        CacheFactory.setCacheManager(ProxyCacheManager.class);//代理缓存模式，支持所有模式，不支持m3u8等
     }
 
     private void initXG() {
-        XGPushConfig.enableDebug(this,false);
+        XGPushConfig.enableDebug(this, false);
         XGPushManager.registerPush(this, new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {

@@ -13,12 +13,16 @@ import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_MOO
  */
 public class MyListUtil {
     public static ArrayList<String> setString(String str) {
-        String[] arr = str.split(",");
-        ArrayList<String> a = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
-            a.add(String.valueOf(new StringBuffer().append(MICRODREAM_SERVER_MOOD).append(arr[i])));
+        if (str == null) {
+            return null;
+        } else {
+            String[] arr = str.split(",");
+            ArrayList<String> a = new ArrayList<>();
+            for (String s : arr) {
+                a.add(MICRODREAM_SERVER_MOOD + s);
+            }
+            return a;
         }
 
-        return a;
     }
 }

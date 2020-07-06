@@ -22,6 +22,7 @@ public class HomepageEntity implements Parcelable {
     private String creatTime;
     private boolean delete;
     private ArrayList<String> images;
+    private String video;
 
     public HomepageEntity() {
 
@@ -103,6 +104,14 @@ public class HomepageEntity implements Parcelable {
 
     public void setImages(ArrayList<String> images) {
         this.images = images;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     public static Creator<HomepageEntity> getCREATOR() {
