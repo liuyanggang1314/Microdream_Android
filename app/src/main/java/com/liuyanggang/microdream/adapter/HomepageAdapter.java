@@ -16,7 +16,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.liuyanggang.microdream.R;
 import com.liuyanggang.microdream.entity.HomepageEntity;
 import com.liuyanggang.microdream.manager.AppManager;
+import com.liuyanggang.microdream.utils.ImageUtils;
 import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
+import com.tamsiree.rxkit.RxFileTool;
 
 import java.io.File;
 import java.util.List;
@@ -24,11 +26,13 @@ import java.util.Objects;
 
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import cn.hutool.core.thread.ThreadUtil;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_IMG;
 import static com.liuyanggang.microdream.entity.HttpEntity.MICRODREAM_SERVER_MOOD;
+import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
 
 /**
  * @ClassName HomepageAdapter
@@ -74,6 +78,10 @@ public class HomepageAdapter extends BaseQuickAdapter<HomepageEntity, BaseViewHo
             mCurrentClickNpl.setVisibility(View.GONE);
         }
         RelativeLayout relativeLayout = helper.getView(R.id.relativeLayout);
+        FrameLayout listItemContainer = helper.getView(R.id.list_item_container);
+        ImageView listItemBtn = helper.getView(R.id.list_item_btn);
+        ImageView imageView = new ImageView(getContext());
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         String url;
         if (item.getVideo() != null) {
             relativeLayout.setVisibility(View.VISIBLE);
@@ -82,18 +90,30 @@ public class HomepageAdapter extends BaseQuickAdapter<HomepageEntity, BaseViewHo
             } else {
                 url = MICRODREAM_SERVER_MOOD + item.getVideo();
             }
+
+            if (RxFileTool.fileExists(getContext().getCacheDir() + "/video-img/" + item.getId() + ".jpg")) {
+                File file = new File(getContext().getCacheDir() + "/video-img/" + item.getId() + ".jpg");
+                Glide.with(getContext()).load(file)
+                        .centerCrop()
+                        .placeholder(R.drawable.image_fill)
+                        .error(R.drawable.logo)
+                        .into(imageView);
+            } else {
+                ThreadUtil.execAsync(() -> {
+                    String videoImg = ImageUtils.bitmap2File(getContext(), url, item.getId());
+                    runOnUiThread(() -> Glide.with(getContext()).load(videoImg)
+                            .centerCrop()
+                            .placeholder(R.drawable.image_fill)
+                            .error(R.drawable.logo)
+                            .into(imageView));
+                });
+
+            }
+
         } else {
             url = null;
             relativeLayout.setVisibility(View.GONE);
         }
-        FrameLayout listItemContainer = helper.getView(R.id.list_item_container);
-        ImageView listItemBtn = helper.getView(R.id.list_item_btn);
-        ImageView imageView = new ImageView(getContext());
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        Glide.with(getContext()).load(R.drawable.logo)
-                .placeholder(R.drawable.image_fill)
-                .error(R.drawable.logo)
-                .into(imageView);
         smallVideoHelper.addVideoPlayer(helper.getAdapterPosition(), imageView, TAG, listItemContainer, listItemBtn);
 
         listItemBtn.setOnClickListener(v -> {
