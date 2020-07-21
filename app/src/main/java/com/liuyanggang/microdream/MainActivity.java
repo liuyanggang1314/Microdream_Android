@@ -219,11 +219,6 @@ public class MainActivity extends BaseActivity implements MainIView, Conversatio
      */
     private void initCleanDataCache() {
         CleanDataCacheDialog cleanDataCacheDialog = new CleanDataCacheDialog(this);
-        try {
-            Objects.requireNonNull(cleanDataCacheDialog.getWindow()).setWindowAnimations(R.style.DialogAnimations);
-        } catch (Exception ignored) {
-
-        }
         cleanDataCacheDialog.setOnClickCloseListener(new CleanDataCacheDialog.OnClickCloseListener() {
             @Override
             public void onColseClick() {
